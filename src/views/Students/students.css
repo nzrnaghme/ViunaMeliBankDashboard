@@ -1,0 +1,71 @@
+.popUpEditStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
+    margin: 4px -7px !important;
+}
+
+.bodyEditStudent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.bodyEditStudent div .MuiGrid-root .MuiGrid-grid-xs-12 {
+    min-width: 236px;
+}
+
+.bodyCreateStudent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.popUpEditStudent .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.popUpCreateStudent .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.popUpAllCoursesStudent .MuiDialog-container .MuiPaper-root {
+    width: 700px;
+}
+
+.popUpAllCoursesStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+    overflow-y: hidden;
+}
+
+
+.bodyCreateStudent div .makeStyles-grid-100 {
+    margin: 1px -15px !important;
+}
+
+.popUpCreateStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+    overflow-y: hidden;
+}
+
+.photoEditStudent .photo .upload {
+    right: 14% !important;
+}
+
+
+@media screen and (max-width:749px) {
+    .popUpCreateStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+        overflow-y: auto;
+    }
+
+    .bodyEditStudent {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .bodyCreateStudent {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .photoEditStudent {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+}

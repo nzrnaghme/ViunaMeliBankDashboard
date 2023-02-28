@@ -1,0 +1,13 @@
+.red .MuiSnackbarContent-root {
+    background-color: red !important;
+
+}
+
+.green .MuiSnackbarContent-root {
+    background-color: green !important;
+}
+
+.orange .MuiSnackbarContent-root {
+    background-color: orange !important;
+
+}

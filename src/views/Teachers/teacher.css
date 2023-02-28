@@ -1,0 +1,97 @@
+.popUpCreateTeacher .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.popUpCreateTeacher .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+    overflow-y: hidden;
+}
+
+.bodyCreateTeacher div .makeStyles-grid-100 {
+    margin: 1px -15px !important;
+}
+
+.bodyCreateTeacher {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.bodyCreateTeacher div .makeStyles-grid-99 {
+    margin: 3px -15px !important;
+}
+
+.bodyCreateTeacher div .MuiGrid-root .MuiGrid-root .MuiFormControl-fullWidth {
+    width: 92%;
+}
+
+.bodyEditTeacher div .MuiGrid-root .MuiGrid-grid-xs-12 {
+    min-width: 236px;
+}
+
+.bodyEditTeacher {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.popUpEditTeacher .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.popUpEditTeacher .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+    overflow-y: hidden;
+}
+
+.bodyEditTeacher div .makeStyles-grid-99 {
+    margin: 3px -15px !important;
+}
+
+.bodyCreateTeacher .MuiGrid-root .datePicker_form .rmdp-container {
+    width: 90%;
+}
+
+.photoInsertTeacher .photo .upload,
+.photoEditTeacher .photo .upload {
+    right: 14% !important;
+}
+
+
+@media screen and (max-width:749px) {
+    .bodyCreateTeacher div .MuiGrid-root .MuiGrid-root .MuiFormControl-fullWidth {
+        width: 100%;
+    }
+
+    .popUpCreateTeacher .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+        overflow-y: auto;
+    }
+
+    .bodyCreateTeacher {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .photoInsertTeacher {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+
+    .bodyCreateTeacher div .makeStyles-grid-99 {
+        margin: 3px -15px !important;
+    }
+
+    .bodyEditTeacher {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .photoEditTeacher {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+
+    .MuiGrid-root .datePicker_form .rmdp-container {
+        width: 100%;
+    }
+}

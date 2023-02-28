@@ -1,0 +1,47 @@
+/* .MuiDialogContent-root {
+    width: 300px;
+} */
+
+.popUpCustome .MuiDialog-container .MuiPaper-root{
+    width: 400px;
+}
+
+@media screen and (max-width:749px) {
+    .MuiPaper-root .MuiTypography-h6{
+        font-size: 13px;
+    }
+}
+
+.popUpActionCustome .MuiDialog-container .MuiPaper-root {
+    width: 313px !important;
+}
+
+.popUpActionCustome .confirmText {
+    text-align: center !important;
+    white-space: unset;
+}
+
+.popUpActionCustome .btnsConfirmWrapper {
+    text-align: center;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.popUpActionCustome .MuiTypography-root {
+    padding: 0px 24px;
+}
+
+@media screen and (max-width:749px) {
+    .popUpActionCustome .btnsConfirmWrapper {
+        width: 80%;
+        margin: auto;
+    }
+    .confirm-popup-content{
+        font-size: smaller;
+    }
+}
+
+.MuiDialog-paperWidthSm{
+    max-width: 1000px !important;
+}

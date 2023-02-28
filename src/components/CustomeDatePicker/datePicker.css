@@ -1,0 +1,20 @@
+.rmdp-input{
+    border: 1px solid white;
+    border-bottom: 1px solid #c0c4d6;
+    border-radius: 0px;
+    width: 97%;
+    direction: ltr;
+}
+
+.rmdp-container{
+    width: 100%;
+}
+
+.rmdp-containe div div svg{
+    right: 40% !important;
+    /* left: 0% !important; */
+}
+
+.datePicker_form{
+    margin-top: 23px;
+}

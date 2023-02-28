@@ -1,0 +1,92 @@
+.popUpEditCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
+    margin: -4px -7px !important;
+}
+
+.bodyEditCourse {
+    display: flex;
+    flex-direction: column;
+}
+
+.bodyEditCourse div .MuiGrid-root .MuiGrid-grid-xs-12 {
+    min-width: 236px;
+}
+
+
+.popUpEditCourse .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.btnEditCourse {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.popUpCreateCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
+    margin: -4px -7px !important;
+}
+
+.bodyCreateCourse {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.bodyCreateCourse div .MuiGrid-root .MuiGrid-grid-xs-12 {
+    min-width: 236px;
+}
+
+
+.popUpCreateCourse .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.bodyCreateCourse .avatarPhotoLesson .MuiAvatar-root{
+    height: 200px;
+    width: 200px;
+    margin: auto;
+}
+
+.bodyEditCourse .avatarPhotoLesson .MuiAvatar-root{
+    height: 200px;
+    width: 200px;
+    margin: auto;
+}
+
+.btnEditCourse {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+
+.popUpAllCurrentStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
+    margin: -4px -7px !important;
+}
+
+
+.popUpAllCurrentStudent .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+
+@media screen and (max-width:749px) {
+    .bodyEditCourse {
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+.MuiSelect-icon{
+    right: 94% !important;
+}
+
+.CardTitle{
+    position: fixed !important;
+    width: 61% !important;
+}
+
+.bodyStyleCard{
+    margin-top: 20px;
+}
