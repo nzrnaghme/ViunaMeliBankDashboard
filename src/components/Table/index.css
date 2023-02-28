@@ -1,0 +1,20 @@
+.MuiTableCell-root .MuiIconButton-root {
+    padding: 8px;
+}
+
+.MuiTablePagination-toolbar {
+    display: inline-flex !important;
+}
+
+.MuiTablePagination-selectRoot {
+    margin-left: 33px !important;
+}
+
+.MuiTablePagination-actions .MuiIconButton-root {
+    transform: rotate(180deg) !important;
+
+}
+
+.MuiTablePagination-caption {
+    direction: ltr !important;
+}
