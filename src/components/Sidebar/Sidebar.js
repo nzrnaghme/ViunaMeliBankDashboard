@@ -218,7 +218,7 @@ export default function Sidebar(props) {
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>
           <a
-            href="https://www.google.com/"
+            href="https://www.viuna-ict.com"
             target="_blank"
             style={
               !drawerlogo
