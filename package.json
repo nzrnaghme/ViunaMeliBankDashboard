@@ -1,7 +1,7 @@
 {
-  "name": "سامانه مدیریت کاربران بانک ملی",
+  "name": "admin_panel",
   "version": "1.10.0",
-  "description": "Material Dashboard React. Coded by Creative Tim",
+  "description": "سامانه مدیریت کاربران بانک ملی",
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
