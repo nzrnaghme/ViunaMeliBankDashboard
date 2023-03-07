@@ -65,6 +65,15 @@ const sidebarStyle = (theme) => ({
       transform: `translate3d(0, 0,${60}px)`,
     },
   },
+  scroller: {
+    overflow: "auto",
+    position: "relative",
+    ...transition,
+    maxHeight: "100%",
+    width: "100%",
+    overflowScrolling: "touch",
+    marginTop:"-30px"
+  },
   showLogoTitle: {
     ...transition,
     width: 260,

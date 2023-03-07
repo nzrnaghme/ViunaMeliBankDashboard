@@ -18,6 +18,9 @@ import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
 import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
 import { getItem } from "api/storage/storage";
 
+import PerfectScrollbar from "perfect-scrollbar";
+let ps;
+
 const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
@@ -27,6 +30,44 @@ export default function Sidebar(props) {
   const classes = useStyles();
 
   const [drawerlogo, setDrawerLogo] = useState(true);
+  const [scroll, setScroll] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const sidebarScrol = React.createRef();
+
+  const resizeFunction = () => {
+    if (window.innerWidth >= 960) {
+      setMobileOpen(false);
+    }
+  };
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  React.useEffect(() => {
+    if (navigator.platform.indexOf("Win") > -1) {
+      ps = new PerfectScrollbar(sidebarScrol.current, {
+        suppressScrollX: true,
+        suppressScrollY: false,
+      });
+      document.body.style.overflow = "hidden";
+    }
+    window.addEventListener("resize", resizeFunction);
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      if (navigator.platform.indexOf("Win") > -1) {
+        ps.destroy();
+      }
+      window.removeEventListener("resize", resizeFunction);
+    };
+  }, [sidebarScrol]);
+
+  const handleScroll = (event) => {
+    console.log(event.currentTarget.scrollTop, "event");
+    if (event.currentTarget.scrollTop > 0) setScroll(true);
+    else setScroll(false);
+  };
 
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
@@ -35,7 +76,11 @@ export default function Sidebar(props) {
 
   const { color, logo, image, logoText, routes } = props;
   var links = (
-    <>
+    <div
+      ref={sidebarScrol}
+      className={classes.scroller}
+      onScroll={handleScroll}
+    >
       <List className={classes.list}>
         {routes.map((prop, key) => {
           var activePro = " ";
@@ -91,6 +136,7 @@ export default function Sidebar(props) {
                 padding: "17px 20px",
                 color: "#4D4D4D",
                 fontSize: "14px",
+                position: "absolute",
               }
             : {
                 display: "none",
@@ -99,7 +145,7 @@ export default function Sidebar(props) {
       >
         توسعه توسط تیم نرم‌افزاری ویونا
       </p>
-    </>
+    </div>
   );
 
   var brand = (
