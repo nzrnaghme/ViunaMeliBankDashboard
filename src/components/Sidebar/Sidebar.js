@@ -81,7 +81,6 @@ export default function Sidebar(props) {
       className={classes.scroller}
       onScroll={handleScroll}
     >
-
       <List className={classes.list}>
         {routes.map((prop, key) => {
           var activePro = " ";
@@ -129,7 +128,6 @@ export default function Sidebar(props) {
           );
         })}
       </List>
-
     </div>
   );
 
@@ -188,7 +186,6 @@ export default function Sidebar(props) {
           <div className={classes.sidebarWrapper}>
             {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
             {links}
-
           </div>
           {image !== undefined ? (
             <div
@@ -196,7 +193,6 @@ export default function Sidebar(props) {
               style={{ backgroundImage: "url(" + image + ")" }}
             />
           ) : null}
-
         </Drawer>
       </Hidden>
       <Hidden smDown implementation="css">
@@ -217,30 +213,32 @@ export default function Sidebar(props) {
           onMouseLeave={() => {
             setDrawerLogo(true);
           }}
-        // style={{ width: drawerWidth }}
+          // style={{ width: drawerWidth }}
         >
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>
-          <p
+          <a
+            href="https://www.google.com/"
+            target="_blank"
             style={
-              !drawerlogo ?
-                {
-                  textAlign: "center",
-                  padding: "17px 20px",
-                  color: "#4D4D4D",
-                  fontSize: "14px",
-                  zIndex: "999",
-                  position: "absolute",
-                  bottom: "0px",
-                  width: 200
-                }
+              !drawerlogo
+                ? {
+                    textAlign: "center",
+                    padding: "17px 20px",
+                    color: "#4D4D4D",
+                    fontSize: "14px",
+                    zIndex: "999",
+                    position: "absolute",
+                    bottom: "0px",
+                    width: 200,
+                  }
                 : {
-                  display: "none",
-                }
+                    display: "none",
+                  }
             }
           >
             توسعه توسط تیم نرم‌افزاری ویونا
-          </p>
+          </a>
           {image !== undefined ? (
             <div
               className={classes.background}
