@@ -13,7 +13,9 @@ const appStyle = (theme) => ({
     height: "100vh",
     direction: "rtl",
     background: myBg,
-    opaccity:".7"
+    opaccity: ".7",
+    overflowY: "hidden",
+    overflowX: "hidden"
   },
   mainPanel: {
     [theme.breakpoints.up("md")]: {
@@ -26,7 +28,7 @@ const appStyle = (theme) => ({
     maxHeight: "100%",
     width: "100%",
     overflowScrolling: "touch",
-    marginTop:"-30px"
+    marginTop: "-30px"
   },
   content: {
     marginTop: "70px",

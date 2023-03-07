@@ -72,7 +72,8 @@ const sidebarStyle = (theme) => ({
     maxHeight: "100%",
     width: "100%",
     overflowScrolling: "touch",
-    marginTop:"-30px"
+    marginTop:"-30px",
+    height:"100%"
   },
   showLogoTitle: {
     ...transition,
@@ -176,7 +177,7 @@ const sidebarStyle = (theme) => ({
     },
   },
   list: {
-    marginTop: "20px",
+    marginTop: "37px",
     paddingLeft: "0",
     paddingTop: "0",
     paddingBottom: "0",

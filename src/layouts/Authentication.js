@@ -42,9 +42,7 @@ export default function Authentication() {
 
                     style={{
                         backgroundImage: "url(" + getBgImage() + ")",
-                        backgroundSize: "cover",
-                        // width:'100%',
-                        // height:'100%'
+                        backgroundSize: "cover"
                     }}
                 >
                     <Switch>
