@@ -21,13 +21,12 @@ import { getItem } from "api/storage/storage";
 const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
-  const token = getItem('token')
-  const role = getItem('role')
-  const id = getItem('id')
+  const token = getItem("token");
+  const role = getItem("role");
+  const id = getItem("id");
   const classes = useStyles();
 
-  const [drawerlogo, setDrawerLogo] = useState(true)
-
+  const [drawerlogo, setDrawerLogo] = useState(true);
 
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
@@ -36,53 +35,71 @@ export default function Sidebar(props) {
 
   const { color, logo, image, logoText, routes } = props;
   var links = (
-    <List className={classes.list}>
-      {routes.map((prop, key) => {
-        var activePro = " ";
-        var listItemClasses;
+    <>
+      <List className={classes.list}>
+        {routes.map((prop, key) => {
+          var activePro = " ";
+          var listItemClasses;
 
-        listItemClasses = classNames({
-          [" " + classes[color]]: activeRoute(prop.layout + prop.path),
-        });
+          listItemClasses = classNames({
+            [" " + classes[color]]: activeRoute(prop.layout + prop.path),
+          });
 
-        const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path),
-        });
-        return (
-          <NavLink
-            to={prop.layout + prop.path}
-            className={activePro + classes.item}
-            activeClassName="active"
-            key={key}
-          >
-            <ListItem button className={classes.itemLink + listItemClasses}>
-              {typeof prop.icon === "string" ? (
-                <Icon
-                  className={classNames(classes.itemIcon, whiteFontClasses, {
-                    [classes.itemIconRTL]: props.rtlActive,
+          const whiteFontClasses = classNames({
+            [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path),
+          });
+          return (
+            <NavLink
+              to={prop.layout + prop.path}
+              className={activePro + classes.item}
+              activeClassName="active"
+              key={key}
+            >
+              <ListItem button className={classes.itemLink + listItemClasses}>
+                {typeof prop.icon === "string" ? (
+                  <Icon
+                    className={classNames(classes.itemIcon, whiteFontClasses, {
+                      [classes.itemIconRTL]: props.rtlActive,
+                    })}
+                  >
+                    {prop.icon}
+                  </Icon>
+                ) : (
+                  <prop.icon
+                    className={classNames(classes.itemIcon, whiteFontClasses, {
+                      [classes.itemIconRTL]: props.rtlActive,
+                    })}
+                  />
+                )}
+                <ListItemText
+                  primary={prop.name}
+                  className={classNames(classes.itemText, whiteFontClasses, {
+                    [classes.itemTextRTL]: props.rtlActive,
                   })}
-                >
-                  {prop.icon}
-                </Icon>
-              ) : (
-                <prop.icon
-                  className={classNames(classes.itemIcon, whiteFontClasses, {
-                    [classes.itemIconRTL]: props.rtlActive,
-                  })}
+                  disableTypography={true}
                 />
-              )}
-              <ListItemText
-                primary={prop.name}
-                className={classNames(classes.itemText, whiteFontClasses, {
-                  [classes.itemTextRTL]: props.rtlActive,
-                })}
-                disableTypography={true}
-              />
-            </ListItem>
-          </NavLink>
-        );
-      })}
-    </List>
+              </ListItem>
+            </NavLink>
+          );
+        })}
+      </List>
+      <p
+        style={
+          !drawerlogo
+            ? {
+                textAlign: "center",
+                padding: "17px 20px",
+                color: "#4D4D4D",
+                fontSize: "14px",
+              }
+            : {
+                display: "none",
+              }
+        }
+      >
+        توسعه توسط تیم نرم‌افزاری ویونا
+      </p>
+    </>
   );
 
   var brand = (
@@ -97,7 +114,15 @@ export default function Sidebar(props) {
         <div className={drawerlogo ? classes.logoImage : classes.logoImageText}>
           <img src={logo} alt="logo" className={classes.img} />
         </div>
-        <p style={{ color: '#E30612', transitionDelay: '5s', transition: 'all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)', lineHeight: "0px", marginTop: "25px", }}>
+        <p
+          style={{
+            color: "#E30612",
+            transitionDelay: "5s",
+            transition: "all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)",
+            lineHeight: "0px",
+            marginTop: "25px",
+          }}
+        >
           {drawerlogo ? "" : logoText}
         </p>
       </a>
@@ -122,12 +147,11 @@ export default function Sidebar(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           onMouseOver={() => {
-            setDrawerLogo(false)
+            setDrawerLogo(false);
           }}
           onMouseLeave={() => {
-            setDrawerLogo(true)
+            setDrawerLogo(true);
           }}
-
         >
           {brand}
           <div className={classes.sidebarWrapper}>
@@ -155,12 +179,12 @@ export default function Sidebar(props) {
             }),
           }}
           onMouseOver={() => {
-            setDrawerLogo(false)
+            setDrawerLogo(false);
           }}
           onMouseLeave={() => {
-            setDrawerLogo(true)
+            setDrawerLogo(true);
           }}
-        // style={{ width: drawerWidth }}
+          // style={{ width: drawerWidth }}
         >
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>

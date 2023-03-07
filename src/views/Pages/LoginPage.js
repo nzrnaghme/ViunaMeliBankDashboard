@@ -22,7 +22,7 @@ import { loginEmployee } from "api/Core/Login_Register";
 import { setItem } from "api/storage/storage";
 
 //captcha pic
-import captcha from "./../../assets/img/captcha.png";
+import captchaPic from "./../../assets/img/captcha.png";
 
 const useStyles = makeStyles(styles);
 export default function LoginPage() {
@@ -30,6 +30,7 @@ export default function LoginPage() {
   const [check, setCheck] = useState(false);
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
+  const [captcha, setCaptcha] = useState();
 
   const handleToggle = (value) => {
     setCheck(value.target.checked);
@@ -138,9 +139,9 @@ export default function LoginPage() {
                   rtlActive
                   labelText="کد تصویر پایین"
                   id="name"
-                  value={email}
+                  value={captcha}
                   onChange={(e) => {
-                    setEmail(e);
+                    setCaptcha(e);
                   }}
                   formControlProps={{
                     fullWidth: true,
@@ -171,7 +172,7 @@ export default function LoginPage() {
                       width: "auto",
                       objectPosition: "center",
                     }}
-                    src={captcha}
+                    src={captchaPic}
                     alt="captchaPic"
                   />
                 </div>
