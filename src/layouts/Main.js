@@ -113,7 +113,7 @@ export default function Main({ ...rest }) {
             <Switch>
               <Route path={"/admin/dashboard"} component={Dashboard} />
               <Route path={"/admin/user"} component={UserProfile} />
-              <Route path={"/admin/courses"} component={CourseList} />
+              <Route path={"/admin/userList"} component={CourseList} />
               <Route path={"/admin/Teachers"} component={Teachers} />
               <Route path={"/admin/students"} component={Students} />
               <Route path={"/admin/lessons"} component={LessonList} />

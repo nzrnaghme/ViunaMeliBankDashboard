@@ -1,12 +1,12 @@
 import axios from "axios";
-import { getItem } from "./storage/storage"
+// import { getItem } from "./storage/storage"
 // import { toast } from "react-toastify";
 
 
 const api = axios.create({
     headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     },
     // timeout: 5000,
 });
@@ -47,9 +47,9 @@ api.interceptors.response.use(
 );
 
 // will send token to headers request ( in x-auth-token body )
-api.interceptors.request.use((config) => {
-    config.headers["x-auth-token"] = getItem("token");
-    return config;
-});
+// api.interceptors.request.use((config) => {
+//     config.headers["x-auth-token"] = getItem("token");
+//     return config;
+// });
 
 export default api;

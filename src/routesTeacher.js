@@ -27,7 +27,7 @@ const dashboardRoutes = [
     layout: "/teacher",
   },
   {
-    path: "/courses",
+    path: "/userList",
     name: "دوره ها",
     icon: "content_paste",
     component: CourseList,

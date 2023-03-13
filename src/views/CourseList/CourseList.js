@@ -10,7 +10,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
 
-import { getAllCourse } from "api/Core/Course";
+import { getListUser } from "api/Core/Course";
 import { removeCourseById } from "api/Core/Course";
 import { getCourseById } from "api/Core/Course";
 import EditCourse from "./EditCourse";
@@ -56,11 +56,13 @@ const useStyles = makeStyles(styles);
 
 export default function CourseList() {
   const roleUser = getItem('role')
-  const userId = getItem('id')
+  // const userId = getItem('id')
 
   const classes = useStyles();
   const [allCourse, setAllCourse] = useState([])
   const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+
+  const [allCourseV, setAllCourseV] = useState({})
 
 
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
@@ -82,26 +84,31 @@ export default function CourseList() {
   }, [])
 
   const getCourses = async () => {
-    let response = await getAllCourse();
-    if (response.data.result) {
-      const data = response.data.result.map((item) => (
-        {
-          title: item.title,
-          teacher: item.teacher.fullName,
-          date: item.startDate.split("T")[0],
-          cost: item.cost,
-          capacity: item.students.length + item.capacity,
-          countStudent: item.students.length,
-          id: item._id,
-          teacherId: item.teacher._id
-        }
-      ));
-      if (roleUser === 'teacher') {
-        var allCourseTeacher = data.filter((item) => item.teacherId === userId)
-        setAllCourse(allCourseTeacher)
-      } else
-        setAllCourse(data)
-    }
+    // let response = await getAllCourse();
+    let response1 = await getListUser();
+    // console.log(response1.data, "11111111111111111111111111");
+    setAllCourseV(response1.data)
+
+
+    // if (response.data.result) {
+    //   const data = response.data.result.map((item) => (
+    //     {
+    //       title: item.title,
+    //       teacher: item.teacher.fullName,
+    //       date: item.startDate.split("T")[0],
+    //       cost: item.cost,
+    //       capacity: item.students.length + item.capacity,
+    //       countStudent: item.students.length,
+    //       id: item._id,
+    //       teacherId: item.teacher._id
+    //     }
+    //   ));
+    //   if (roleUser === 'teacher') {
+    //     var allCourseTeacher = data.filter((item) => item.teacherId === userId)
+    //     setAllCourse(allCourseTeacher)
+    //   } else
+    //     setAllCourse(data)
+    // }
   }
 
   const removeCourse = async (id) => {
@@ -145,6 +152,7 @@ export default function CourseList() {
     setCurrentPage_MainbarMyCourses(0);
   };
 
+  console.log(allCourseV, "allCourseV", Object.keys(allCourseV).length);
 
   return (
     <>
@@ -160,6 +168,19 @@ export default function CourseList() {
               <h4 className={classes.cardTitleWhite}>تمام دوره ها</h4>
             </CardHeader>
             <CardBody>
+
+              {allCourseV && Object.keys(allCourseV).length > 0 && Object.values(allCourseV).map((item, key) => (
+                <div key={key}>
+                  <div >{item.USER_USERNAME}</div>
+                  <div>{item.USER_DESCRIPTION}</div>
+                  <div>{item.USER_STATUS}</div>
+                  <div>{item.USER_ID}</div>
+                  <hr></hr>
+                </div>
+              ))}
+
+              <p>Hi</p>
+
               {allCourse && allCourse.length > 0 ?
                 <Table
                   tableHeaderColor="info"

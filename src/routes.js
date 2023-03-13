@@ -38,8 +38,8 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/courses",
-    name: "دوره ها",
+    path: "/userList",
+    name: "کاربران",
     icon: "content_paste",
     component: CourseList,
     layout: "/admin",
