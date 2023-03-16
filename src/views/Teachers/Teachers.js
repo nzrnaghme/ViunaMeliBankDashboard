@@ -17,7 +17,7 @@ import { deActiveEmployeetManage } from "api/Core/Employe_Manage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeEmployee } from "api/Core/Employe_Manage";
-import { getAllTeachers } from "api/Core/Employe_Manage";
+import { getAllTeachersV } from "api/Core/Employe_Manage";
 import { trackPromise } from "react-promise-tracker";
 
 const styles = {
@@ -54,7 +54,8 @@ const useStyles = makeStyles(styles);
 
 export default function Teachers() {
   const classes = useStyles();
-  const [allTeachers, setAllTeachers] = useState([])
+  const [allTeachers, setAllTeachers] = useState([]);
+  const [allTeachersV, setAllTeachersV] = useState([]);
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -71,19 +72,24 @@ export default function Teachers() {
 
 
   const getTeachers = async () => {
-    let response = await getAllTeachers();
-    const data = response.data.result.map((item) => (
-      {
-        name: item.fullName,
-        profile: item.profile,
-        email: item.email,
-        courses: item.courses.length,
-        active: item.isActive,
-        phone: item.phoneNumber,
-        id: item._id
-      }
-    ));
-    setAllTeachers(data)
+
+    let response1 = await getAllTeachersV();
+    // console.log(response1.data, "111222111");
+    setAllTeachersV(response1.data);
+
+    // let response = await getAllTeachers();
+    // const data = response.data.result.map((item) => (
+    //   {
+    //     name: item.fullName,
+    //     profile: item.profile,
+    //     email: item.email,
+    //     courses: item.courses.length,
+    //     active: item.isActive,
+    //     phone: item.phoneNumber,
+    //     id: item._id
+    //   }
+    // ));
+    // setAllTeachers(data)
   }
 
   const removeTeacher = async (id) => {
@@ -160,11 +166,11 @@ export default function Teachers() {
               <h4 className={classes.cardTitleWhite}>تمام اساتید</h4>
             </CardHeader>
             <CardBody>
-              {allTeachers && allTeachers.length > 0 ?
+              {allTeachersV && Object.keys(allTeachersV).length > 0 ?
                 <Table
                   tableHeaderColor="info"
-                  tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
-                  tableData={allTeachers}
+                  tableHead={["ردیف", "توضیحات گروه", "وضعیت گروه", "کد گروه", "عملیات"]}
+                  tableData={Object.values(allTeachersV)}
                   currentPage={currentPage_MainbarMyCourses}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
@@ -172,7 +178,7 @@ export default function Teachers() {
                   editTeacher={editTeacher}
                   changeActivate={changeActivate}
                   removeTeacher={(id) => {
-                    onConfirmSetter('آیا برای حذف استاد مطمئن هستید؟', () => {
+                    onConfirmSetter('آیا برای حذف گروه مطمئن هستید؟', () => {
                       trackPromise(removeTeacher(id))
                     })
                     setConfirmPopupOpen(true)
