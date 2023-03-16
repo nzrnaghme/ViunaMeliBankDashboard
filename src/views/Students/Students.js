@@ -17,7 +17,7 @@ import EditStudent from "./EditStudent";
 
 import "./students.css";
 
-import { getAllStudet } from "api/Core/Student_Manage";
+import { getAllStudetV } from "api/Core/Student_Manage";
 import { deleteStudentById } from "api/Core/Student_Manage";
 import { getStudentById } from "api/Core/Student_Manage";
 import { deActiveStudentManage } from "api/Core/Student_Manage";
@@ -63,6 +63,7 @@ const useStyles = makeStyles(styles);
 export default function Students() {
     const classes = useStyles();
     const [allStudents, setAllStudents] = useState([])
+    const [allStudentsV, setAllStudentsV] = useState([])
     const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -81,19 +82,22 @@ export default function Students() {
     }, [])
 
     const getStudents = async () => {
-        let response = await getAllStudet();
-        const data = response.data.result.map((item) => (
-            {
-                name: item.fullName,
-                profile: item.profile,
-                email: item.email,
-                courses: item.courses.length,
-                phone: item.phoneNumber,
-                active: item.isActive,
-                id: item._id
-            }
-        ));
-        setAllStudents(data)
+        let response1 = await getAllStudetV();
+
+        console.log(Object.values(response1.data), "amirrrrrrr");
+        setAllStudentsV(response1.data);
+        // const data = response.data.result.map((item) => (
+        //     {
+        //         name: item.fullName,
+        //         profile: item.profile,
+        //         email: item.email,
+        //         courses: item.courses.length,
+        //         phone: item.phoneNumber,
+        //         active: item.isActive,
+        //         id: item._id
+        //     }
+        // ));
+        // setAllStudents(data)
     }
 
     const removeStudent = (id) => {
@@ -180,11 +184,11 @@ export default function Students() {
                             <h4 className={classes.cardTitleWhite}>تمام دانشجویان</h4>
                         </CardHeader>
                         <CardBody>
-                            {allStudents && allStudents.length > 0 ?
+                            {allStudentsV && Object.keys(allStudentsV).length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
-                                    tableData={allStudents}
+                                    tableHead={["ردیف", "توضیحات نقش", "وضعیت نقش", "آیدی نقش", "عملیات"]}
+                                    tableData={Object.values(allStudentsV)}
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={rowsPerPage}
                                     removeStudent={(id) => {

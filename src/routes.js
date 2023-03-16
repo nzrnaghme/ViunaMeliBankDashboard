@@ -46,14 +46,14 @@ const dashboardRoutes = [
   },
   {
     path: "/Teachers",
-    name: "اساتید",
+    name: "گروه‌ها",
     icon: LocalLibraryIcon,
     component: Teachers,
     layout: "/admin",
   },
   {
     path: "/students",
-    name: "دانشجویان",
+    name: "نقش‌ها",
     icon: PeopleIcon,
     component: Students,
     layout: "/admin",

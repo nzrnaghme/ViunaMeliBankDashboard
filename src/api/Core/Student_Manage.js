@@ -1,7 +1,9 @@
-import { ACTIVE_STUDENT, DEACTIVE_STUDENT, DELETE_STUDENT, GETALL_STUDENT, GET_STUDENT_BY_ID, PAGINATION_GETALL_STUDENT, UPDATE_STUDENT } from "../endpoints";
+import { LIST_ROLLS, ACTIVE_STUDENT, DEACTIVE_STUDENT, DELETE_STUDENT, GETALL_STUDENT, GET_STUDENT_BY_ID, PAGINATION_GETALL_STUDENT, UPDATE_STUDENT } from "../endpoints";
 import api from "../interceptor";
 
 export const getAllStudet = () => api.get(GETALL_STUDENT)
+
+export const getAllStudetV = () => api.post(LIST_ROLLS);
 
 export const getStudentPagination = payload =>
     api.get(PAGINATION_GETALL_STUDENT(payload));

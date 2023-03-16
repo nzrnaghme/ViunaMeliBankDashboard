@@ -86,8 +86,12 @@ export default function CourseList() {
   const getCourses = async () => {
     // let response = await getAllCourse();
     let response1 = await getListUser();
-    // console.log(response1.data, "11111111111111111111111111");
+    // const keys = Object.keys(response1.data);
+    // const value = response1.data;
+
     setAllCourseV(response1.data)
+
+
 
 
     // if (response.data.result) {
@@ -169,7 +173,7 @@ export default function CourseList() {
             </CardHeader>
             <CardBody>
 
-              {allCourseV && Object.keys(allCourseV).length > 0 && Object.values(allCourseV).map((item, key) => (
+              {/* {allCourseV && Object.keys(allCourseV).length > 0 && Object.values(allCourseV).map((item, key) => (
                 <div key={key}>
                   <div >{item.USER_USERNAME}</div>
                   <div>{item.USER_DESCRIPTION}</div>
@@ -179,17 +183,17 @@ export default function CourseList() {
                 </div>
               ))}
 
-              <p>Hi</p>
+              <p>Hi</p> */}
 
-              {allCourse && allCourse.length > 0 ?
+              {allCourseV && Object.keys(allCourseV).length > 0 ?
                 <Table
                   tableHeaderColor="info"
-                  tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "گنجایش", "تعداد دانشجویان دوره", ""]}
-                  tableData={allCourse}
+                  tableHead={["ردیف","نام کاربری", "توضیحات", "وضعیت کاربر", "کد کاربر", "عملیات"]}
+                  tableData={Object.values(allCourseV)}
                   currentPage={currentPage_MainbarMyCourses}
                   rowsCount={rowsPerPage}
                   removeCourse={(id) => {
-                    onConfirmSetter('آیا برای حذف دوره مطمئن هستید؟', () => {
+                    onConfirmSetter('آیا برای حذف کاربر مطمئن هستید؟', () => {
                       trackPromise(removeCourse(id))
                     })
                     setConfirmPopupOpen(true)
