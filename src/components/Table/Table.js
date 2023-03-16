@@ -48,7 +48,7 @@ export default function CustomTable(props) {
     courses,
     teacher,
     editTeacher,
-    changeActivate,
+    // changeActivate,
     removeTeacher,
     student,
     removeStudent,

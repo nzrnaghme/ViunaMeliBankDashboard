@@ -90,7 +90,7 @@ export default function CourseList() {
     // const value = response1.data;
 
     setAllCourseV(response1.data)
-
+console.log(response1.data,"response1.data");
 
 
 
@@ -163,13 +163,13 @@ export default function CourseList() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12} >
           <div className="btnAdd">
-            <RegularButton color="success" onClick={() => { createCourse() }}>افزودن دوره</RegularButton>
+            <RegularButton color="success" onClick={() => { createCourse() }}>افزودن کاربر جدید</RegularButton>
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>تمام دوره ها</h4>
+              <h4 className={classes.cardTitleWhite}>تمام کاربران</h4>
             </CardHeader>
             <CardBody>
 
