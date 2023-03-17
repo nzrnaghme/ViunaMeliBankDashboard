@@ -11,7 +11,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
-import Teachers from "views/Teachers/Teachers.js";
+import Groups from "views/Groups/Groups.js";
 // import Planning from "views/Planning/Planning.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
@@ -45,10 +45,10 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/Teachers",
+    path: "/groups",
     name: "گروه‌ها",
     icon: LocalLibraryIcon,
-    component: Teachers,
+    component: Groups,
     layout: "/admin",
   },
   {

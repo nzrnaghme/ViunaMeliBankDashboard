@@ -9,15 +9,14 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
-import InsertTeacher from "./InsertTeacher";
-import EditTeacher from "./EditTeacher";
+import InsertGroup from "./InsertGroup";
+import EditGroup from "./EditGroup";
 
 import { activeEmployeeManage } from "api/Core/Employe_Manage";
 import { deActiveEmployeetManage } from "api/Core/Employe_Manage";
-import { getEmployeeById } from "api/Core/Employe_Manage";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeEmployee } from "api/Core/Employe_Manage";
-import { getAllTeachersV } from "api/Core/Employe_Manage";
+import { getAllGroups } from "api/Core/Group";
 import { trackPromise } from "react-promise-tracker";
 
 const styles = {
@@ -52,44 +51,39 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Teachers() {
+export default function Groups() {
   const classes = useStyles();
   const [allTeachers, setAllTeachers] = useState([]);
   const [allTeachersV, setAllTeachersV] = useState([]);
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [openInsertTeacher, setOpenInsertTeacher] = useState(false)
+  const [openInsertGroup, setOpenInsertGroup] = useState(false)
   const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
-  const [openUpdateTeacher, setOpenUpdateTeacher] = useState(false)
-  const [dataTeacher, setDataTeacher] = useState()
+  const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
+  const [dataGroup, setDataGroup] = useState()
 
   useEffect(() => {
-    trackPromise(getTeachers());
+    trackPromise(getGroups());
   }, [])
 
 
 
-  const getTeachers = async () => {
+  const getGroups = async () => {
 
-    let response1 = await getAllTeachersV();
-    // console.log(response1.data, "111222111");
-    setAllTeachersV(response1.data);
+    let response1 = await getAllGroups();
 
-    // let response = await getAllTeachers();
-    // const data = response.data.result.map((item) => (
-    //   {
-    //     name: item.fullName,
-    //     profile: item.profile,
-    //     email: item.email,
-    //     courses: item.courses.length,
-    //     active: item.isActive,
-    //     phone: item.phoneNumber,
-    //     id: item._id
-    //   }
-    // ));
-    // setAllTeachers(data)
+    if (response1.data) {
+      var newData = Object.values(response1.data).map((item, index) => ({
+        GROUP_USERNAME: Object.keys(response1.data)[index],
+        GROUP_STATUS: item.GROUP_STATUS,
+        GROUP_ID: item.GROUP_ID,
+        GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
+      }));
+
+      setAllTeachersV(newData);
+    }
   }
 
   const removeTeacher = async (id) => {
@@ -102,16 +96,9 @@ export default function Teachers() {
     }
   }
 
-  const editTeacher = (id) => {
-    getDataTeacher(id)
-  }
-
-  const getDataTeacher = async (id) => {
-    let response = await getEmployeeById(id)
-    if (response.data.result) {
-      setDataTeacher(response.data.result);
-      setOpenUpdateTeacher(true);
-    }
+  const editGroup = (row) => {
+    setDataGroup(row);
+    setOpenUpdateGroup(true);
   }
 
   const changeActivate = (id, active) => {
@@ -125,7 +112,7 @@ export default function Teachers() {
     if (response.data.result) {
       setOpenToast(true)
       onToast("استاد فعال شد", "success")
-      getTeachers()
+      getGroups()
     }
 
   }
@@ -135,7 +122,7 @@ export default function Teachers() {
     if (response.data.result) {
       setOpenToast(true)
       onToast("استاد غیرفعال شد", "success")
-      getTeachers()
+      getGroups()
     }
   }
 
@@ -156,26 +143,26 @@ export default function Teachers() {
           <div className="btnAdd">
             <RegularButton color="success"
               onClick={() => {
-                setOpenInsertTeacher(true)
-              }} >افزودن استاد</RegularButton>
+                setOpenInsertGroup(true)
+              }} >افزودن گروه</RegularButton>
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>تمام اساتید</h4>
+              <h4 className={classes.cardTitleWhite}>تمام گروه ها</h4>
             </CardHeader>
             <CardBody>
               {allTeachersV && Object.keys(allTeachersV).length > 0 ?
                 <Table
                   tableHeaderColor="info"
-                  tableHead={["ردیف", "توضیحات گروه", "وضعیت گروه", "کد گروه", "عملیات"]}
-                  tableData={Object.values(allTeachersV)}
+                  tableHead={["ردیف", "اسم گروه", "توضیحات گروه", "وضعیت گروه", "کد گروه", "عملیات"]}
+                  tableData={allTeachersV}
                   currentPage={currentPage_MainbarMyCourses}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
                   rowsCount={rowsPerPage}
-                  editTeacher={editTeacher}
+                  editGroup={editGroup}
                   changeActivate={changeActivate}
                   removeTeacher={(id) => {
                     onConfirmSetter('آیا برای حذف گروه مطمئن هستید؟', () => {
@@ -183,7 +170,7 @@ export default function Teachers() {
                     })
                     setConfirmPopupOpen(true)
                   }}
-                  teacher
+                  group
                 /> :
                 <div style={{
                   textAlign: 'center',
@@ -193,7 +180,7 @@ export default function Teachers() {
                   borderRadius: 5,
                   paddingTop: 10,
                   paddingBottom: 10
-                }}> استادی ثبت نشده</div>}
+                }}> گروهی ثبت نشده</div>}
             </CardBody>
             <div>
 
@@ -201,28 +188,29 @@ export default function Teachers() {
           </Card>
         </GridItem>
       </GridContainer>
-      {openInsertTeacher &&
-        <InsertTeacher
-          openPopUpInsertTecher={openInsertTeacher}
-          closePopUp={() => { setOpenInsertTeacher(false) }}
+      {openInsertGroup &&
+        <InsertGroup
+          openPopUpInsertGroup={openInsertGroup}
+          closePopUp={() => { setOpenInsertGroup(false) }}
           InsertSuccess={() => {
             setOpenToast(true)
-            onToast("استاد اضافه شد", "success")
-            getTeachers()
-            setOpenInsertTeacher(false)
+            onToast("گروه اضافه شد", "success")
+            getGroups();
+            setOpenInsertGroup(false);
           }} />
       }
-      {openUpdateTeacher && dataTeacher &&
-        <EditTeacher
-          openEditTeacherPopUp={openUpdateTeacher}
-          dataTeacher={dataTeacher}
-          closePopUpEdit={() => { setOpenUpdateTeacher(false) }}
+      {openUpdateGroup && dataGroup &&
+        <EditGroup
+          openEditTeacherPopUp={openUpdateGroup}
+          dataGroup={dataGroup}
+          closePopUpEdit={() => { setOpenUpdateGroup(false) }}
           EditSuccess={() => {
             setOpenToast(true)
-            onToast("استاد بروزرسانی شد", "success")
-            getTeachers()
-            setOpenUpdateTeacher(false)
-          }} />}
+            onToast("گروه بروزرسانی شد", "success")
+            getGroups()
+            setOpenUpdateGroup(false)
+          }} />
+      }
 
     </>
   );

@@ -1,7 +1,5 @@
-import { LIST_GROUPS, ACTIVE_EMPLOYEE, ALL_TEACHER, DEACTIVE_EMPLOYEE, GET_EMPLOYEE_BY_ID, LAST_TEACHERS, REMOVE_EMPLOYEE, UPDATE_EMPLOYEE } from "../endpoints";
+import { ACTIVE_EMPLOYEE, ALL_TEACHER, DEACTIVE_EMPLOYEE, GET_EMPLOYEE_BY_ID, LAST_TEACHERS, REMOVE_EMPLOYEE, UPDATE_EMPLOYEE } from "../endpoints";
 import api from "../interceptor";
-
-export const getAllTeachersV = () => api.post(LIST_GROUPS)
 
 export const getAllTeachers = () => api.get(ALL_TEACHER)
 

@@ -1,0 +1,57 @@
+.popUpCreateGroup .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.popUpCreateGroup .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+    overflow-y: hidden;
+}
+
+
+.bodyEditGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.bodyEditGroup div .MuiGrid-root .MuiGrid-grid-xs-12 {
+    min-width: 236px;
+}
+
+.btnEditGroup {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.popUpEditGroup .MuiDialog-container .MuiPaper-root {
+    width: 900px;
+}
+
+.popUpEditGroup .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+    overflow-y: hidden;
+}
+
+.bodyEditGroup div .makeStyles-grid-99 {
+    margin: 3px -15px !important;
+}
+
+
+
+@media screen and (max-width:749px) {
+
+    .popUpCreateGroup .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+        overflow-y: auto;
+    }
+
+    .bodyEditGroup {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .MuiGrid-root .datePicker_form .rmdp-container {
+        width: 100%;
+    }
+}
+
+.bodyStyleCard{
+    margin-top: 20px;
+}

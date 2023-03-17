@@ -15,7 +15,7 @@ import logo from "assets/img/logo4.png";
 import Dashboard from "views/Dashboard/Dashboard";
 import UserProfile from "views/UserProfile/UserProfile";
 import CourseList from "views/CourseList/CourseList";
-import Teachers from "views/Teachers/Teachers";
+import Groups from "views/Groups/Groups";
 import Students from "views/Students/Students";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
@@ -114,7 +114,7 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/dashboard"} component={Dashboard} />
               <Route path={"/admin/user"} component={UserProfile} />
               <Route path={"/admin/userList"} component={CourseList} />
-              <Route path={"/admin/Teachers"} component={Teachers} />
+              <Route path={"/admin/Groups"} component={Groups} />
               <Route path={"/admin/students"} component={Students} />
               <Route path={"/admin/lessons"} component={LessonList} />
               <Route path={"/admin/comments"} component={Comments} />
