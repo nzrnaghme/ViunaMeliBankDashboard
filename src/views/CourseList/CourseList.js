@@ -12,7 +12,7 @@ import RegularButton from "components/CustomButtons/Button";
 
 import { getListUser } from "api/Core/Course";
 import EditCourse from "./EditCourse";
-import CreateCourse from "./CreateCourse";
+import CreateUser from "./CreateUser";
 import { GeneralContext } from "providers/GeneralContext";
 // import { getItem } from "api/storage/storage";
 import { trackPromise } from "react-promise-tracker";
@@ -227,8 +227,8 @@ export default function CourseList() {
       )}
 
       {openPopUpCreateCourse && (
-        <CreateCourse
-          openCreateCoursePopUp={openPopUpCreateCourse}
+        <CreateUser
+          openCreateUserPopUp={openPopUpCreateCourse}
           CreateSuccess={() => {
             setOpenPopUpCreateCourse(false);
 

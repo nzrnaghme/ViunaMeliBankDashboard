@@ -12,7 +12,7 @@ import RegularButton from "components/CustomButtons/Button";
 import { GeneralContext } from "providers/GeneralContext";
 import EditLEsson from "./EditLesson";
 import AddLesson from "./AddLesson";
-import CreateCourse from "views/CourseList/CreateCourse";
+import CreateUser from "views/CourseList/CreateUser";
 
 import { getAllLesson } from "api/Core/Lesson";
 import { getAllCategory } from "api/Core/Lesson";
@@ -228,8 +228,8 @@ export default function LessonList() {
             }
 
             {openAddCourseInLesson && imgLesson && idLesson &&
-                <CreateCourse
-                    openCreateCoursePopUp={openAddCourseInLesson}
+                <CreateUser
+                    openCreateUserPopUp={openAddCourseInLesson}
                     CreateSuccess={() => {
                         setOpenToast(true)
                         onToast("دوره اضافه شد", "success")
