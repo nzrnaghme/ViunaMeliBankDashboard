@@ -170,7 +170,7 @@ export default function CustomTable(props) {
                           aria-label="Edit"
                           className={classes.tableActionButton}
                           onClick={() => {
-                            editCourse(row.id);
+                            editCourse(row);
                           }}
                         >
                           <Edit
@@ -190,7 +190,7 @@ export default function CustomTable(props) {
                           aria-label="Close"
                           className={classes.tableActionButton}
                           onClick={() => {
-                            removeCourse(row.id);
+                            removeCourse(row);
                           }}
                         >
                           <Close
