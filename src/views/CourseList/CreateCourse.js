@@ -15,293 +15,272 @@ import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 import { getAllLesson } from "api/Core/Lesson";
 import { createCourse } from "api/Core/Course";
-import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker";
 import { getItem } from "api/storage/storage";
 
-import "./Course.css"
+import "./Course.css";
 import { Avatar } from "@mui/material";
 import { trackPromise } from "react-promise-tracker";
 
+// new
+
+export const User_Status = [
+    {
+      _id: 0,
+      fullName: "غیر فعال"
+    },
+    {
+      _id: 1,
+      fullName: "فعال"
+    }
+  ];
+
 const styles = (theme) => ({
-    cardCategoryWhite: {
-        "&,& a,& a:hover,& a:focus": {
-            color: "rgba(255,255,255,.62)",
-            margin: "0",
-            fontSize: "14px",
-            marginTop: "0",
-            marginBottom: "0",
-        },
-        "& a,& a:hover,& a:focus": {
-            color: "#FFFFFF",
-        },
+  cardCategoryWhite: {
+    "&,& a,& a:hover,& a:focus": {
+      color: "rgba(255,255,255,.62)",
+      margin: "0",
+      fontSize: "14px",
+      marginTop: "0",
+      marginBottom: "0",
     },
-    cardTitleWhite: {
-        color: "#FFFFFF",
-        marginTop: "0px",
-        minHeight: "auto",
-        fontWeight: "300",
-        fontFamily: "bakh",
-        marginBottom: "3px",
-        textDecoration: "none",
-        "& small": {
-            color: "#777",
-            fontSize: "65%",
-            fontWeight: "400",
-            lineHeight: "1",
-        },
+    "& a,& a:hover,& a:focus": {
+      color: "#FFFFFF",
     },
-    large: {
-        width: theme.spacing(22),
-        height: theme.spacing(22),
+  },
+  cardTitleWhite: {
+    color: "#FFFFFF",
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "bakh",
+    marginBottom: "3px",
+    textDecoration: "none",
+    "& small": {
+      color: "#777",
+      fontSize: "65%",
+      fontWeight: "400",
+      lineHeight: "1",
     },
-   
+  },
+  large: {
+    width: theme.spacing(22),
+    height: theme.spacing(22),
+  },
 });
 
 const useStyles = makeStyles(styles);
 export default function CreateCourse(props) {
-    const roleUser = getItem('role')
-    const userId = getItem('id')
+  const roleUser = getItem("role");
+  const userId = getItem("id");
 
-    const classes = useStyles();
-    const {
-        openCreateCoursePopUp,
-        CreateSuccess,
-        closePopUpCreate,
-        imgLesson,
-        idLesson } = props
+  const classes = useStyles();
+  const {
+    openCreateCoursePopUp,
+    CreateSuccess,
+    closePopUpCreate,
+    imgLesson,
+    idLesson,
+  } = props;
 
-    const [title, setTitle] = useState()
-    const [startDate, setStartDate] = useState()
-    const [teacherName, setTeacherName] = useState("")
-    const [lessonName, setLessonName] = useState("")
-    const [endDate, setEndDate] = useState()
-    const [cost, setCost] = useState()
-    const [capacity, setCapacity] = useState()
+  const [title, setTitle] = useState();
+  const [startDate, setStartDate] = useState();
+  const [teacherName, setTeacherName] = useState("");
+  const [lessonName, setLessonName] = useState("");
+  const [endDate, setEndDate] = useState();
+  const [cost, setCost] = useState();
+  const [capacity, setCapacity] = useState();
 
-    const [allTeacher, setAllTeacher] = useState()
-    const [allLessons, setAllLessons] = useState()
-    const [photoLesson, setPhotoLesson] = useState()
+  const [allTeacher, setAllTeacher] = useState();
+  const [allLessons, setAllLessons] = useState();
+  const [photoLesson, setPhotoLesson] = useState();
 
-    const [dateStart, setDateStart] = useState(null)
-    const [dateEnd, setDateEnd] = useState(null)
+  // new
 
-    useEffect(() => {
-        trackPromise(getAllTeacher())
-        trackPromise(getAllLessons())
-        if (userId) setTeacherName(userId)
-    }, [])
-
-    useEffect(() => {
-        if (allLessons && allLessons.length > 0) {
-            if (imgLesson && idLesson) {
-                setLessonName(idLesson);
-                setPhotoLesson(imgLesson)
-            }
-            else {
-                setLessonName(allLessons[0]._id);
-                setPhotoLesson(allLessons[0].image)
-            }
-        }
-    }, [allLessons])
+  const [name, setName] = useState();
+  const [pass, setPass] = useState();
+  const [statos, setStatos] = useState();
+  const [description, setDescription] = useState();
 
 
-    const getAllTeacher = async () => {
-        let response = await getAllTeachers()
-        if (response.data.result) {
-            setAllTeacher(response.data.result)
-        }
+  useEffect(() => {
+    trackPromise(getAllTeacher());
+    trackPromise(getAllLessons());
+    if (userId) setTeacherName(userId);
+  }, []);
+
+  useEffect(() => {
+    if (allLessons && allLessons.length > 0) {
+      if (imgLesson && idLesson) {
+        setLessonName(idLesson);
+        setPhotoLesson(imgLesson);
+      } else {
+        setLessonName(allLessons[0]._id);
+        setPhotoLesson(allLessons[0].image);
+      }
     }
+  }, [allLessons]);
 
-    const getAllLessons = async () => {
-        let response = await getAllLesson()
-        if (response.data.result) {
-            let rightData = response.data.result.map((item) => ({
-                fullName: item.lessonName,
-                _id: item._id,
-                image: item.image
-            }));
-            setAllLessons(rightData)
-        }
+  const getAllTeacher = async () => {
+    let response = await getAllTeachers();
+    if (response.data.result) {
+      setAllTeacher(response.data.result);
     }
+  };
 
-
-    const createNewCourse = async () => {
-        const data = {
-            title,
-            cost,
-            endDate,
-            startDate,
-            capacity,
-            teacher: teacherName,
-            lesson: lessonName
-        }
-        let response = await createCourse(data)
-        if (response.data.result) {
-            setTeacherName('')
-            setTitle('')
-            setCapacity('');
-            setCost('')
-            setEndDate('')
-            setStartDate('')
-            setLessonName('')
-            CreateSuccess();
-        }
+  const getAllLessons = async () => {
+    let response = await getAllLesson();
+    if (response.data.result) {
+      let rightData = response.data.result.map((item) => ({
+        fullName: item.lessonName,
+        _id: item._id,
+        image: item.image,
+      }));
+      setAllLessons(rightData);
     }
+  };
 
-    return (
-        <PopUpCustome
-            open={openCreateCoursePopUp}
-            handleClose={() => { closePopUpCreate() }}
-            className="popUpCreateCourse">
-            <GridContainer>
+  const createNewCourse = async () => {
 
-                <GridItem xs={12} sm={12} md={12}>
-                    <Card className="CardEditCourse" style={{ boxShadow: 'none' }}>
-                        <CardHeader color="warning" className="CardTitle">
-                            <h4 className={classes.cardTitleWhite}>افزودن دوره</h4>
-                        </CardHeader>
-                        <CardBody className="bodyCreateCourse">
-                            <div className="avatarPhotoLesson">
-                                <Avatar src={photoLesson} className={classes.large} />
-                            </div>
-                            <div>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="نام دوره"
-                                            value={title}
-                                            onChange={(e) => { setTitle(e) }}
+    console.log("Create occure");
 
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
+    closePopUpCreate();
+    // const data = {
+    //   title,
+    //   cost,
+    //   endDate,
+    //   startDate,
+    //   capacity,
+    //   teacher: teacherName,
+    //   lesson: lessonName,
+    // };
+    // let response = await createCourse(data);
+    // if (response.data.result) {
+    //   setTeacherName("");
+    //   setTitle("");
+    //   setCapacity("");
+    //   setCost("");
+    //   setEndDate("");
+    //   setStartDate("");
+    //   setLessonName("");
+    //   CreateSuccess();
+    // }
+  };
 
-                                        {allTeacher && allTeacher.length > 0 && <CustomSelectInput
-                                            labelText="استاد"
-                                            value={teacherName}
-                                            options={allTeacher}
-                                            handleChange={(e) => {
-                                                setTeacherName(e.target.value)
-                                            }}
-                                            disabled={roleUser === 'teacher'} />}
+  return (
+    <PopUpCustome
+      open={openCreateCoursePopUp}
+      handleClose={() => {
+        closePopUpCreate();
+      }}
+      className="popUpCreateCourse"
+    >
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card className="CardEditCourse" style={{ boxShadow: "none" }}>
+            <CardHeader color="warning" className="CardTitle">
+              <h4 className={classes.cardTitleWhite}>افزودن کاربر</h4>
+            </CardHeader>
+            <CardBody className="bodyCreateCourse">
+              <div>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      rtlActive
+                      labelText="نام کاربری"
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      rtlActive
+                      labelText="رمز عبور"
+                      value={pass}
+                      onChange={(e) => {
+                        setPass(e.target.value);
+                      }}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                    />
+                  </GridItem>
+                </GridContainer>
 
-                                    </GridItem>
-
-                                </GridContainer>
-
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomeDatePicker
-                                            label="شروع دوره"
-                                            minDate={new Date()}
-                                            onChange={(e) => {
-                                                setDateStart(e);
-                                                setStartDate(`${e.year}/${e.month.number}/${e.day}`)
-                                            }}
-                                            value={dateStart}
-                                        />
-
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-
-                                        <CustomeDatePicker
-                                            minDate={new Date()}
-                                            label="پایان دوره"
-                                            onChange={(e) => {
-                                                setDateEnd(e);
-                                                setEndDate(`${e.year}/${e.month.number}/${e.day}`)
-                                            }}
-                                            value={dateEnd}
-                                        />
-                                    </GridItem>
-                                </GridContainer>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="قیمت"
-
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            value={cost}
-                                            onChange={(e) => {
-                                                if (/^[0-9]+$/i.test(e)) {
-                                                    setCost(e)
-                                                } else setCost('')
-                                            }}
-                                        />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            labelText="گنجایش"
-
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            value={capacity}
-                                            onChange={(e) => {
-                                                if (/^[0-9]+$/i.test(e)) {
-                                                    setCapacity(e)
-                                                } else setCapacity('')
-                                            }}
-                                            rtlActive
-                                        />
-                                    </GridItem>
-                                </GridContainer>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        {allLessons && allLessons.length > 0 &&
-                                            <CustomSelectInput
-                                                labelText="درس"
-                                                value={lessonName}
-                                                options={allLessons}
-                                                handleChange={(e) => {
-                                                    setLessonName(e.target.value)
-                                                    let lesson = allLessons.find((item) => item._id === e.target.value)
-                                                    setPhotoLesson(lesson.image)
-                                                }}
-                                                disabled={idLesson ? true : false}
-                                            />}
-
-                                    </GridItem>
-                                </GridContainer>
-                            </div>
-                            <div className="btnEditCourse">
-                                <div style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    bottom: 20,
-                                    cursor: "pointer",
-                                    marginTop: 20
-                                }}>
-                                    <RegularButton
-                                        color="info"
-                                        size="sm"
-                                        onClick={() => { trackPromise(createNewCourse()) }}>ثبت تغییرات</RegularButton>
-                                    <RegularButton
-                                        color="danger"
-                                        size="sm"
-                                        onClick={() => { closePopUpCreate() }}>انصراف</RegularButton>
-                                </div>
-
-                            </div>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-            </GridContainer>
-        </PopUpCustome>
-    )
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomSelectInput
+                      labelText="وضعیت کاربر"
+                      value={statos}
+                      options={User_Status}
+                      handleChange={(e) => {
+                        setStatos(e.target.value);
+                      }}
+                      disabled={roleUser === "teacher"}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      rtlActive
+                      labelText="توضیحات"
+                      value={description}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                      }}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                    />
+                  </GridItem>
+                </GridContainer>
+              </div>
+              <div className="btnEditCourse">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    bottom: 20,
+                    cursor: "pointer",
+                    marginTop: 20,
+                  }}
+                >
+                  <RegularButton
+                    color="info"
+                    size="sm"
+                    onClick={() => {
+                      trackPromise(createNewCourse());
+                    }}
+                  >
+                    ثبت تغییرات
+                  </RegularButton>
+                  <RegularButton
+                    color="danger"
+                    size="sm"
+                    onClick={() => {
+                      closePopUpCreate();
+                    }}
+                  >
+                    انصراف
+                  </RegularButton>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </PopUpCustome>
+  );
 }
 
 CreateCourse.propTypes = {
-    openCreateCoursePopUp: PropTypes.bool,
-    CreateSuccess: PropTypes.func,
-    closePopUpCreate: PropTypes.func,
-    imgLesson: PropTypes.string,
-    idLesson: PropTypes.string
+  openCreateCoursePopUp: PropTypes.bool,
+  CreateSuccess: PropTypes.func,
+  closePopUpCreate: PropTypes.func,
+  imgLesson: PropTypes.string,
+  idLesson: PropTypes.string,
 };
