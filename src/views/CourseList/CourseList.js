@@ -91,10 +91,18 @@ export default function CourseList() {
   const getCourses = async () => {
     // let response = await getAllCourse();
     let response1 = await getListUser();
+<<<<<<< HEAD
     const keys = Object.keys(response1.data);
     const value = response1.data;
 
     console.log("01", keys, "02", value);
+=======
+    // const keys = Object.keys(response1.data);
+    // const value = response1.data;
+
+    setAllCourseV(response1.data)
+console.log(response1.data,"response1.data");
+>>>>>>> origin/main
 
     if (response1.data) {
       var newData = Object.keys(response1.data).map((item, index) => ({
