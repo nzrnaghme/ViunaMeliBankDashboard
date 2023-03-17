@@ -11,14 +11,10 @@ import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
 
 import { getListUser } from "api/Core/Course";
-import { removeCourseById } from "api/Core/Course";
-import { getCourseById } from "api/Core/Course";
 import EditCourse from "./EditCourse";
-import ListOfStudents from "./ListOfStudent";
 import CreateCourse from "./CreateCourse";
-import AddStudentToCourse from "./AddStudentToCourse";
 import { GeneralContext } from "providers/GeneralContext";
-import { getItem } from "api/storage/storage";
+// import { getItem } from "api/storage/storage";
 import { trackPromise } from "react-promise-tracker";
 
 const styles = {
@@ -54,11 +50,10 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function CourseList() {
-  const roleUser = getItem("role");
+  // const roleUser = getItem("role");
   // const userId = getItem('id')
 
   const classes = useStyles();
-  const [allCourse, setAllCourse] = useState([]);
   const {
     setConfirmPopupOpen,
     onConfirmSetter,
@@ -77,12 +72,7 @@ export default function CourseList() {
   const [courseDetail, setCourseDetail] = useState();
   const [openPopUpEditCourse, setOpenPopUpEditCourse] = useState(false);
 
-  const [idForStudents, setIdForStudents] = useState();
-  const [openPopUpStudentsCourse, setOpenPopUpStudentsCourse] = useState(false);
-
   const [openPopUpCreateCourse, setOpenPopUpCreateCourse] = useState(false);
-
-  const [openPopUpaddStudent, setOpenPopUpaddStudent] = useState(false);
 
   useEffect(() => {
     trackPromise(getCourses());
@@ -91,18 +81,10 @@ export default function CourseList() {
   const getCourses = async () => {
     // let response = await getAllCourse();
     let response1 = await getListUser();
-<<<<<<< HEAD
     const keys = Object.keys(response1.data);
     const value = response1.data;
 
     console.log("01", keys, "02", value);
-=======
-    // const keys = Object.keys(response1.data);
-    // const value = response1.data;
-
-    setAllCourseV(response1.data)
-console.log(response1.data,"response1.data");
->>>>>>> origin/main
 
     if (response1.data) {
       var newData = Object.keys(response1.data).map((item, index) => ({
@@ -116,30 +98,10 @@ console.log(response1.data,"response1.data");
     }
 
     setAllCourseV(response1.data);
-
-    // if (response.data.result) {
-    //   const data = response.data.result.map((item) => (
-    //     {
-    //       title: item.title,
-    //       teacher: item.teacher.fullName,
-    //       date: item.startDate.split("T")[0],
-    //       cost: item.cost,
-    //       capacity: item.students.length + item.capacity,
-    //       countStudent: item.students.length,
-    //       id: item._id,
-    //       teacherId: item.teacher._id
-    //     }
-    //   ));
-    //   if (roleUser === 'teacher') {
-    //     var allCourseTeacher = data.filter((item) => item.teacherId === userId)
-    //     setAllCourse(allCourseTeacher)
-    //   } else
-    //     setAllCourse(data)
-    // }
   };
 
-  const removeCourse = async (id) => {
-    console.log(id);
+  const removeCourse = async (row) => {
+    console.log(row);
 
     // const id.USER_USERNAME = {
     //   USER_STATUS: id.USER_STATUS,
@@ -159,32 +121,15 @@ console.log(response1.data,"response1.data");
   };
 
   const editCourse = async (data) => {
-
-    console.log("HAMASH ++++++++++", data);
-
     setCourseDetail(data);
     setOpenPopUpEditCourse(true);
-
-    // let response = await getCourseById(id);
-    // if (response.data.result) {
-    //   setCourseDetail(response.data.result);
-    //   setOpenPopUpEditCourse(true);
-    // }
   };
 
-  const showStudents = (id) => {
-    setIdForStudents(id);
-    setOpenPopUpStudentsCourse(true);
-  };
 
   const createCourse = () => {
     setOpenPopUpCreateCourse(true);
   };
 
-  const addStudentToCourse = (idCourse) => {
-    setOpenPopUpaddStudent(true);
-    setIdForStudents(idCourse);
-  };
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage_MainbarMyCourses(newPage);
@@ -195,7 +140,6 @@ console.log(response1.data,"response1.data");
     setCurrentPage_MainbarMyCourses(0);
   };
 
-  console.log(allCourseV, "allCourseV", Object.keys(allCourseV).length);
 
   return (
     <>
@@ -218,18 +162,7 @@ console.log(response1.data,"response1.data");
               <h4 className={classes.cardTitleWhite}>تمام کاربران</h4>
             </CardHeader>
             <CardBody>
-              {/* {allCourseV && Object.keys(allCourseV).length > 0 && Object.values(allCourseV).map((item, key) => (
-                <div key={key}>
-                  <div >{item.USER_USERNAME}</div>
-                  <div>{item.USER_DESCRIPTION}</div>
-                  <div>{item.USER_STATUS}</div>
-                  <div>{item.USER_ID}</div>
-                  <hr></hr>
-                </div>
-              ))}
-
-              <p>Hi</p> */}
-
+        
               {allCourseV && Object.keys(allCourseV).length > 0 ? (
                 <Table
                   tableHeaderColor="info"
@@ -251,12 +184,9 @@ console.log(response1.data,"response1.data");
                     setConfirmPopupOpen(true);
                   }}
                   editCourse={editCourse}
-                  showStudents={showStudents}
-                  addStudentToCourse={addStudentToCourse}
                   courses
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
-                  teacherRole={roleUser === "teacher"}
                 />
               ) : (
                 <div
@@ -296,21 +226,6 @@ console.log(response1.data,"response1.data");
         />
       )}
 
-      {openPopUpStudentsCourse && idForStudents && (
-        <ListOfStudents
-          userIdCourse={idForStudents}
-          openListStudentPopUp={openPopUpStudentsCourse}
-          closePopUpList={() => {
-            setOpenPopUpStudentsCourse(false);
-          }}
-          RemoveSuccess={() => {
-            setOpenPopUpStudentsCourse(false);
-
-            getCourses();
-          }}
-        />
-      )}
-
       {openPopUpCreateCourse && (
         <CreateCourse
           openCreateCoursePopUp={openPopUpCreateCourse}
@@ -326,22 +241,7 @@ console.log(response1.data,"response1.data");
           }}
         />
       )}
-      {openPopUpaddStudent && idForStudents && (
-        <AddStudentToCourse
-          openAddStudentPopUp={openPopUpaddStudent}
-          userIdCourse={idForStudents}
-          closePopUpAdd={() => {
-            setOpenPopUpaddStudent(false);
-          }}
-          AddSuccess={() => {
-            setOpenPopUpaddStudent(false);
-
-            setOpenToast(true);
-            onToast("دانشجو به دوره اضافه شد", "success");
-            getCourses();
-          }}
-        />
-      )}
+      
     </>
   );
 }

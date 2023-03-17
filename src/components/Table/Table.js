@@ -25,9 +25,7 @@ import styles from "assets/jss/material-dashboard-react/components/tableStyle.js
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
 import TextsmsIcon from "@material-ui/icons/Textsms";
-import PersonIcon from "@material-ui/icons/Person";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import "./index.css";
 
 const useStyles = makeStyles(styles);
@@ -42,7 +40,6 @@ export default function CustomTable(props) {
     currentPage,
     handleChangePage,
     handleChangeRowsPerPage,
-    showStudents,
     removeCourse,
     editCourse,
     courses,
@@ -59,7 +56,6 @@ export default function CustomTable(props) {
     lessons,
     myCourses,
     removeCourseFromStudent,
-    addStudentToCourse,
     currentStudent,
     AllStudentInsertCourse,
     coursesFromLesson,
@@ -137,28 +133,6 @@ export default function CustomTable(props) {
                       {row.USER_ID}
                     </TableCell>
                     <TableCell className={classes.tableCell}>
-                      <Tooltip
-                        id="tooltip-top"
-                        title="دانشجویان"
-                        placement="top"
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <IconButton
-                          aria-label="Edit"
-                          className={classes.tableActionButton}
-                          onClick={() => {
-                            showStudents(row.id);
-                          }}
-                        >
-                          <PersonIcon
-                            className={
-                              classes.tableActionButtonIcon +
-                              " " +
-                              classes.PersonIcon
-                            }
-                          />
-                        </IconButton>
-                      </Tooltip>
 
                       <Tooltip
                         id="tooltip-top"
@@ -203,30 +177,6 @@ export default function CustomTable(props) {
                         </IconButton>
                       </Tooltip>
 
-                      {!props.teacherRole && (
-                        <Tooltip
-                          id="tooltip-top-start"
-                          title="اضافه کردن دانشجو"
-                          placement="top"
-                          classes={{ tooltip: classes.tooltip }}
-                        >
-                          <IconButton
-                            aria-label="Close"
-                            className={classes.tableActionButton}
-                            onClick={() => {
-                              addStudentToCourse(row.id);
-                            }}
-                          >
-                            <AddCircleOutlineIcon
-                              className={
-                                classes.tableActionButtonIcon +
-                                " " +
-                                classes.Add
-                              }
-                            />
-                          </IconButton>
-                        </Tooltip>
-                      )}
                     </TableCell>
                   </TableRow>
                 ))
@@ -621,30 +571,6 @@ export default function CustomTable(props) {
                           {row.isActive === true ? "فعال" : "غیرفعال"}
                         </p>
                       </div>
-                    </TableCell>
-                    <TableCell className={classes.tableCell}>
-                      <Tooltip
-                        id="tooltip-top-start"
-                        title="اضافه کردن دانشجو"
-                        placement="top"
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <IconButton
-                          aria-label="Add"
-                          className={classes.tableActionButton}
-                          onClick={() => {
-                            addStudentToCourse(row._id);
-                          }}
-                        >
-                          <GroupAddIcon
-                            className={
-                              classes.tableActionButtonIcon +
-                              " " +
-                              classes.Insert
-                            }
-                          />
-                        </IconButton>
-                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))
@@ -1280,9 +1206,6 @@ CustomTable.propTypes = {
   courses: PropTypes.bool,
   removeCourse: PropTypes.func,
   editCourse: PropTypes.func,
-  showStudents: PropTypes.func,
-  addStudentToCourse: PropTypes.func,
-  teacherRole: PropTypes.bool,
 
   teacher: PropTypes.bool,
   editTeacher: PropTypes.func,

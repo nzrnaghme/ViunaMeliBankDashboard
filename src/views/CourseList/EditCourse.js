@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { trackPromise } from "react-promise-tracker";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -11,12 +12,21 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { getAllTeachers } from "api/Core/Employe_Manage";
-import { updateCourse } from "api/Core/Course";
-import { getAllLesson } from "api/Core/Lesson";
+import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 
 import "./Course.css";
-import { trackPromise } from "react-promise-tracker";
+// import { User_Status } from "variables/general";
+
+export const User_Status = [
+  {
+    _id: 0,
+    fullName: "غیر فعال"
+  },
+  {
+    _id: 1,
+    fullName: "فعال"
+  }
+];
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -54,54 +64,40 @@ const styles = (theme) => ({
 
 const useStyles = makeStyles(styles);
 export default function EditCourse(props) {
-  var jalaali = require("jalaali-js");
   const classes = useStyles();
   const {
     openEditCoursePopUp,
-    EditSuccess,
+    // EditSuccess,
     closePopUpEdit,
     dataCourse,
   } = props;
 
-  const [title, setTitle] = useState();
-  const [startDate, setStartDate] = useState();
-  const [teacherName, setTeacherName] = useState();
-  const [endDate, setEndDate] = useState();
-  const [cost, setCost] = useState();
-  const [lessonName, setLessonName] = useState("");
-  const [capacity, setCapacity] = useState();
-
   //new
 
-  const [condition, setCondition] = useState(dataCourse.USER_DESCRIPTION);
-  const [description, setDescription] = useState(dataCourse.USER_STATU);
+  const [condition, setCondition] = useState();
+  const [description, setDescription] = useState();
 
-  // useEffect(() => {
-  //   setTitle(dataCourse.title);
-  //   setTeacherName(dataCourse.teacher._id);
-  //   setCost(dataCourse.cost);
-  //   setCapacity(dataCourse.capacity + dataCourse.students.length);
-  //   setLessonName(dataCourse.lesson._id);
-
-  // }, [dataCourse]);
+  useEffect(() => {
+    setCondition(dataCourse.USER_STATUS);
+    setDescription(dataCourse.USER_DESCRIPTION)
+  }, [dataCourse]);
 
 
   const updateDataCourse = async () => {
-    const data = {
-      id: dataCourse._id,
-      title,
-      cost,
-      endDate,
-      startDate,
-      capacity,
-      teacher: teacherName,
-      lesson: lessonName,
-    };
+    // const data = {
+    //   id: dataCourse._id,
+    //   title,
+    //   cost,
+    //   endDate,
+    //   startDate,
+    //   teacher: teacherName,
+    //   lesson: lessonName,
+    // };
 
-    let response = await updateCourse(data);
-    if (response.data.result) {
-      EditSuccess();
-    }
+    // let response = await updateCourse(data);
+    // if (response.data.result) {
+    //   EditSuccess();
+    // }
   };
 
   return (
@@ -119,9 +115,7 @@ export default function EditCourse(props) {
               <h4 className={classes.cardTitleWhite}>آپدیت کاربر</h4>
             </CardHeader>
             <CardBody className="bodyEditCourse bodyStyleCard">
-              {/* <div className="avatarPhotoLesson">
-                <Avatar src={photoLesson} className={classes.large} />
-              </div> */}
+
               <div>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
@@ -130,9 +124,6 @@ export default function EditCourse(props) {
                       rtlActive
                       labelText="نام کاربری"
                       value={dataCourse.USER_USERNAME}
-                      // onChange={(e) => {
-                      //   setTitle(e);
-                      // }}
                       formControlProps={{
                         fullWidth: true,
                       }}
@@ -144,9 +135,6 @@ export default function EditCourse(props) {
                       rtlActive
                       labelText="کد کاربر"
                       value={dataCourse.USER_ID}
-                      // handleChange={(e) => {
-                      //   setTeacherName(e.target.value);
-                      // }}
                       formControlProps={{
                         fullWidth: true,
                       }}
@@ -155,7 +143,7 @@ export default function EditCourse(props) {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
-                    <CustomInput
+                    {/* <CustomInput
                       rtlActive
                       labelText="وضعیت کاربر"
                       value={condition}
@@ -165,7 +153,16 @@ export default function EditCourse(props) {
                       formControlProps={{
                         fullWidth: true,
                       }}
-                    />
+                    /> */}
+                    {User_Status && User_Status.length > 0 &&
+                      <CustomSelectInput
+                        labelText="وضعیت کاربر"
+                        value={condition}
+                        options={User_Status}
+                        handleChange={(e) => {
+                          setCondition(e.target.value)
+                        }} />
+                    }
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
@@ -187,7 +184,6 @@ export default function EditCourse(props) {
                   style={{
                     display: "flex",
                     flexDirection: "row",
-                    // position: "absolute",
                     bottom: 20,
                     cursor: "pointer",
                   }}
@@ -196,8 +192,7 @@ export default function EditCourse(props) {
                     color="info"
                     size="sm"
                     onClick={() => {
-                      console.log("updateddddd");
-                      // trackPromise(updateDataCourse(dataCourse._id));
+                      trackPromise(updateDataCourse());
                     }}
                   >
                     ثبت تغییرات
