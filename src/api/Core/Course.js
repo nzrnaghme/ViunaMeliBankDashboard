@@ -44,6 +44,14 @@ export const updateCourse = payload =>
         lesson: payload.lesson
     })
 
-export const removeCourseById = payload => api.delete(DELETE_COURSE(payload))
+export const removeCourseById = payload => api.delete(DELETE_COURSE(payload));
+
+// export const removeCourseByIdV = payload => api.post(DELETE_COURSE, {
+//     payload.USER_USERNAME: {
+//         "USER_STATUS": payload.USER_STATUS,
+//         "USER_DESCRIPTION": payload.USER_DESCRIPTION
+//     },
+// });
+
 
 export const createCourse = payload => api.post(CREATE_COURSE, payload)

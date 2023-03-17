@@ -3,6 +3,8 @@ export const API_V = 'http://5.201.178.229:9502/Utopia/rest/';
 
 //user
 export const LIST_USERS = `${API_V}user/lstusers?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const REMOVE_USERS = `${API_V}user/removeusers?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+
 
 //Group
 export const LIST_GROUPS = `${API_V}group/lstgroups?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;

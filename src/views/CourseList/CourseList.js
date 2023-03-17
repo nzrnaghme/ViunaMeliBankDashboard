@@ -21,7 +21,6 @@ import { GeneralContext } from "providers/GeneralContext";
 import { getItem } from "api/storage/storage";
 import { trackPromise } from "react-promise-tracker";
 
-
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -55,44 +54,68 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function CourseList() {
-  const roleUser = getItem('role')
+  const roleUser = getItem("role");
   // const userId = getItem('id')
 
   const classes = useStyles();
-  const [allCourse, setAllCourse] = useState([])
-  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+  const [allCourse, setAllCourse] = useState([]);
+  const {
+    setConfirmPopupOpen,
+    onConfirmSetter,
+    setOpenToast,
+    onToast,
+  } = useContext(GeneralContext);
 
-  const [allCourseV, setAllCourseV] = useState({})
+  const [allCourseV, setAllCourseV] = useState({});
 
-
-  const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+  const [
+    currentPage_MainbarMyCourses,
+    setCurrentPage_MainbarMyCourses,
+  ] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [courseDetail, setCourseDetail] = useState()
-  const [openPopUpEditCourse, setOpenPopUpEditCourse] = useState(false)
+  const [courseDetail, setCourseDetail] = useState();
+  const [openPopUpEditCourse, setOpenPopUpEditCourse] = useState(false);
 
-  const [idForStudents, setIdForStudents] = useState()
-  const [openPopUpStudentsCourse, setOpenPopUpStudentsCourse] = useState(false)
+  const [idForStudents, setIdForStudents] = useState();
+  const [openPopUpStudentsCourse, setOpenPopUpStudentsCourse] = useState(false);
 
-  const [openPopUpCreateCourse, setOpenPopUpCreateCourse] = useState(false)
+  const [openPopUpCreateCourse, setOpenPopUpCreateCourse] = useState(false);
 
-  const [openPopUpaddStudent, setOpenPopUpaddStudent] = useState(false)
-
+  const [openPopUpaddStudent, setOpenPopUpaddStudent] = useState(false);
 
   useEffect(() => {
     trackPromise(getCourses());
-  }, [])
+  }, []);
 
   const getCourses = async () => {
     // let response = await getAllCourse();
     let response1 = await getListUser();
+<<<<<<< HEAD
+    const keys = Object.keys(response1.data);
+    const value = response1.data;
+
+    console.log("01", keys, "02", value);
+=======
     // const keys = Object.keys(response1.data);
     // const value = response1.data;
 
     setAllCourseV(response1.data)
 console.log(response1.data,"response1.data");
+>>>>>>> origin/main
 
+    if (response1.data) {
+      var newData = Object.keys(response1.data).map((item, index) => ({
+        title: Object.keys(response1.data)[index],
+        USER_USERNAME: item.USER_USERNAME,
+        USER_STATUS: item.USER_STATUS,
+        USER_ID: item.USER_ID,
+        USER_DESCRIPTION: item.USER_DESCRIPTION,
+      }));
+      console.log("amir", newData);
+    }
 
+    setAllCourseV(response1.data);
 
     // if (response.data.result) {
     //   const data = response.data.result.map((item) => (
@@ -113,43 +136,59 @@ console.log(response1.data,"response1.data");
     //   } else
     //     setAllCourse(data)
     // }
-  }
+  };
 
   const removeCourse = async (id) => {
-    let response = await removeCourseById(id)
-    if (response.data.result) {
-      let newCourse = allCourse.filter((item) => item.id != id);
-      setOpenToast(true)
-      onToast(response.data.message[0].message, "success")
-      setAllCourse(newCourse)
-    }
-  }
+    console.log(id);
 
-  const editCourse = async (id) => {
-    let response = await getCourseById(id);
-    if (response.data.result) {
-      setCourseDetail(response.data.result)
-      setOpenPopUpEditCourse(true)
-    }
-  }
+    // const id.USER_USERNAME = {
+    //   USER_STATUS: id.USER_STATUS,
+    //   USER_DESCRIPTION: id.USER_DESCRIPTION,
+    // };
+
+    // console.log(name);
+
+    //---------------------
+    // let response = await removeCourseById(id);
+    // if (response.data.result) {
+    //   let newCourse = allCourse.filter((item) => item.id != id);
+    //   setOpenToast(true);
+    //   onToast(response.data.message[0].message, "success");
+    //   setAllCourse(newCourse);
+    // }
+  };
+
+  const editCourse = async (data) => {
+
+    console.log("HAMASH ++++++++++", data);
+
+    setCourseDetail(data);
+    setOpenPopUpEditCourse(true);
+
+    // let response = await getCourseById(id);
+    // if (response.data.result) {
+    //   setCourseDetail(response.data.result);
+    //   setOpenPopUpEditCourse(true);
+    // }
+  };
 
   const showStudents = (id) => {
-    setIdForStudents(id)
-    setOpenPopUpStudentsCourse(true)
-  }
+    setIdForStudents(id);
+    setOpenPopUpStudentsCourse(true);
+  };
 
   const createCourse = () => {
-    setOpenPopUpCreateCourse(true)
-  }
+    setOpenPopUpCreateCourse(true);
+  };
 
   const addStudentToCourse = (idCourse) => {
-    setOpenPopUpaddStudent(true)
-    setIdForStudents(idCourse)
-  }
+    setOpenPopUpaddStudent(true);
+    setIdForStudents(idCourse);
+  };
 
   const handleChangePage = (event, newPage) => {
-    setCurrentPage_MainbarMyCourses(newPage)
-  }
+    setCurrentPage_MainbarMyCourses(newPage);
+  };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -161,9 +200,16 @@ console.log(response1.data,"response1.data");
   return (
     <>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12} >
+        <GridItem xs={12} sm={12} md={12}>
           <div className="btnAdd">
-            <RegularButton color="success" onClick={() => { createCourse() }}>افزودن کاربر جدید</RegularButton>
+            <RegularButton
+              color="success"
+              onClick={() => {
+                createCourse();
+              }}
+            >
+              افزودن کاربر
+            </RegularButton>
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
@@ -172,7 +218,6 @@ console.log(response1.data,"response1.data");
               <h4 className={classes.cardTitleWhite}>تمام کاربران</h4>
             </CardHeader>
             <CardBody>
-
               {/* {allCourseV && Object.keys(allCourseV).length > 0 && Object.values(allCourseV).map((item, key) => (
                 <div key={key}>
                   <div >{item.USER_USERNAME}</div>
@@ -185,18 +230,25 @@ console.log(response1.data,"response1.data");
 
               <p>Hi</p> */}
 
-              {allCourseV && Object.keys(allCourseV).length > 0 ?
+              {allCourseV && Object.keys(allCourseV).length > 0 ? (
                 <Table
                   tableHeaderColor="info"
-                  tableHead={["ردیف","نام کاربری", "توضیحات", "وضعیت کاربر", "کد کاربر", "عملیات"]}
+                  tableHead={[
+                    "ردیف",
+                    "نام کاربری",
+                    "توضیحات",
+                    "وضعیت کاربر",
+                    "کد کاربر",
+                    "عملیات",
+                  ]}
                   tableData={Object.values(allCourseV)}
                   currentPage={currentPage_MainbarMyCourses}
                   rowsCount={rowsPerPage}
                   removeCourse={(id) => {
-                    onConfirmSetter('آیا برای حذف کاربر مطمئن هستید؟', () => {
-                      trackPromise(removeCourse(id))
-                    })
-                    setConfirmPopupOpen(true)
+                    onConfirmSetter("آیا برای حذف کاربر مطمئن هستید؟", () => {
+                      trackPromise(removeCourse(id));
+                    });
+                    setConfirmPopupOpen(true);
                   }}
                   editCourse={editCourse}
                   showStudents={showStudents}
@@ -204,78 +256,92 @@ console.log(response1.data,"response1.data");
                   courses
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
-                  teacherRole={roleUser === 'teacher'}
-                /> :
-                <div style={{
-                  textAlign: 'center',
-                  marginTop: 10,
-                  backgroundColor: "#ec7254",
-                  color: "white",
-                  borderRadius: 5,
-                  paddingTop: 10,
-                  paddingBottom: 10
-                }}> دوره وجود ندارد</div>
-              }
+                  teacherRole={roleUser === "teacher"}
+                />
+              ) : (
+                <div
+                  style={{
+                    textAlign: "center",
+                    marginTop: 10,
+                    backgroundColor: "#ec7254",
+                    color: "white",
+                    borderRadius: 5,
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {" "}
+                  دوره وجود ندارد
+                </div>
+              )}
             </CardBody>
           </Card>
         </GridItem>
       </GridContainer>
 
-      {openPopUpEditCourse && courseDetail &&
+      {openPopUpEditCourse && courseDetail && (
         <EditCourse
           dataCourse={courseDetail}
           openEditCoursePopUp={openPopUpEditCourse}
-          closePopUpEdit={() => { setOpenPopUpEditCourse(false) }}
+          closePopUpEdit={() => {
+            setOpenPopUpEditCourse(false);
+          }}
           EditSuccess={() => {
-            setOpenPopUpEditCourse(false)
+            setOpenPopUpEditCourse(false);
 
-            setOpenToast(true)
-            onToast("دوره بروزرسانی شد", "success")
-            getCourses()
-          }} />}
+            setOpenToast(true);
+            onToast("کاربر بروزرسانی شد", "success");
+            getCourses();
+          }}
+        />
+      )}
 
-      {openPopUpStudentsCourse && idForStudents &&
+      {openPopUpStudentsCourse && idForStudents && (
         <ListOfStudents
           userIdCourse={idForStudents}
           openListStudentPopUp={openPopUpStudentsCourse}
-          closePopUpList={() => { setOpenPopUpStudentsCourse(false) }}
-          RemoveSuccess={() => {
-            setOpenPopUpStudentsCourse(false)
-
-            getCourses()
+          closePopUpList={() => {
+            setOpenPopUpStudentsCourse(false);
           }}
-        />}
+          RemoveSuccess={() => {
+            setOpenPopUpStudentsCourse(false);
 
-      {openPopUpCreateCourse &&
+            getCourses();
+          }}
+        />
+      )}
+
+      {openPopUpCreateCourse && (
         <CreateCourse
           openCreateCoursePopUp={openPopUpCreateCourse}
           CreateSuccess={() => {
-            setOpenPopUpCreateCourse(false)
+            setOpenPopUpCreateCourse(false);
 
-            setOpenToast(true)
-            onToast("دوره اضافه شد", "success")
+            setOpenToast(true);
+            onToast("دوره اضافه شد", "success");
             getCourses();
           }}
           closePopUpCreate={() => {
-            setOpenPopUpCreateCourse(false)
-          }} />
-      }
-      {openPopUpaddStudent && idForStudents &&
+            setOpenPopUpCreateCourse(false);
+          }}
+        />
+      )}
+      {openPopUpaddStudent && idForStudents && (
         <AddStudentToCourse
           openAddStudentPopUp={openPopUpaddStudent}
           userIdCourse={idForStudents}
           closePopUpAdd={() => {
-            setOpenPopUpaddStudent(false)
+            setOpenPopUpaddStudent(false);
           }}
           AddSuccess={() => {
-            setOpenPopUpaddStudent(false)
+            setOpenPopUpaddStudent(false);
 
-            setOpenToast(true)
-            onToast("دانشجو به دوره اضافه شد", "success")
+            setOpenToast(true);
+            onToast("دانشجو به دوره اضافه شد", "success");
             getCourses();
           }}
         />
-      }
+      )}
     </>
   );
 }
