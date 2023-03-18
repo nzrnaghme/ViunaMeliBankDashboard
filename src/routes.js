@@ -12,15 +12,10 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import UserProfile from "views/UserProfile/UserProfile.js";
 import UsersList from "views/UsersList/UsersList.js";
 import Groups from "views/Groups/Groups.js";
-// import Planning from "views/Planning/Planning.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
-// import News from "views/News/News";
 import Students from "views/Students/Students";
-// import Support from "views/Support/Support";
-// import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
-// import Suggest from "views/Suggest/Suggest";
 
 const dashboardRoutes = [
   {
