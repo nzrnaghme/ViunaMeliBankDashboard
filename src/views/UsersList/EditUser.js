@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -13,8 +13,10 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+import { GeneralContext } from "providers/GeneralContext";
 
-import "./Course.css";
+import "./User.css";
+import { editUser } from "api/Core/User";
 // import { User_Status } from "variables/general";
 
 export const User_Status = [
@@ -65,11 +67,13 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function EditCourse(props) {
   const classes = useStyles();
+  const { setOpenToast, onToast } = useContext(GeneralContext);
+
   const {
-    openEditCoursePopUp,
-    // EditSuccess,
+    openEditUserPopUp,
+    EditSuccess,
     closePopUpEdit,
-    dataCourse,
+    dataUser,
   } = props;
 
   //new
@@ -78,31 +82,35 @@ export default function EditCourse(props) {
   const [description, setDescription] = useState();
 
   useEffect(() => {
-    setCondition(dataCourse.USER_STATUS);
-    setDescription(dataCourse.USER_DESCRIPTION)
-  }, [dataCourse]);
+    setCondition(dataUser.USER_STATUS);
+    setDescription(dataUser.USER_DESCRIPTION)
+  }, [dataUser]);
 
 
   const updateDataCourse = async () => {
-    // const data = {
-    //   id: dataCourse._id,
-    //   title,
-    //   cost,
-    //   endDate,
-    //   startDate,
-    //   teacher: teacherName,
-    //   lesson: lessonName,
-    // };
-
-    // let response = await updateCourse(data);
-    // if (response.data.result) {
-    //   EditSuccess();
-    // }
+    const userName = dataUser.USER_USERNAME;
+    const data = Object.create(
+      {
+        userName: {
+          USER_STATUS: condition.toString(),
+          USER_DESCRIPTION: description,
+        },
+      },
+    );
+    data[userName] = data["userName"];
+    let response = await editUser(data);
+    if (response.data === "SUCCESSFUL") {
+      EditSuccess();
+    } else {
+      setOpenToast(true);
+      onToast("کاربر بروزرسانی نشد", "error");
+      closePopUpEdit();
+    }
   };
 
   return (
     <PopUpCustome
-      open={openEditCoursePopUp}
+      open={openEditUserPopUp}
       handleClose={() => {
         closePopUpEdit();
       }}
@@ -123,7 +131,7 @@ export default function EditCourse(props) {
                       disabled
                       rtlActive
                       labelText="نام کاربری"
-                      value={dataCourse.USER_USERNAME}
+                      value={dataUser.USER_USERNAME}
                       formControlProps={{
                         fullWidth: true,
                       }}
@@ -134,7 +142,7 @@ export default function EditCourse(props) {
                       disabled
                       rtlActive
                       labelText="کد کاربر"
-                      value={dataCourse.USER_ID}
+                      value={dataUser.USER_ID}
                       formControlProps={{
                         fullWidth: true,
                       }}
@@ -217,8 +225,8 @@ export default function EditCourse(props) {
 }
 
 EditCourse.propTypes = {
-  openEditCoursePopUp: PropTypes.bool,
+  openEditUserPopUp: PropTypes.bool,
   EditSuccess: PropTypes.func,
   closePopUpEdit: PropTypes.func,
-  dataCourse: PropTypes.object,
+  dataUser: PropTypes.object,
 };

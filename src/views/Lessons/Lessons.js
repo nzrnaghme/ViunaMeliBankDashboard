@@ -12,7 +12,7 @@ import RegularButton from "components/CustomButtons/Button";
 import { GeneralContext } from "providers/GeneralContext";
 import EditLEsson from "./EditLesson";
 import AddLesson from "./AddLesson";
-import CreateUser from "views/CourseList/CreateUser";
+import CreateUser from "views/UsersList/CreateUser";
 
 import { getAllLesson } from "api/Core/Lesson";
 import { getAllCategory } from "api/Core/Lesson";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
@@ -12,6 +12,8 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { trackPromise } from "react-promise-tracker";
+import { editeGroup } from "api/Core/Group";
+import { GeneralContext } from "providers/GeneralContext";
 
 export const User_Status = [
     {
@@ -62,6 +64,7 @@ const useStyles = makeStyles(styles);
 
 export default function EditTeacher(props) {
     const classes = useStyles();
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         openEditTeacherPopUp,
@@ -77,8 +80,28 @@ export default function EditTeacher(props) {
         setDescription(dataGroup.GROUP_DESCRIPTION);
     }, [dataGroup]);
 
-    const updateDataGroup = () => {
-        EditSuccess();
+    const updateDataGroup = async () => {
+        const groupName = dataGroup.GROUP_USERNAME
+        const data = Object.create(
+            {
+                groupName: {
+                    GROUP_STATUS: condition.toString(),
+                    GROUP_DESCRIPTION: description,
+                },
+            },
+        );
+        data[groupName] = data["groupName"];
+
+        let response = await editeGroup(data);
+        if (response.data === "SUCCESSFUL")
+            EditSuccess();
+
+        else {
+            setOpenToast(true)
+            onToast("گروه بروزرسانی نشد", "error")
+            closePopUpEdit();
+        }
+
 
     }
 

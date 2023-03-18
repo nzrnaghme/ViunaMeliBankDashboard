@@ -12,12 +12,10 @@ import RegularButton from "components/CustomButtons/Button";
 import InsertGroup from "./InsertGroup";
 import EditGroup from "./EditGroup";
 
-import { activeEmployeeManage } from "api/Core/Employe_Manage";
-import { deActiveEmployeetManage } from "api/Core/Employe_Manage";
 import { GeneralContext } from "providers/GeneralContext";
-import { removeEmployee } from "api/Core/Employe_Manage";
 import { getAllGroups } from "api/Core/Group";
 import { trackPromise } from "react-promise-tracker";
+import { removeGroup } from "api/Core/Group";
 
 const styles = {
   cardCategoryWhite: {
@@ -53,7 +51,6 @@ const useStyles = makeStyles(styles);
 
 export default function Groups() {
   const classes = useStyles();
-  const [allTeachers, setAllTeachers] = useState([]);
   const [allTeachersV, setAllTeachersV] = useState([]);
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -63,6 +60,7 @@ export default function Groups() {
 
   const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
   const [dataGroup, setDataGroup] = useState()
+
 
   useEffect(() => {
     trackPromise(getGroups());
@@ -86,44 +84,33 @@ export default function Groups() {
     }
   }
 
-  const removeTeacher = async (id) => {
-    let response = await removeEmployee(id)
-    if (response.data.result) {
-      let newTeacher = allTeachers.filter((item) => item.id != id)
-      setOpenToast(true)
-      onToast("استاد با موفقیت حذف شد", "success")
-      setAllTeachers(newTeacher);
+  const removeSelectGroup = async (row) => {
+    const groupName = row.GROUP_USERNAME
+    const data = Object.create(
+      {
+        groupName: {
+          GROUP_STATUS: row.GROUP_STATUS.toString(),
+          GROUP_DESCRIPTION: row.GROUP_DESCRIPTION,
+        },
+      },
+    );
+    data[groupName] = data["groupName"];
+
+    let response = await removeGroup(data);
+    console.log(response);
+    if (response.data === "SUCCESSFUL") {
+      // let newTeacher = allTeachers.filter((item) => item.id != id)
+      setOpenToast(true);
+      onToast("گروه با موفقیت حذف شد", "success");
+      trackPromise(getGroups());
+
+      // setAllTeachers(newTeacher);
     }
   }
 
   const editGroup = (row) => {
     setDataGroup(row);
     setOpenUpdateGroup(true);
-  }
-
-  const changeActivate = (id, active) => {
-    if (active) {
-      deActiveEmployee(id)
-    } else activeEmployee(id)
-  }
-
-  const activeEmployee = async (id) => {
-    let response = await activeEmployeeManage(id)
-    if (response.data.result) {
-      setOpenToast(true)
-      onToast("استاد فعال شد", "success")
-      getGroups()
-    }
-
-  }
-
-  const deActiveEmployee = async (id) => {
-    let response = await deActiveEmployeetManage(id)
-    if (response.data.result) {
-      setOpenToast(true)
-      onToast("استاد غیرفعال شد", "success")
-      getGroups()
-    }
   }
 
   const handleChangePage = (event, newPage) => {
@@ -163,12 +150,14 @@ export default function Groups() {
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
                   rowsCount={rowsPerPage}
                   editGroup={editGroup}
-                  changeActivate={changeActivate}
-                  removeTeacher={(id) => {
+                  removeGroup={(row) => {
                     onConfirmSetter('آیا برای حذف گروه مطمئن هستید؟', () => {
-                      trackPromise(removeTeacher(id))
+                      trackPromise(removeSelectGroup(row))
                     })
                     setConfirmPopupOpen(true)
+                  }}
+                  addGroupMember={(row) => {
+                    console.log(row);
                   }}
                   group
                 /> :
