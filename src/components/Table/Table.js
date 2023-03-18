@@ -46,7 +46,7 @@ export default function CustomTable(props) {
     group,
     editGroup,
     removeGroup,
-    addGroupMember,
+    addGroupToGroup,
     groupMember,
     addMemberToGroup,
     roles,
@@ -255,7 +255,7 @@ export default function CustomTable(props) {
                     </Tooltip>
                     <Tooltip
                       id="tooltip-top-start"
-                      title="اضافه کردن کاربر به گروه"
+                      title="اضافه کردن گروه به گروه"
                       placement="top"
                       classes={{ tooltip: classes.tooltip }}
                     >
@@ -263,7 +263,7 @@ export default function CustomTable(props) {
                         aria-label="Close"
                         className={classes.tableActionButton}
                         onClick={() => {
-                          addGroupMember(row);
+                          addGroupToGroup(row);
                         }}
                       >
                         <AddCircleOutlineIcon
@@ -1269,7 +1269,7 @@ CustomTable.propTypes = {
   group: PropTypes.bool,
   editGroup: PropTypes.func,
   removeGroup: PropTypes.func,
-  addGroupMember: PropTypes.func,
+  addGroupToGroup: PropTypes.func,
 
   groupMember: PropTypes.bool,
   addMemberToGroup: PropTypes.func,

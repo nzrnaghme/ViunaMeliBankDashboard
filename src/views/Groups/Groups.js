@@ -51,8 +51,8 @@ const useStyles = makeStyles(styles);
 
 export default function Groups() {
   const classes = useStyles();
-  const [allTeachersV, setAllTeachersV] = useState([]);
-  const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+  const [allGroups, setAllGroups] = useState([]);
+  const [currentPage_MainbarMyGroup, setCurrentPage_MainbarMyGroup] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [openInsertGroup, setOpenInsertGroup] = useState(false)
@@ -61,12 +61,9 @@ export default function Groups() {
   const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
   const [dataGroup, setDataGroup] = useState()
 
-
   useEffect(() => {
     trackPromise(getGroups());
   }, [])
-
-
 
   const getGroups = async () => {
 
@@ -80,7 +77,7 @@ export default function Groups() {
         GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
       }));
 
-      setAllTeachersV(newData);
+      setAllGroups(newData);
     }
   }
 
@@ -114,12 +111,12 @@ export default function Groups() {
   }
 
   const handleChangePage = (event, newPage) => {
-    setCurrentPage_MainbarMyCourses(newPage)
+    setCurrentPage_MainbarMyGroup(newPage)
   }
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
-    setCurrentPage_MainbarMyCourses(0);
+    setCurrentPage_MainbarMyGroup(0);
   };
 
 
@@ -140,12 +137,12 @@ export default function Groups() {
               <h4 className={classes.cardTitleWhite}>تمام گروه ها</h4>
             </CardHeader>
             <CardBody>
-              {allTeachersV && Object.keys(allTeachersV).length > 0 ?
+              {allGroups && Object.keys(allGroups).length > 0 ?
                 <Table
                   tableHeaderColor="info"
                   tableHead={["ردیف", "اسم گروه", "توضیحات گروه", "وضعیت گروه", "کد گروه", "عملیات"]}
-                  tableData={allTeachersV}
-                  currentPage={currentPage_MainbarMyCourses}
+                  tableData={allGroups}
+                  currentPage={currentPage_MainbarMyGroup}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
                   rowsCount={rowsPerPage}
@@ -156,7 +153,7 @@ export default function Groups() {
                     })
                     setConfirmPopupOpen(true)
                   }}
-                  addGroupMember={(row) => {
+                  addGroupToGroup={(row) => {
                     console.log(row);
                   }}
                   group
