@@ -13,7 +13,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { GeneralContext } from "providers/GeneralContext";
 import { trackPromise } from "react-promise-tracker";
-import { getListUser } from "api/Core/Course";
+import { getAllRoles } from "api/Core/Role";
+import { addUserToRole } from "api/Core/User";
 
 
 const styles = (theme) => ({
@@ -51,29 +52,36 @@ const styles = (theme) => ({
 });
 const useStyles = makeStyles(styles);
 
-export default function ListOfUsers(props) {
+export default function ListOfRole(props) {
     const classes = useStyles();
     const [currentPage_MainbarCurrentUser, setCurrentPage_MainbarCurrentUser] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [currentUsers, setCurrentUsers] = useState()
 
-    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
-        openListStudentPopUp,
-        RemoveSuccess,
+        openListGrouptPopUp,
+        InsertSuccess,
         closePopUpList,
-        groupName } = props
+        dataUserToGroup } = props
 
     useEffect(() => {
-        trackPromise(getMember())
+        trackPromise(getRoles())
     }, [])
 
-    const getMember = async () => {
-        let response1 = await getListUser();
-
-        setCurrentUsers(response1.data);
+    const getRoles = async () => {
+        let response = await getAllRoles();
+        if (response.data) {
+            var newData = Object.values(response.data).map((item, index) => ({
+                title: Object.keys(response.data)[index],
+                ROLE_STATUS: item.ROLE_STATUS,
+                ROLE_ID: item.ROLE_ID,
+                ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
+            }));
+            setCurrentUsers(newData);
+        }
     };
 
     const handleChangePage = (event, newPage) => {
@@ -85,42 +93,58 @@ export default function ListOfUsers(props) {
         setCurrentPage_MainbarCurrentUser(0);
     };
 
+    const addUserToGroup = async (row) => {
+        console.log(row);
+        const groupName = row.title
+        const data = Object.create(
+            {
+                groupName: {
+                    MEMBER_TYPE: "USER",
+                    MEMBER: dataUserToGroup.USER_USERNAME,
+                },
+            },
+        );
+        data[groupName] = data["groupName"];
+
+        let response = await addUserToRole(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("گروه با موفقیت به کاربر اضافه شد", "success");
+        } else {
+            setOpenToast(true);
+            onToast("گروه قبلا به کاربر اضافه شده است", "error");
+        }
+    }
+
     return (
         <PopUpCustome
-            open={openListStudentPopUp}
+            open={openListGrouptPopUp}
             handleClose={() => { closePopUpList() }}
             className="popUpAllCurrentStudent">
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning" className="CardTitle">
-                            <h4 className={classes.cardTitleWhite}>تمام دانشجویان</h4>
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن نقش به کاربر{dataUserToGroup.USER_USERNAME}</h4>
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
                             {currentUsers != undefined && currentUsers.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={[
-                                        "ردیف",
-                                        "نام کاربری",
-                                        "توضیحات",
-                                        "وضعیت کاربر",
-                                        "کد کاربر",
-                                        "عملیات"]}
+                                    tableHead={["اسم نقش", "توضیحات نقش", "وضعیت نقش", "کد نقش", "عملیات"]}
                                     tableData={currentUsers}
                                     currentPage={currentPage_MainbarCurrentUser}
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     rowsCount={rowsPerPage}
-                                    addMemberToGroup={(row) => {
-                                        onConfirmSetter('آیا برای اضافه کردن کاربر مطمئن هستید؟', () => {
-                                            console.log(row);
-                                            // trackPromise(removeStudentInCourse(id))
+                                    addGroupToGroup={(row) => {
+                                        onConfirmSetter('آیا برای اضافه کردن نقش به کاربر مطمئن هستید؟', () => {
+                                            trackPromise(addUserToGroup(row))
                                         })
                                         setConfirmPopupOpen(true)
 
                                     }}
-                                    groupMember
+                                    userToRole
                                 /> :
                                 <div style={{
                                     textAlign: 'center',
@@ -130,15 +154,16 @@ export default function ListOfUsers(props) {
                                     borderRadius: 5,
                                     paddingTop: 10,
                                     paddingBottom: 10
-                                }}>کاربری ثبت نام نکرده</div>}
+                                }}>نقشی ثبت نام نکرده</div>}
                         </CardBody>
                         {currentUsers != undefined && currentUsers.length > 0 &&
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <RegularButton
                                     color="success"
                                     size="sm"
-                                    onClick={() => { RemoveSuccess() }}>ثبت تغییرات</RegularButton>
-                            </div>}
+                                    onClick={InsertSuccess}>ثبت تغییرات</RegularButton>
+                            </div>
+                        }
                     </Card>
                 </GridItem>
             </GridContainer>
@@ -146,9 +171,9 @@ export default function ListOfUsers(props) {
     )
 }
 
-ListOfStudents.propTypes = {
-    openListStudentPopUp: PropTypes.bool,
-    RemoveSuccess: PropTypes.func,
+ListOfRole.propTypes = {
+    openListGrouptPopUp: PropTypes.bool,
+    InsertSuccess: PropTypes.func,
     closePopUpList: PropTypes.func,
-    userIdCourse: PropTypes.string
+    dataUserToGroup: PropTypes.array
 };

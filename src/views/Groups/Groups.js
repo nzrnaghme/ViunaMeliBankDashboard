@@ -16,6 +16,7 @@ import { GeneralContext } from "providers/GeneralContext";
 import { getAllGroups } from "api/Core/Group";
 import { trackPromise } from "react-promise-tracker";
 import { removeGroup } from "api/Core/Group";
+import ListOfUGroups from "./ListOfGroups";
 
 const styles = {
   cardCategoryWhite: {
@@ -61,17 +62,19 @@ export default function Groups() {
   const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
   const [dataGroup, setDataGroup] = useState()
 
+  const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
+  const [dataGroupToGroup, setDataGroupToGroup] = useState()
+
   useEffect(() => {
     trackPromise(getGroups());
   }, [])
 
   const getGroups = async () => {
+    let response = await getAllGroups();
 
-    let response1 = await getAllGroups();
-
-    if (response1.data) {
-      var newData = Object.values(response1.data).map((item, index) => ({
-        GROUP_USERNAME: Object.keys(response1.data)[index],
+    if (response.data) {
+      var newData = Object.values(response.data).map((item, index) => ({
+        GROUP_USERNAME: Object.keys(response.data)[index],
         GROUP_STATUS: item.GROUP_STATUS,
         GROUP_ID: item.GROUP_ID,
         GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
@@ -96,12 +99,9 @@ export default function Groups() {
     let response = await removeGroup(data);
     console.log(response);
     if (response.data === "SUCCESSFUL") {
-      // let newTeacher = allTeachers.filter((item) => item.id != id)
       setOpenToast(true);
       onToast("گروه با موفقیت حذف شد", "success");
       trackPromise(getGroups());
-
-      // setAllTeachers(newTeacher);
     }
   }
 
@@ -154,7 +154,9 @@ export default function Groups() {
                     setConfirmPopupOpen(true)
                   }}
                   addGroupToGroup={(row) => {
-                    console.log(row);
+                    setDataGroupToGroup(row)
+                    setOpenGroupToGroup(true);
+
                   }}
                   group
                 /> :
@@ -196,6 +198,19 @@ export default function Groups() {
             getGroups()
             setOpenUpdateGroup(false)
           }} />
+      }
+      {openGroupToGroup && dataGroupToGroup &&
+        <ListOfUGroups
+          openListGrouptPopUp={openGroupToGroup}
+          closePopUpList={() => { setOpenGroupToGroup(false) }}
+          dataGroupToGroup={dataGroupToGroup}
+          InsertSuccess={() => {
+            setOpenToast(true);
+            onToast("گروه بروزرسانی شد", "success");
+            getGroups()
+            setOpenUpdateGroup(false)
+          }}
+        />
       }
 
     </>

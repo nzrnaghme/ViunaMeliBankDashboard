@@ -13,10 +13,12 @@ import RegularButton from "components/CustomButtons/Button";
 import { getListUser } from "api/Core/User";
 import EditUser from "./EditUser";
 import CreateUser from "./CreateUser";
+import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
 // import { getItem } from "api/storage/storage";
 import { trackPromise } from "react-promise-tracker";
 import { removeUser } from "api/Core/User";
+import ListOfRole from "./ListOfRole";
 
 const styles = {
   cardCategoryWhite: {
@@ -75,6 +77,12 @@ export default function UsersList() {
 
   const [openPopUpCreateUser, setOpenPopUpCreateUser] = useState(false);
 
+  const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
+  const [dataGroupToGroup, setDataGroupToGroup] = useState()
+
+  const [openRoleToUser, setOpenRoleToUser] = useState(false)
+  const [dataRoleToUser, setDataRoleToUser] = useState()
+
   useEffect(() => {
     trackPromise(getUsers());
   }, []);
@@ -106,7 +114,6 @@ export default function UsersList() {
   };
 
   const EditUsers = (data) => {
-    console.log("!1111111111111111111",data);
     setUserDetail(data);
     setOpenPopUpEditUser(true);
   };
@@ -173,6 +180,14 @@ export default function UsersList() {
                   Users
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  addGroupToGroup={(row) => {
+                    setDataGroupToGroup(row)
+                    setOpenGroupToGroup(true);
+                  }}
+                  addRoleToGroup={(row) => {
+                    setDataRoleToUser(row);
+                    setOpenRoleToUser(true);
+                  }}
                 />
               ) : (
                 <div
@@ -227,6 +242,21 @@ export default function UsersList() {
           }}
         />
       )}
+      {openGroupToGroup && dataGroupToGroup &&
+        <ListOfUsers
+          dataUserToGroup={dataGroupToGroup}
+          closePopUpList={() => { setOpenGroupToGroup(false) }}
+          InsertSuccess={getUsers}
+          openListGrouptPopUp={openGroupToGroup} />
+      }
+      {openRoleToUser && dataRoleToUser &&
+        <ListOfRole
+          dataUserToGroup={dataRoleToUser}
+          closePopUpList={() => { setOpenRoleToUser(false) }}
+          InsertSuccess={getUsers}
+          openListGrouptPopUp={openRoleToUser}
+        />
+      }
 
     </>
   );

@@ -43,13 +43,14 @@ export default function CustomTable(props) {
     removeUser,
     EditUser,
     Users,
+    addRoleToGroup,
     group,
     editGroup,
     removeGroup,
+    groupToGroup,
     addGroupToGroup,
-    groupMember,
-    addMemberToGroup,
     roles,
+    userToRole,
     removeRole,
     editRole,
     removeStudent,
@@ -177,6 +178,46 @@ export default function CustomTable(props) {
                         />
                       </IconButton>
                     </Tooltip>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="اضافه کردن گروه به کاربر"
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton
+                        aria-label="Close"
+                        className={classes.tableActionButton}
+                        onClick={() => {
+                          addGroupToGroup(row);
+                        }}
+                      >
+                        <AddCircleOutlineIcon
+                          className={
+                            classes.tableActionButtonIcon + " " + classes.Add
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="اضافه کردن نقش به کاربر"
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton
+                        aria-label="Close"
+                        className={classes.tableActionButton}
+                        onClick={() => {
+                          addRoleToGroup(row);
+                        }}
+                      >
+                        <AddCircleOutlineIcon
+                          className={
+                            classes.tableActionButtonIcon + " " + classes.Add
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))
@@ -277,7 +318,7 @@ export default function CustomTable(props) {
                 </TableRow>
               ))
             : ""}
-          {groupMember && tableData
+          {groupToGroup && tableData
             ? tableData
               .slice(
                 currentPage * rowsCount,
@@ -286,30 +327,25 @@ export default function CustomTable(props) {
               .map((row, index) => (
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
-                    {index + 1 + currentPage * rowsCount > 9
-                      ? index + 1 + currentPage * rowsCount
-                      : `0${index + 1 + currentPage * rowsCount}`}
+                    {row.GROUP_USERNAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.USER_USERNAME}
+                    {row.GROUP_DESCRIPTION}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.USER_DESCRIPTION}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.USER_STATUS === 1 ? (
+                    {row.GROUP_STATUS === 1 ? (
                       <DoneIcon style={{ color: green[500] }} />
                     ) : (
                       <CloseIcon color="error" />
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.USER_ID}
+                    {row.GROUP_ID}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top-start"
-                      title="اضافه کردن کاربر"
+                      title="اضافه کردن گروه به گروه مورد نظر"
                       placement="top"
                       classes={{ tooltip: classes.tooltip }}
                     >
@@ -317,7 +353,56 @@ export default function CustomTable(props) {
                         aria-label="Close"
                         className={classes.tableActionButton}
                         onClick={() => {
-                          addMemberToGroup(row);
+                          addGroupToGroup(row);
+                        }}
+                      >
+                        <AddCircleOutlineIcon
+                          className={
+                            classes.tableActionButtonIcon + " " + classes.Add
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))
+            : ""}
+             {userToRole && tableData
+            ? tableData
+              .slice(
+                currentPage * rowsCount,
+                currentPage * rowsCount + rowsCount
+              )
+              .map((row, index) => (
+                <TableRow key={index} className={classes.tableBodyRow}>
+                  <TableCell className={classes.tableCell}>
+                    {row.title}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_DESCRIPTION}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_STATUS === 1 ? (
+                      <DoneIcon style={{ color: green[500] }} />
+                    ) : (
+                      <CloseIcon color="error" />
+                    )}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_ID}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="اضافه کردن نقش به کاربر مورد نظر"
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton
+                        aria-label="Close"
+                        className={classes.tableActionButton}
+                        onClick={() => {
+                          addGroupToGroup(row);
                         }}
                       >
                         <AddCircleOutlineIcon
@@ -1265,22 +1350,24 @@ CustomTable.propTypes = {
   removeCourse: PropTypes.func,
   removeUser: PropTypes.func,
   EditUser: PropTypes.func,
+  addRoleToGroup: PropTypes.func,
 
   group: PropTypes.bool,
   editGroup: PropTypes.func,
   removeGroup: PropTypes.func,
-  addGroupToGroup: PropTypes.func,
 
-  groupMember: PropTypes.bool,
-  addMemberToGroup: PropTypes.func,
+  groupToGroup: PropTypes.bool,
+  addGroupToGroup: PropTypes.func,
 
   roles: PropTypes.bool,
   editRole: PropTypes.func,
   removeRole: PropTypes.func,
   editCourseStudent: PropTypes.func,
 
+  userToRole:PropTypes.bool,
+
   removeStudent: PropTypes.func,
-  
+
   lessons: PropTypes.bool,
   editLessons: PropTypes.func,
   removeLessons: PropTypes.func,
