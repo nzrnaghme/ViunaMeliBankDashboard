@@ -49,8 +49,7 @@ export default function CustomTable(props) {
     removeTeacher,
     student,
     removeStudent,
-    editStudent,
-    editCourseStudent,
+    editRole,
     editLessons,
     removeLessons,
     lessons,
@@ -105,599 +104,57 @@ export default function CustomTable(props) {
         <TableBody>
           {courses && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    {index + 1 + currentPage * rowsCount > 9
-                      ? index + 1 + currentPage * rowsCount
-                      : `0${index + 1 + currentPage * rowsCount}`}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.USER_USERNAME}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.USER_DESCRIPTION}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.USER_STATUS === 1 ? (
-                      <DoneIcon style={{ color: green[500] }} />
-                    ) : (
-                      <CloseIcon color="error" />
-                    )}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.USER_ID}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-
-                    <Tooltip
-                      id="tooltip-top"
-                      title="ویرایش"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          editCourse(row);
-                        }}
-                      >
-                        <Edit
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="حذف"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeCourse(row);
-                        }}
-                      >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-          {group && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    {index + 1 + currentPage * rowsCount > 9
-                      ? index + 1 + currentPage * rowsCount
-                      : `0${index + 1 + currentPage * rowsCount}`}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.GROUP_USERNAME}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.GROUP_STATUS === 1 ? (
-                      <DoneIcon style={{ color: green[500] }} />
-                    ) : (
-                      <CloseIcon color="error" />
-                    )}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.GROUP_ID}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Tooltip
-                      id="tooltip-top"
-                      title="ویرایش"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          editGroup(row);
-                        }}
-                      >
-                        <Edit
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      id="tooltip-top"
-                      title="حذف"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeTeacher(row.id);
-                        }}
-                      >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-          {student && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    {index + 1 + currentPage * rowsCount > 9
-                      ? index + 1 + currentPage * rowsCount
-                      : `0${index + 1 + currentPage * rowsCount}`}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.ROLE_DESCRIPTION}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.ROLE_STATUS === 1 ? (
-                      <DoneIcon style={{ color: green[500] }} />
-                    ) : (
-                      <CloseIcon color="error" />
-                    )}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.ROLE_ID}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Tooltip
-                      id="tooltip-top"
-                      title="دوره ها"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          editCourseStudent(row.id);
-                        }}
-                      >
-                        <MenuBookIcon
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.courseShow
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      id="tooltip-top"
-                      title="ویرایش"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          editStudent(row.id);
-                        }}
-                      >
-                        <Edit
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="حذف"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeStudent(row.id);
-                        }}
-                      >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-          {lessons && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Avatar src={row.profile} className={classes.large} />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.name}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.category}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.description.substring(0, 15) + "..."}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.courses}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Tooltip
-                      id="tooltip-top"
-                      title="ویرایش"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          editLessons(row.id);
-                        }}
-                      >
-                        <Edit
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="حذف"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeLessons(row.id);
-                        }}
-                      >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="اضافه کردن دوره"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          addCourseToLesson(row.id, row.profile);
-                        }}
-                      >
-                        <AddCircleOutlineIcon
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.Add
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-
-          {myCourses && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    {row.title}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.teacher.fullName}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {formatDate(row.endDate)}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.cost > 0 ? `${row.cost} ت` : "رایگان!"}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {formatDate(row.startDate)}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="حذف دانشجو"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeCourseFromStudent(row._id);
-                        }}
-                      >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-
-          {currentStudent && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Avatar src={row.profile} className={classes.large} />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.fullName}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.email}
-                  </TableCell>
-
-                  <TableCell className={classes.tableCell}>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="حذف"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Add"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeStudent(row._id);
-                        }}
-                      >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-
-          {AllStudentInsertCourse && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Avatar src={row.profile} className={classes.large} />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.fullName}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.email}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.courses.length}
-                  </TableCell>
-
-                  <TableCell className={classes.tableCell}>
-                    <div
-                      className={
-                        row.isActive === true
-                          ? classes.ActiveTeacher
-                          : classes.deActiveTeacher
-                      }
-                    >
-                      <p style={{ color: "white", paddingTop: 3 }}>
-                        {row.isActive === true ? "فعال" : "غیرفعال"}
-                      </p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-
-          {coursesFromLesson && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    {row.title}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {formatDate(row.startDate)}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {formatDate(row.endDate)}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.cost > 0 ? `${row.cost} ت` : "رایگان!"}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="حذف"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeCourse(row._id);
-                        }}
-                      >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
-            : ""}
-
-          {allComment && tableData
-            ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow
-                  key={index}
-                  className={classes.tableBodyRow}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
-                  >
-                    {row.username}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
-                  >
-                    {row.email}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
-                  >
-                    {changeDate(row.createDate)}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
-                  >
-                    {row.comment.substring(0, 15) + "..."}
-                  </TableCell>
-                  {row.answer && verified && (
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
                     <TableCell className={classes.tableCell}>
-                      {row.answer.substring(0, 15) + "..."}
+                      {index + 1 + currentPage * rowsCount > 9
+                        ? index + 1 + currentPage * rowsCount
+                        : `0${index + 1 + currentPage * rowsCount}`}
                     </TableCell>
-                  )}
-                  <TableCell className={classes.tableCell}>
-                    <div
-                      onClick={(e) => {
-                        e.preventDefault();
-                        changeVerified(row._id, row.verified);
-                      }}
-                      className={
-                        row.verified === true
-                          ? classes.ActiveTeacher
-                          : classes.deActiveTeacher
-                      }
-                    >
-                      <p style={{ color: "white", paddingTop: 3 }}>
-                        {row.verified === true ? "تایید شده" : "تایید نشده"}
-                      </p>
-                    </div>
-                  </TableCell>
-                  {!row.answer && row.verified && (
+                    <TableCell className={classes.tableCell}>
+                      {row.USER_USERNAME}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.USER_DESCRIPTION}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.USER_STATUS === 1 ? (
+                        <DoneIcon style={{ color: green[500] }} />
+                      ) : (
+                        <CloseIcon color="error" />
+                      )}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.USER_ID}
+                    </TableCell>
                     <TableCell className={classes.tableCell}>
                       <Tooltip
+                        id="tooltip-top"
+                        title="ویرایش"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            editCourse(row);
+                          }}
+                        >
+                          <Edit
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.edit
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
                         id="tooltip-top-start"
-                        title="پاسخ به کامنت"
+                        title="حذف"
                         placement="top"
                         classes={{ tooltip: classes.tooltip }}
                       >
@@ -705,33 +162,10 @@ export default function CustomTable(props) {
                           aria-label="Close"
                           className={classes.tableActionButton}
                           onClick={() => {
-                            answerToComment(row._id);
+                            removeCourse(row);
                           }}
                         >
-                          <TextsmsIcon
-                            className={
-                              classes.tableActionButtonIcon +
-                              " " +
-                              classes.Insert
-                            }
-                          />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  )}
-                  {!row.answer && !row.verified && (
-                    <TableCell className={classes.tableCell}>
-                      <Tooltip
-                        id="tooltip-top-start"
-                        title="تایید نشده و جواب داده نشده"
-                        placement="top"
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <IconButton
-                          aria-label="Close"
-                          className={classes.tableActionButton}
-                        >
-                          <DoneRoundedIcon
+                          <Close
                             className={
                               classes.tableActionButtonIcon +
                               " " +
@@ -741,12 +175,138 @@ export default function CustomTable(props) {
                         </IconButton>
                       </Tooltip>
                     </TableCell>
-                  )}
-                  {row.answer && row.verified && (
+                  </TableRow>
+                ))
+            : ""}
+          {group && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      {index + 1 + currentPage * rowsCount > 9
+                        ? index + 1 + currentPage * rowsCount
+                        : `0${index + 1 + currentPage * rowsCount}`}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.GROUP_USERNAME}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.GROUP_STATUS === 1 ? (
+                        <DoneIcon style={{ color: green[500] }} />
+                      ) : (
+                        <CloseIcon color="error" />
+                      )}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.GROUP_ID}
+                    </TableCell>
                     <TableCell className={classes.tableCell}>
                       <Tooltip
+                        id="tooltip-top"
+                        title="ویرایش"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            editGroup(row);
+                          }}
+                        >
+                          <Edit
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.edit
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        id="tooltip-top"
+                        title="حذف"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeTeacher(row.id);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon +
+                              " " +
+                              classes.close
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
+            : ""}
+          {student && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      {index + 1 + currentPage * rowsCount > 9
+                        ? index + 1 + currentPage * rowsCount
+                        : `0${index + 1 + currentPage * rowsCount}`}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.title}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.ROLE_DESCRIPTION}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.ROLE_STATUS === 1 ? (
+                        <DoneIcon style={{ color: green[500] }} />
+                      ) : (
+                        <CloseIcon color="error" />
+                      )}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.ROLE_ID}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top"
+                        title="ویرایش"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            editRole(row);
+                          }}
+                        >
+                          <Edit
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.edit
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
                         id="tooltip-top-start"
-                        title="کامنت تایید شده و جواب داده شده"
+                        title="حذف"
                         placement="top"
                         classes={{ tooltip: classes.tooltip }}
                       >
@@ -754,420 +314,838 @@ export default function CustomTable(props) {
                           aria-label="Close"
                           className={classes.tableActionButton}
                           onClick={() => {
-                            showAllData(row._id);
+                            removeStudent(row.id);
                           }}
                         >
-                          <DoneAllIcon
+                          <Close
                             className={
                               classes.tableActionButtonIcon +
                               " " +
-                              classes.Add
+                              classes.close
                             }
                           />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
-                  )}
-                </TableRow>
-              ))
+                  </TableRow>
+                ))
+            : ""}
+          {lessons && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      <Avatar src={row.profile} className={classes.large} />
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.name}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.category}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.description.substring(0, 15) + "..."}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.courses}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top"
+                        title="ویرایش"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            editLessons(row.id);
+                          }}
+                        >
+                          <Edit
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.edit
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeLessons(row.id);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon +
+                              " " +
+                              classes.close
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="اضافه کردن دوره"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            addCourseToLesson(row.id, row.profile);
+                          }}
+                        >
+                          <AddCircleOutlineIcon
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.Add
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
+            : ""}
+
+          {myCourses && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      {row.title}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.teacher.fullName}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {formatDate(row.endDate)}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.cost > 0 ? `${row.cost} ت` : "رایگان!"}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {formatDate(row.startDate)}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف دانشجو"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeCourseFromStudent(row._id);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon +
+                              " " +
+                              classes.close
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
+            : ""}
+
+          {currentStudent && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      <Avatar src={row.profile} className={classes.large} />
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.fullName}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.email}
+                    </TableCell>
+
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Add"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeStudent(row._id);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon +
+                              " " +
+                              classes.close
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
+            : ""}
+
+          {AllStudentInsertCourse && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      <Avatar src={row.profile} className={classes.large} />
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.fullName}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.email}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.courses.length}
+                    </TableCell>
+
+                    <TableCell className={classes.tableCell}>
+                      <div
+                        className={
+                          row.isActive === true
+                            ? classes.ActiveTeacher
+                            : classes.deActiveTeacher
+                        }
+                      >
+                        <p style={{ color: "white", paddingTop: 3 }}>
+                          {row.isActive === true ? "فعال" : "غیرفعال"}
+                        </p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+            : ""}
+
+          {coursesFromLesson && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      {row.title}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {formatDate(row.startDate)}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {formatDate(row.endDate)}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.cost > 0 ? `${row.cost} ت` : "رایگان!"}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeCourse(row._id);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon +
+                              " " +
+                              classes.close
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
+            : ""}
+
+          {allComment && tableData
+            ? tableData
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow
+                    key={index}
+                    className={classes.tableBodyRow}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {row.username}
+                    </TableCell>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {row.email}
+                    </TableCell>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {changeDate(row.createDate)}
+                    </TableCell>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {row.comment.substring(0, 15) + "..."}
+                    </TableCell>
+                    {row.answer && verified && (
+                      <TableCell className={classes.tableCell}>
+                        {row.answer.substring(0, 15) + "..."}
+                      </TableCell>
+                    )}
+                    <TableCell className={classes.tableCell}>
+                      <div
+                        onClick={(e) => {
+                          e.preventDefault();
+                          changeVerified(row._id, row.verified);
+                        }}
+                        className={
+                          row.verified === true
+                            ? classes.ActiveTeacher
+                            : classes.deActiveTeacher
+                        }
+                      >
+                        <p style={{ color: "white", paddingTop: 3 }}>
+                          {row.verified === true ? "تایید شده" : "تایید نشده"}
+                        </p>
+                      </div>
+                    </TableCell>
+                    {!row.answer && row.verified && (
+                      <TableCell className={classes.tableCell}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="پاسخ به کامنت"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton
+                            aria-label="Close"
+                            className={classes.tableActionButton}
+                            onClick={() => {
+                              answerToComment(row._id);
+                            }}
+                          >
+                            <TextsmsIcon
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.Insert
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                    {!row.answer && !row.verified && (
+                      <TableCell className={classes.tableCell}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="تایید نشده و جواب داده نشده"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton
+                            aria-label="Close"
+                            className={classes.tableActionButton}
+                          >
+                            <DoneRoundedIcon
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.close
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                    {row.answer && row.verified && (
+                      <TableCell className={classes.tableCell}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="کامنت تایید شده و جواب داده شده"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton
+                            aria-label="Close"
+                            className={classes.tableActionButton}
+                            onClick={() => {
+                              showAllData(row._id);
+                            }}
+                          >
+                            <DoneAllIcon
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.Add
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))
             : ""}
 
           {allNewsShow && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Avatar src={row.image} className={classes.large} />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.title.substring(0, 15) + "..."}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.text.substring(0, 15) + "..."}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.category === "news" ? "اخبار" : "مقاله"}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Tooltip
-                      id="tooltip-top"
-                      title="ویرایش"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          editNews(row._id);
-                        }}
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      <Avatar src={row.image} className={classes.large} />
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.title.substring(0, 15) + "..."}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.text.substring(0, 15) + "..."}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.category === "news" ? "اخبار" : "مقاله"}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top"
+                        title="ویرایش"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
                       >
-                        <Edit
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="حذف"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}
-                        onClick={() => {
-                          removeNews(row._id);
-                        }}
+                        <IconButton
+                          aria-label="Edit"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            editNews(row._id);
+                          }}
+                        >
+                          <Edit
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.edit
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
                       >
-                        <Close
-                          className={
-                            classes.tableActionButtonIcon +
-                            " " +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeNews(row._id);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon +
+                              " " +
+                              classes.close
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
             : ""}
 
           {studentPannel && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Avatar src={row.profile} className={classes.large} />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.fullName}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {digitsEnToFa(row.courses && row.courses.length)}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <div
-                      className={
-                        row.isActive === true
-                          ? classes.ActiveTeacher
-                          : classes.deActiveTeacher
-                      }
-                    >
-                      <p style={{ color: "white", paddingTop: 3 }}>
-                        {row.isActive === true ? "فعال" : "غیرفعال"}
-                      </p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      <Avatar src={row.profile} className={classes.large} />
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.fullName}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {digitsEnToFa(row.courses && row.courses.length)}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      <div
+                        className={
+                          row.isActive === true
+                            ? classes.ActiveTeacher
+                            : classes.deActiveTeacher
+                        }
+                      >
+                        <p style={{ color: "white", paddingTop: 3 }}>
+                          {row.isActive === true ? "فعال" : "غیرفعال"}
+                        </p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
             : ""}
 
           {teacherPannelLesson && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Avatar src={row.image} className={classes.large} />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.lessonName}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.description.substring(0, 15) + "..."}
-                  </TableCell>
-                </TableRow>
-              ))
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      <Avatar src={row.image} className={classes.large} />
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.lessonName}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.description.substring(0, 15) + "..."}
+                    </TableCell>
+                  </TableRow>
+                ))
             : ""}
 
           {teacherPannelCourses && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Avatar
-                      src={row.lesson.image}
-                      className={classes.large}
-                    />
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.title}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {digitsEnToFa(row.capacity ? row.capacity : 0)}
-                  </TableCell>
-                </TableRow>
-              ))
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow key={index} className={classes.tableBodyRow}>
+                    <TableCell className={classes.tableCell}>
+                      <Avatar
+                        src={row.lesson.image}
+                        className={classes.large}
+                      />
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {row.title}
+                    </TableCell>
+                    <TableCell className={classes.tableCell}>
+                      {digitsEnToFa(row.capacity ? row.capacity : 0)}
+                    </TableCell>
+                  </TableRow>
+                ))
             : ""}
 
           {questionAnswer && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow
-                  key={index}
-                  className={classes.tableBodyRow}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id, row.postId.split(".")[0]);
-                    }}
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow
+                    key={index}
+                    className={classes.tableBodyRow}
+                    style={{ cursor: "pointer" }}
                   >
-                    {row.username}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id, row.postId.split(".")[0]);
-                    }}
-                  >
-                    {row.email}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id, row.postId.split(".")[0]);
-                    }}
-                  >
-                    {changeDate(row.createDate)}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id, row.postId.split(".")[0]);
-                    }}
-                  >
-                    {row.comment.substring(0, 15) + "..."}
-                  </TableCell>
-                  {row.answer && (
-                    <TableCell className={classes.tableCell}>
-                      {row.answer.substring(0, 15) + "..."}
-                    </TableCell>
-                  )}
-                  <TableCell className={classes.tableCell}>
-                    <div
-                      onClick={(e) => {
-                        e.preventDefault();
-                        changeVerified(row._id, row.verified);
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id, row.postId.split(".")[0]);
                       }}
-                      className={
-                        row.verified === true
-                          ? classes.ActiveTeacher
-                          : classes.deActiveTeacher
-                      }
                     >
-                      <p style={{ color: "white", paddingTop: 3 }}>
-                        {row.verified === true ? "تایید شده" : "تایید نشده"}
-                      </p>
-                    </div>
-                  </TableCell>
-                  {!row.answer && (
-                    <TableCell className={classes.tableCell}>
-                      <Tooltip
-                        id="tooltip-top-start"
-                        title="پاسخ به کامنت"
-                        placement="top"
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <IconButton
-                          aria-label="Close"
-                          className={classes.tableActionButton}
-                          onClick={() => {
-                            answerToComment(
-                              row._id,
-                              row.postId.split(".")[0],
-                              row.verified
-                            );
-                          }}
-                        >
-                          <TextsmsIcon
-                            className={
-                              classes.tableActionButtonIcon +
-                              " " +
-                              classes.Insert
-                            }
-                          />
-                        </IconButton>
-                      </Tooltip>
+                      {row.username}
                     </TableCell>
-                  )}
-                  {row.answer && (
-                    <TableCell className={classes.tableCell}>
-                      <Tooltip
-                        id="tooltip-top-start"
-                        title="کامنت تایید شده و جواب داده شده"
-                        placement="top"
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <IconButton
-                          aria-label="Close"
-                          className={classes.tableActionButton}
-                          onClick={() => {
-                            showAllData(row._id);
-                          }}
-                        >
-                          <DoneAllIcon
-                            className={
-                              classes.tableActionButtonIcon +
-                              " " +
-                              classes.Add
-                            }
-                          />
-                        </IconButton>
-                      </Tooltip>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id, row.postId.split(".")[0]);
+                      }}
+                    >
+                      {row.email}
                     </TableCell>
-                  )}
-                </TableRow>
-              ))
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id, row.postId.split(".")[0]);
+                      }}
+                    >
+                      {changeDate(row.createDate)}
+                    </TableCell>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id, row.postId.split(".")[0]);
+                      }}
+                    >
+                      {row.comment.substring(0, 15) + "..."}
+                    </TableCell>
+                    {row.answer && (
+                      <TableCell className={classes.tableCell}>
+                        {row.answer.substring(0, 15) + "..."}
+                      </TableCell>
+                    )}
+                    <TableCell className={classes.tableCell}>
+                      <div
+                        onClick={(e) => {
+                          e.preventDefault();
+                          changeVerified(row._id, row.verified);
+                        }}
+                        className={
+                          row.verified === true
+                            ? classes.ActiveTeacher
+                            : classes.deActiveTeacher
+                        }
+                      >
+                        <p style={{ color: "white", paddingTop: 3 }}>
+                          {row.verified === true ? "تایید شده" : "تایید نشده"}
+                        </p>
+                      </div>
+                    </TableCell>
+                    {!row.answer && (
+                      <TableCell className={classes.tableCell}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="پاسخ به کامنت"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton
+                            aria-label="Close"
+                            className={classes.tableActionButton}
+                            onClick={() => {
+                              answerToComment(
+                                row._id,
+                                row.postId.split(".")[0],
+                                row.verified
+                              );
+                            }}
+                          >
+                            <TextsmsIcon
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.Insert
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                    {row.answer && (
+                      <TableCell className={classes.tableCell}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="کامنت تایید شده و جواب داده شده"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton
+                            aria-label="Close"
+                            className={classes.tableActionButton}
+                            onClick={() => {
+                              showAllData(row._id);
+                            }}
+                          >
+                            <DoneAllIcon
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.Add
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))
             : ""}
 
           {support && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow
-                  key={index}
-                  className={classes.tableBodyRow}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow
+                    key={index}
+                    className={classes.tableBodyRow}
+                    style={{ cursor: "pointer" }}
                   >
-                    {changeDate(row.createDate)}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
-                  >
-                    {row.comment.length > 30
-                      ? row.comment.substring(0, 30) + "..."
-                      : row.comment}
-                  </TableCell>
-                  {!row.answer && (
-                    <TableCell className={classes.tableCell}>
-                      <Tooltip
-                        id="tooltip-top-start"
-                        title="پاسخ به کامنت"
-                        placement="top"
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <IconButton
-                          aria-label="Close"
-                          className={classes.tableActionButton}
-                          onClick={() => {
-                            answerToSupport(row._id);
-                          }}
-                        >
-                          <TextsmsIcon
-                            className={
-                              classes.tableActionButtonIcon +
-                              " " +
-                              classes.Insert
-                            }
-                          />
-                        </IconButton>
-                      </Tooltip>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {changeDate(row.createDate)}
                     </TableCell>
-                  )}
-                  {row.answer && (
-                    <TableCell className={classes.tableCell}>
-                      <Tooltip
-                        id="tooltip-top-start"
-                        title="کامنت تایید شده و جواب داده شده"
-                        placement="top"
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <IconButton
-                          aria-label="Close"
-                          className={classes.tableActionButton}
-                          onClick={() => {
-                            showAllData(row._id);
-                          }}
-                        >
-                          <DoneAllIcon
-                            className={
-                              classes.tableActionButtonIcon +
-                              " " +
-                              classes.Add
-                            }
-                          />
-                        </IconButton>
-                      </Tooltip>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {row.comment.length > 30
+                        ? row.comment.substring(0, 30) + "..."
+                        : row.comment}
                     </TableCell>
-                  )}
-                </TableRow>
-              ))
+                    {!row.answer && (
+                      <TableCell className={classes.tableCell}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="پاسخ به کامنت"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton
+                            aria-label="Close"
+                            className={classes.tableActionButton}
+                            onClick={() => {
+                              answerToSupport(row._id);
+                            }}
+                          >
+                            <TextsmsIcon
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.Insert
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                    {row.answer && (
+                      <TableCell className={classes.tableCell}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="کامنت تایید شده و جواب داده شده"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton
+                            aria-label="Close"
+                            className={classes.tableActionButton}
+                            onClick={() => {
+                              showAllData(row._id);
+                            }}
+                          >
+                            <DoneAllIcon
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.Add
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))
             : ""}
 
           {contactMe && tableData
             ? tableData
-              .slice(
-                currentPage * rowsCount,
-                currentPage * rowsCount + rowsCount
-              )
-              .map((row, index) => (
-                <TableRow
-                  key={index}
-                  className={[
-                    classes.tableBodyRow,
-                    row.verified === false
-                      ? classes.showMessage
-                      : classes.hideMessage,
-                  ]}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
+                .slice(
+                  currentPage * rowsCount,
+                  currentPage * rowsCount + rowsCount
+                )
+                .map((row, index) => (
+                  <TableRow
+                    key={index}
+                    className={[
+                      classes.tableBodyRow,
+                      row.verified === false
+                        ? classes.showMessage
+                        : classes.hideMessage,
+                    ]}
+                    style={{ cursor: "pointer" }}
                   >
-                    {changeDate(row.createDate)}
-                  </TableCell>
-                  <TableCell
-                    className={classes.tableCell}
-                    onClick={() => {
-                      showAllData(row._id);
-                    }}
-                  >
-                    {row.comment.length > 30
-                      ? row.comment.substring(0, 30) + "..."
-                      : row.comment}
-                  </TableCell>
-                </TableRow>
-              ))
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {changeDate(row.createDate)}
+                    </TableCell>
+                    <TableCell
+                      className={classes.tableCell}
+                      onClick={() => {
+                        showAllData(row._id);
+                      }}
+                    >
+                      {row.comment.length > 30
+                        ? row.comment.substring(0, 30) + "..."
+                        : row.comment}
+                    </TableCell>
+                  </TableRow>
+                ))
             : ""}
         </TableBody>
       </Table>
@@ -1216,7 +1194,7 @@ CustomTable.propTypes = {
   removeTeacher: PropTypes.func,
 
   student: PropTypes.bool,
-  editStudent: PropTypes.func,
+  editRole: PropTypes.func,
   removeStudent: PropTypes.func,
   editCourseStudent: PropTypes.func,
 

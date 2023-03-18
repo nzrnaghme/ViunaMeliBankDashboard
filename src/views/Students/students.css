@@ -4,8 +4,7 @@
 
 .bodyEditStudent {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
 }
 
 .bodyEditStudent div .MuiGrid-root .MuiGrid-grid-xs-12 {
@@ -14,7 +13,7 @@
 
 .bodyCreateStudent {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
 }
 
