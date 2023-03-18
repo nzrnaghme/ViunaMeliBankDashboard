@@ -14,12 +14,12 @@ import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 // @material-ui/icons
-import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import PersonIcon from '@material-ui/icons/Person';
 // import { GeneralContext } from "providers/GeneralContext";
 
 import "./group.css"
 import { trackPromise } from "react-promise-tracker";
+import { addGroup } from "api/Core/Group";
 
 export const User_Status = [
     {
@@ -78,12 +78,23 @@ export default function InsertGroup(props) {
         closePopUp
     } = props;
     const [nameNew, setNameNew] = useState()
-    const [nationalIdNew, setNationalCodeNew] = useState()
-    const [condition, setCondition] = useState(null);
+    const [condition, setCondition] = useState(0);
     const [description, setDescription] = useState(null);
 
-    const InsertGroup = () => {
-        InsertSuccess()
+    const InsertGroup = async () => {
+        const groupName = nameNew
+        const data = Object.create(
+            {
+                groupName: {
+                    GROUP_STATUS: condition.toString(),
+                    GROUP_DESCRIPTION: description,
+                },
+            },
+        );
+        data[groupName] = data["groupName"];
+        let response = await addGroup(data);
+        console.log(response);
+        InsertSuccess();
     }
 
     return (
@@ -100,8 +111,8 @@ export default function InsertGroup(props) {
                         <CardBody className="bodyEditGroup bodyStyleCard">
                             <div>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        
+                                    <GridItem xs={12} sm={12} md={12}>
+
                                         <CustomInput
                                             rtlActive
                                             labelText="نام گروه"
@@ -115,32 +126,6 @@ export default function InsertGroup(props) {
                                                 endAdornment: (
                                                     <InputAdornment position="end">
                                                         <PersonIcon className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                       
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="کد گروه"
-                                            value={nationalIdNew}
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            onChange={(e) => {
-                                                if (/^[0-9]+$/i.test(e)) {
-                                                    setNationalCodeNew(e)
-                                                } else setNationalCodeNew('')
-                                            }}
-                                            inputProps={{
-                                                maxLength: 10,
-                                                minLength: 10,
-                                                required: true,
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <RecentActorsIcon className={classes.inputAdornmentIcon} />
                                                     </InputAdornment>
                                                 )
                                             }}
@@ -160,7 +145,7 @@ export default function InsertGroup(props) {
                                         }
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>
-                                       
+
                                         <CustomInput
                                             rtlActive
                                             labelText="توضیخات"

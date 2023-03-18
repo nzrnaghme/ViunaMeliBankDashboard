@@ -8,6 +8,11 @@ export const REMOVE_USERS = `${API_V}user/removeusers?api_key=X-API-Key&API_KEY_
 
 //Group
 export const LIST_GROUPS = `${API_V}group/lstgroups?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const REMOVE_GROUP = `${API_V}group/removegroups?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const EDIT_GROUP = `${API_V}group/editgroups?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const ADD_GROUP = `${API_V}group/addgroups??api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const ADD_GROUP_MEMBER = `${API_V}group/addusertogroup??api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+
 
 //Roll
 export const LIST_ROLLS = `${API_V}role/lstroles?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;

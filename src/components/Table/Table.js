@@ -45,8 +45,10 @@ export default function CustomTable(props) {
     courses,
     group,
     editGroup,
-    // changeActivate,
-    removeTeacher,
+    removeGroup,
+    addGroupMember,
+    groupMember,
+    addMemberToGroup,
     student,
     removeStudent,
     editStudent,
@@ -241,7 +243,7 @@ export default function CustomTable(props) {
                         aria-label="Edit"
                         className={classes.tableActionButton}
                         onClick={() => {
-                          removeTeacher(row.id);
+                          removeGroup(row);
                         }}
                       >
                         <Close
@@ -249,6 +251,81 @@ export default function CustomTable(props) {
                             classes.tableActionButtonIcon +
                             " " +
                             classes.close
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="اضافه کردن کاربر"
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton
+                        aria-label="Close"
+                        className={classes.tableActionButton}
+                        onClick={() => {
+                          addGroupMember(row);
+                        }}
+                      >
+                        <AddCircleOutlineIcon
+                          className={
+                            classes.tableActionButtonIcon + " " + classes.Add
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))
+            : ""}
+
+          {groupMember && tableData
+            ? tableData
+              .slice(
+                currentPage * rowsCount,
+                currentPage * rowsCount + rowsCount
+              )
+              .map((row, index) => (
+                <TableRow key={index} className={classes.tableBodyRow}>
+                  <TableCell className={classes.tableCell}>
+                    {index + 1 + currentPage * rowsCount > 9
+                      ? index + 1 + currentPage * rowsCount
+                      : `0${index + 1 + currentPage * rowsCount}`}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_USERNAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_DESCRIPTION}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_STATUS === 1 ? (
+                      <DoneIcon style={{ color: green[500] }} />
+                    ) : (
+                      <CloseIcon color="error" />
+                    )}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_ID}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="اضافه کردن کاربر"
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton
+                        aria-label="Close"
+                        className={classes.tableActionButton}
+                        onClick={() => {
+                          addMemberToGroup(row);
+                        }}
+                      >
+                        <AddCircleOutlineIcon
+                          className={
+                            classes.tableActionButtonIcon + " " + classes.Add
                           }
                         />
                       </IconButton>
@@ -1212,8 +1289,11 @@ CustomTable.propTypes = {
 
   group: PropTypes.bool,
   editGroup: PropTypes.func,
-  changeActivate: PropTypes.func,
-  removeTeacher: PropTypes.func,
+  removeGroup: PropTypes.func,
+  addGroupMember: PropTypes.func,
+
+  groupMember: PropTypes.bool,
+  addMemberToGroup: PropTypes.func,
 
   student: PropTypes.bool,
   editStudent: PropTypes.func,

@@ -12,6 +12,7 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { trackPromise } from "react-promise-tracker";
+import { editeGroup } from "api/Core/Group";
 
 export const User_Status = [
     {
@@ -77,9 +78,22 @@ export default function EditTeacher(props) {
         setDescription(dataGroup.GROUP_DESCRIPTION);
     }, [dataGroup]);
 
-    const updateDataGroup = () => {
-        EditSuccess();
+    const updateDataGroup = async () => {
+        const groupName = dataGroup.GROUP_USERNAME
+        const data = Object.create(
+            {
+                groupName: {
+                    GROUP_STATUS: condition.toString(),
+                    GROUP_DESCRIPTION: description,
+                },
+            },
+        );
+        data[groupName] = data["groupName"];
 
+        let response = await editeGroup(data);
+        console.log(response);
+
+        EditSuccess();
     }
 
     return (
