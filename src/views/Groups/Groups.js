@@ -182,8 +182,8 @@ export default function Groups() {
           openPopUpInsertGroup={openInsertGroup}
           closePopUp={() => { setOpenInsertGroup(false) }}
           InsertSuccess={() => {
-            setOpenToast(true)
-            onToast("گروه اضافه شد", "success")
+            setOpenToast(true);
+            onToast("گروه اضافه شد", "success");
             getGroups();
             setOpenInsertGroup(false);
           }} />
@@ -194,8 +194,8 @@ export default function Groups() {
           dataGroup={dataGroup}
           closePopUpEdit={() => { setOpenUpdateGroup(false) }}
           EditSuccess={() => {
-            setOpenToast(true)
-            onToast("گروه بروزرسانی شد", "success")
+            setOpenToast(true);
+            onToast("گروه بروزرسانی شد", "success");
             getGroups()
             setOpenUpdateGroup(false)
           }} />

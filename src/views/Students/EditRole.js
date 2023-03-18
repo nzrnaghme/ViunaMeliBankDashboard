@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import axios from "axios";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -12,15 +11,12 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { updateStudetInform } from "api/Core/Student_Manage";
 import { GeneralContext } from "providers/GeneralContext";
-import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker";
-import UploadPhoto from "components/UploadPhoto/UploadPhoto";
-import imagePicker from "components/UploadPhoto/imagePicker";
 
 import "./students.css";
 import { trackPromise } from "react-promise-tracker";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+import { editRole } from "api/Core/Role";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -70,78 +66,45 @@ export const Role_Status = [
 ];
 
 export default function EditRole(props) {
-  var jalaali = require("jalaali-js");
   const classes = useStyles();
-  const { openEditRolePopUp, EditSuccess, closePopUpEdit, dataRole } = props;
+  const {
+    openEditRolePopUp,
+    EditSuccess,
+    closePopUpEdit,
+    dataRole } = props;
   const { setOpenToast, onToast } = useContext(GeneralContext);
 
   const [description, setDescription] = useState();
-  const [statos, setStatos] = useState();
+  const [status, setStatus] = useState();
 
-  const [name, setName] = useState();
-  const [phone, setPhone] = useState();
-  const [date, setDate] = useState();
-  const [email, setEmail] = useState();
-  const [photo, setPhoto] = useState();
-  const [nationalId, setNationalCode] = useState();
+  useEffect(() => {
+    setStatus(dataRole.ROLE_STATUS);
+    setDescription(dataRole.ROLE_DESCRIPTION);
+  }, [dataRole])
 
-  const [birth, setBirth] = useState();
 
-  const [filesImg, setFileImg] = useState();
-  const fileName = useRef("");
-  const upsertImgRef = useRef(null);
-
-  const onUploadingImg = async (e) => {
-    const files = e.target.files[0];
-    fileName.current = files.name;
-    let blob = await imagePicker(files);
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-  };
-
-  const onUpsertClicked = () => {
-    upsertImgRef.current.click();
-  };
-
-  const uploadImgToDatabase = async () => {
-    if (!filesImg) {
-      trackPromise(updateDataStudent(dataRole._id, photo));
-    } else {
-      let formData = new FormData();
-      formData.append("image", filesImg);
-      axios({
-        method: "post",
-        url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then(function (response) {
-          if (response.data.result)
-            trackPromise(updateDataStudent(dataRole._id, response.data.result));
-        })
-        .catch(function (response) {
-          console.log(response);
-        });
-    }
-  };
-
-  const updateDataStudent = async (id, img) => {
-    const data = {
-      id,
-      fullName: name,
-      email,
-      phoneNumber: phone,
-      birthDate: birth,
-      nationalId,
-      profile: img,
-    };
-    let response = await updateStudetInform(data);
-    if (response.data.result) {
-      setOpenToast(true);
-      onToast("کاربر آپدیت شد", "success");
+  const updateRole = async () => {
+    const roleName = dataRole.title
+    const data = Object.create(
+      {
+        roleName: {
+          ROLE_STATUS: status.toString(),
+          ROLE_DESCRIPTION: description,
+        },
+      },
+    );
+    data[roleName] = data["roleName"];
+    let response = await editRole(data);
+    if (response.data === "SUCCESSFUL")
       EditSuccess();
+
+    else {
+      setOpenToast(true)
+      onToast("نفش بروزرسانی نشد", "error")
+      closePopUpEdit();
     }
-  };
+
+  }
 
   return (
     <PopUpCustome
@@ -155,7 +118,7 @@ export default function EditRole(props) {
         <GridItem xs={12} sm={12} md={12}>
           <Card className="CardEditStudent">
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>آپدیت نقش</h4>
+              <h4 className={classes.cardTitleWhite}>بروزرسانی نقش</h4>
             </CardHeader>
             <CardBody className="bodyEditStudent">
               <div>
@@ -172,14 +135,15 @@ export default function EditRole(props) {
                     />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
-                    <CustomSelectInput
-                      labelText="وضعیت"
-                      value={statos}
-                      options={Role_Status}
-                      handleChange={(e) => {
-                        setStatos(e.target.value);
-                      }}
-                    />
+                    {Role_Status && Role_Status.length > 0 &&
+                      <CustomSelectInput
+                        labelText="وضعیت"
+                        value={status}
+                        options={Role_Status}
+                        handleChange={(e) => {
+                          setStatus(e.target.value);
+                        }}
+                      />}
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
@@ -187,12 +151,12 @@ export default function EditRole(props) {
                     <CustomInput
                       rtlActive
                       labelText="توضیحات"
-                      value={email}
+                      value={description}
                       formControlProps={{
                         fullWidth: true,
                       }}
                       onChange={(e) => {
-                        setEmail(e);
+                        setDescription(e);
                       }}
                     />
                   </GridItem>
@@ -211,7 +175,7 @@ export default function EditRole(props) {
                   color="info"
                   size="sm"
                   onClick={() => {
-                    trackPromise(uploadImgToDatabase());
+                    trackPromise(updateRole());
                   }}
                 >
                   ثبت تغییرات

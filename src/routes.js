@@ -15,7 +15,7 @@ import Groups from "views/Groups/Groups.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
-import Students from "views/Students/Students";
+import Roles from "views/Students/Roles";
 
 const dashboardRoutes = [
   {
@@ -47,10 +47,10 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/students",
+    path: "/roles",
     name: "نقش‌ها",
     icon: PeopleIcon,
-    component: Students,
+    component: Roles,
     layout: "/admin",
   },
   {

@@ -82,7 +82,7 @@ export default function InsertGroup(props) {
     const [description, setDescription] = useState(null);
 
     const InsertGroup = async () => {
-        if (nameNew && condition && description) {
+        if (nameNew && description) {
             const groupName = nameNew
             const data = Object.create(
                 {

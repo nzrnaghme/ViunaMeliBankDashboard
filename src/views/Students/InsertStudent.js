@@ -1,9 +1,7 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import Icon from "@material-ui/core/Icon";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import GridItem from "components/Grid/GridItem.js";
@@ -15,19 +13,13 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 import { GeneralContext } from "providers/GeneralContext";
-import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker";
-import imagePicker from "components/UploadPhoto/imagePicker";
-import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 
 // @material-ui/icons
-import RecentActorsIcon from "@material-ui/icons/RecentActors";
-import Call from "@material-ui/icons/Call";
 import PersonIcon from "@material-ui/icons/Person";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import { registerUser } from "api/Core/Login_Register";
-import photoPic from "assets/img/photo.png";
 import { trackPromise } from "react-promise-tracker";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+import { addRole } from "api/Core/Role";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -80,40 +72,37 @@ export default function InsertStudent(props) {
   const { InsertSuccess, openPopUpInsertStudent, closePopUp } = props;
   const { setOpenToast, onToast } = useContext(GeneralContext);
 
-  const [nameNew, setNameNew] = useState();
-  const [phoneNew, setPhoneNew] = useState();
-  const [birthNew, setBirthNew] = useState();
-  const [emailNew, setEmailNew] = useState();
-  const [passNew, setPassNew] = useState();
-  const [nationalIdNew, setNationalCodeNew] = useState();
-
   const [title, setTitle] = useState();
-  const [statos, setStatos] = useState();
+  const [status, setStatus] = useState(0);
   const [description, setDescription] = useState();
 
-  const insertStudent = async (img) => {
-    const data = {
-      fullName: nameNew,
-      email: emailNew,
-      phoneNumber: phoneNew,
-      birthDate: birthNew,
-      nationalId: nationalIdNew,
-      profile: img,
-      password: passNew,
-    };
-    let response = await registerUser(data);
-    if (response.data.result) {
-      setNameNew("");
-      setEmailNew("");
-      setPassNew("");
-      setPhoneNew("");
-      setNationalCodeNew("");
-      setBirthNew("");
-      setOpenToast(true);
-      onToast("نقش اضافه شد", "success");
-      InsertSuccess();
+  const insertRole = async () => {
+    if (title && description) {
+      const roleName = title
+      const data = Object.create(
+        {
+          roleName: {
+            ROLE_STATUS: status.toString(),
+            ROLE_DESCRIPTION: description,
+          },
+        },
+      );
+      data[roleName] = data["roleName"];
+
+      let response = await addRole(data);
+      if (response.data === "SUCCESSFUL")
+        InsertSuccess();
+      else {
+        setOpenToast(true)
+        onToast("گروه اضافه نشد", "error")
+        closePopUp()
+      }
+    } else {
+      setOpenToast(true)
+      onToast("گروه اضافه نشد", "error")
+      closePopUp()
     }
-  };
+  }
 
   return (
     <PopUpCustome
@@ -135,10 +124,10 @@ export default function InsertStudent(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
-                      labelText="عنوان"
+                      labelText="نام نقش"
                       value={title}
                       onChange={(e) => {
-                        setTitle(e.target.value);
+                        setTitle(e);
                       }}
                       formControlProps={{
                         fullWidth: true,
@@ -158,10 +147,10 @@ export default function InsertStudent(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomSelectInput
                       labelText="وضعیت کاربر"
-                      value={statos}
+                      value={status}
                       options={Role_Status}
                       handleChange={(e) => {
-                        setStatos(e.target.value);
+                        setStatus(e.target.value);
                       }}
                     />
                   </GridItem>
@@ -176,7 +165,7 @@ export default function InsertStudent(props) {
                         fullWidth: true,
                       }}
                       onChange={(e) => {
-                        setDescription(e.target.value);
+                        setDescription(e);
                       }}
                       inputProps={{
                         required: true,
@@ -206,7 +195,7 @@ export default function InsertStudent(props) {
                     color="info"
                     size="sm"
                     onClick={() => {
-                      trackPromise(uploadImgToDatabase());
+                      trackPromise(insertRole());
                     }}
                   >
                     ثبت تغییرات

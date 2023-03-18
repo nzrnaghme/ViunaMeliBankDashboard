@@ -18,6 +18,8 @@ export const ADD_GROUP_MEMBER = `${API_V}group/addusertogroup??api_key=X-API-Key
 
 //Roll
 export const LIST_ROLLS = `${API_V}role/lstroles?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const EDIT_ROLE = `${API_V}role/editroles?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const ADD_ROLE = `${API_V}role/addroles?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
 //login register
 export const REGISTER = `${API}auth/register`

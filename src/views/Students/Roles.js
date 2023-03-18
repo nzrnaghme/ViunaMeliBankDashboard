@@ -16,7 +16,7 @@ import EditRole from "./EditRole";
 
 import "./students.css";
 
-import { getAllStudetV } from "api/Core/Student_Manage";
+import { getAllRoles } from "api/Core/Role";
 import { deleteStudentById } from "api/Core/Student_Manage";
 import { deActiveStudentManage } from "api/Core/Student_Manage";
 import { activeStudentManage } from "api/Core/Student_Manage";
@@ -82,11 +82,11 @@ export default function Roles() {
 
 
   useEffect(() => {
-    trackPromise(getStudents());
+    trackPromise(getRoles());
   }, []);
 
-  const getStudents = async () => {
-    let response1 = await getAllStudetV();
+  const getRoles = async () => {
+    let response1 = await getAllRoles();
 
     if (response1.data) {
       var newData = Object.values(response1.data).map((item, index) => ({
@@ -100,7 +100,7 @@ export default function Roles() {
     setAllStudentsV(newData);
   };
 
-  const removeStudent = (id) => {
+  const removeRole = (id) => {
     onConfirmSetter(
       "مطمئن به حذف نقش هستید؟",
       async () => {
@@ -133,7 +133,7 @@ export default function Roles() {
     if (response.data.result) {
       onToast("وضعیت نقش آپدیت شد", "success");
       setOpenToast(true);
-      getStudents();
+      getRoles();
     }
   };
 
@@ -142,7 +142,7 @@ export default function Roles() {
     if (response.data.result) {
       onToast("وضعیت نقش آپدیت شد", "success");
       setOpenToast(true);
-      getStudents();
+      getRoles();
     }
   };
 
@@ -199,7 +199,7 @@ export default function Roles() {
                   currentPage={currentPage_MainbarMyCourses}
                   rowsCount={rowsPerPage}
                   removeStudent={(id) => {
-                    removeStudent(id);
+                    removeRole(id);
                   }}
                   editRole={editRole}
                   changeActivate={changeActivate}
@@ -236,7 +236,9 @@ export default function Roles() {
             setOpenEditRole(false);
           }}
           EditSuccess={() => {
-            // getStudents();
+            setOpenToast(true);
+            onToast("گروه بروزرسانی شد", "success");
+            getRoles();
             setOpenEditRole(false);
           }}
         />
@@ -246,6 +248,9 @@ export default function Roles() {
         <InsertStudent
           openPopUpInsertStudent={openInsertStudent}
           InsertSuccess={() => {
+            setOpenToast(true);
+            onToast("گروه اضافه شد", "success");
+            getRoles();
             setOpenInsertStudent(false);
           }}
           closePopUp={() => {

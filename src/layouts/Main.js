@@ -115,7 +115,7 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/user"} component={UserProfile} />
               <Route path={"/admin/userList"} component={UsersList} />
               <Route path={"/admin/Groups"} component={Groups} />
-              <Route path={"/admin/students"} component={Roles} />
+              <Route path={"/admin/roles"} component={Roles} />
               <Route path={"/admin/lessons"} component={LessonList} />
               <Route path={"/admin/comments"} component={Comments} />
               <Route path={"/admin/news"} component={News} />
