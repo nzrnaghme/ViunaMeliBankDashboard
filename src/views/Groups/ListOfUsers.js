@@ -11,10 +11,9 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { getCourseById } from "api/Core/Course";
-import { removeStudentToCourse } from "api/Core/Course";
 import { GeneralContext } from "providers/GeneralContext";
 import { trackPromise } from "react-promise-tracker";
+import { getListUser } from "api/Core/Course";
 
 
 const styles = (theme) => ({
@@ -52,52 +51,38 @@ const styles = (theme) => ({
 });
 const useStyles = makeStyles(styles);
 
-export default function ListOfStudents(props) {
+export default function ListOfUsers(props) {
     const classes = useStyles();
-    const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(0);
+    const [currentPage_MainbarCurrentUser, setCurrentPage_MainbarCurrentUser] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const [currentStudents, setCurrentStudents] = useState()
+    const [currentUsers, setCurrentUsers] = useState()
 
-    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
     const {
         openListStudentPopUp,
         RemoveSuccess,
         closePopUpList,
-        userIdCourse } = props
+        groupName } = props
 
     useEffect(() => {
-        trackPromise(getCurrentStudents(userIdCourse))
-    }, [userIdCourse])
+        trackPromise(getMember())
+    }, [])
 
-    const getCurrentStudents = async (id) => {
-        let response = await getCourseById(id);
-        if (response.data.result) {
-            setCurrentStudents(response.data.result.students)
-        }
-    }
+    const getMember = async () => {
+        let response1 = await getListUser();
 
-    const removeStudentInCourse = async (id) => {
-        const data = {
-            userId: id,
-            courseId: userIdCourse
-        }
-        let response = await removeStudentToCourse(data);
-        if (response.data.result) {
-            setOpenToast(true)
-            onToast(response.data.message[0].message, "success")
-            getCurrentStudents(userIdCourse)
-        }
-    }
+        setCurrentUsers(response1.data);
+    };
 
     const handleChangePage = (event, newPage) => {
-        setCurrentPage_MainbarCurrentStudent(newPage)
+        setCurrentPage_MainbarCurrentUser(newPage)
     }
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
-        setCurrentPage_MainbarCurrentStudent(0);
+        setCurrentPage_MainbarCurrentUser(0);
     };
 
     return (
@@ -112,23 +97,30 @@ export default function ListOfStudents(props) {
                             <h4 className={classes.cardTitleWhite}>تمام دانشجویان</h4>
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
-                            {currentStudents != undefined && currentStudents.length > 0 ?
+                            {currentUsers != undefined && currentUsers.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["", "اسم", "ایمیل", ""]}
-                                    tableData={currentStudents}
-                                    currentPage={currentPage_MainbarCurrentStudent}
+                                    tableHead={[
+                                        "ردیف",
+                                        "نام کاربری",
+                                        "توضیحات",
+                                        "وضعیت کاربر",
+                                        "کد کاربر",
+                                        "عملیات"]}
+                                    tableData={currentUsers}
+                                    currentPage={currentPage_MainbarCurrentUser}
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     rowsCount={rowsPerPage}
-                                    removeStudent={(id) => {
-                                        onConfirmSetter('آیا برای حذف دانشجو مطمئن هستید؟', () => {
-                                            trackPromise(removeStudentInCourse(id))
+                                    addMemberToGroup={(row) => {
+                                        onConfirmSetter('آیا برای اضافه کردن کاربر مطمئن هستید؟', () => {
+                                            console.log(row);
+                                            // trackPromise(removeStudentInCourse(id))
                                         })
                                         setConfirmPopupOpen(true)
 
                                     }}
-                                    currentStudent
+                                    groupMember
                                 /> :
                                 <div style={{
                                     textAlign: 'center',
@@ -138,9 +130,9 @@ export default function ListOfStudents(props) {
                                     borderRadius: 5,
                                     paddingTop: 10,
                                     paddingBottom: 10
-                                }}>دانشجویی ثبت نام نکرده</div>}
+                                }}>کاربری ثبت نام نکرده</div>}
                         </CardBody>
-                        {currentStudents != undefined && currentStudents.length > 0 &&
+                        {currentUsers != undefined && currentUsers.length > 0 &&
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <RegularButton
                                     color="success"
