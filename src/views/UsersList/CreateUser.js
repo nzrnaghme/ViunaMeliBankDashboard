@@ -15,7 +15,7 @@ import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { getItem } from "api/storage/storage";
 import { GeneralContext } from "providers/GeneralContext";
 
-import "./Course.css";
+import "./User.css";
 import { trackPromise } from "react-promise-tracker";
 import { insertUser } from "api/Core/User";
 
@@ -77,7 +77,7 @@ export default function CreateUser(props) {
     const {
         openCreateUserPopUp,
         CreateSuccess,
-        closePopUpUser,
+        closePopUpCreate,
     } = props;
 
 
@@ -110,12 +110,12 @@ export default function CreateUser(props) {
             } else {
                 setOpenToast(true);
                 onToast("کاربر با اضافه نشد", "error");
-                closePopUpUser();
+                closePopUpCreate();
             }
         } else {
             setOpenToast(true);
             onToast("کاربر اضافه نشد", "error");
-            closePopUpUser();
+            closePopUpCreate();
         }
     };
 
@@ -123,7 +123,7 @@ export default function CreateUser(props) {
         <PopUpCustome
             open={openCreateUserPopUp}
             handleClose={() => {
-                closePopUpUser();
+                closePopUpCreate();
             }}
             className="popUpCreateCourse"
         >
@@ -214,7 +214,7 @@ export default function CreateUser(props) {
                                         color="danger"
                                         size="sm"
                                         onClick={() => {
-                                            closePopUpUser();
+                                            closePopUpCreate();
                                         }}
                                     >
                                         انصراف
@@ -232,5 +232,5 @@ export default function CreateUser(props) {
 CreateUser.propTypes = {
     openCreateUserPopUp: PropTypes.bool,
     CreateSuccess: PropTypes.func,
-    closePopUpUser: PropTypes.func,
+    closePopUpCreate: PropTypes.func,
 };

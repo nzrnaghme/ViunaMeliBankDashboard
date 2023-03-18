@@ -15,7 +15,7 @@ import CardBody from "components/Card/CardBody.js";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { GeneralContext } from "providers/GeneralContext";
 
-import "./Course.css";
+import "./User.css";
 import { editUser } from "api/Core/User";
 // import { User_Status } from "variables/general";
 
