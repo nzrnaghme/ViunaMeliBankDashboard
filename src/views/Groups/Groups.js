@@ -98,7 +98,7 @@ export default function Groups() {
 
     let response = await removeGroup(data);
     console.log(response);
-    if (response.data.result) {
+    if (response.data === "SUCCESSFUL") {
       // let newTeacher = allTeachers.filter((item) => item.id != id)
       setOpenToast(true);
       onToast("گروه با موفقیت حذف شد", "success");

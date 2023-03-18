@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,7 +15,7 @@ import RegularButton from "components/CustomButtons/Button";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 // @material-ui/icons
 import PersonIcon from '@material-ui/icons/Person';
-// import { GeneralContext } from "providers/GeneralContext";
+import { GeneralContext } from "providers/GeneralContext";
 
 import "./group.css"
 import { trackPromise } from "react-promise-tracker";
@@ -70,7 +70,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function InsertGroup(props) {
     const classes = useStyles();
-    // const { setOpenToast, onToast } = useContext(GeneralContext);
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         InsertSuccess,
@@ -82,19 +82,31 @@ export default function InsertGroup(props) {
     const [description, setDescription] = useState(null);
 
     const InsertGroup = async () => {
-        const groupName = nameNew
-        const data = Object.create(
-            {
-                groupName: {
-                    GROUP_STATUS: condition.toString(),
-                    GROUP_DESCRIPTION: description,
+        if (nameNew && condition && description) {
+            const groupName = nameNew
+            const data = Object.create(
+                {
+                    groupName: {
+                        GROUP_STATUS: condition.toString(),
+                        GROUP_DESCRIPTION: description,
+                    },
                 },
-            },
-        );
-        data[groupName] = data["groupName"];
-        let response = await addGroup(data);
-        console.log(response);
-        InsertSuccess();
+            );
+            data[groupName] = data["groupName"];
+            let response = await addGroup(data);
+            if (response.data === "SUCCESSFUL")
+                InsertSuccess();
+            else {
+                setOpenToast(true)
+                onToast("گروه اضافه نشد", "error")
+                closePopUp()
+            }
+        } else {
+            setOpenToast(true)
+            onToast("گروه اضافه نشد", "error")
+            closePopUp()
+        }
+
     }
 
     return (
