@@ -66,10 +66,10 @@ const useStyles = makeStyles(styles);
 export default function EditCourse(props) {
   const classes = useStyles();
   const {
-    openEditCoursePopUp,
+    openEditUserPopUp,
     // EditSuccess,
     closePopUpEdit,
-    dataCourse,
+    dataUser,
   } = props;
 
   //new
@@ -78,14 +78,14 @@ export default function EditCourse(props) {
   const [description, setDescription] = useState();
 
   useEffect(() => {
-    setCondition(dataCourse.USER_STATUS);
-    setDescription(dataCourse.USER_DESCRIPTION)
-  }, [dataCourse]);
+    setCondition(dataUser.USER_STATUS);
+    setDescription(dataUser.USER_DESCRIPTION)
+  }, [dataUser]);
 
 
   const updateDataCourse = async () => {
     // const data = {
-    //   id: dataCourse._id,
+    //   id: dataUser._id,
     //   title,
     //   cost,
     //   endDate,
@@ -102,7 +102,7 @@ export default function EditCourse(props) {
 
   return (
     <PopUpCustome
-      open={openEditCoursePopUp}
+      open={openEditUserPopUp}
       handleClose={() => {
         closePopUpEdit();
       }}
@@ -123,7 +123,7 @@ export default function EditCourse(props) {
                       disabled
                       rtlActive
                       labelText="نام کاربری"
-                      value={dataCourse.USER_USERNAME}
+                      value={dataUser.USER_USERNAME}
                       formControlProps={{
                         fullWidth: true,
                       }}
@@ -134,7 +134,7 @@ export default function EditCourse(props) {
                       disabled
                       rtlActive
                       labelText="کد کاربر"
-                      value={dataCourse.USER_ID}
+                      value={dataUser.USER_ID}
                       formControlProps={{
                         fullWidth: true,
                       }}
@@ -217,8 +217,8 @@ export default function EditCourse(props) {
 }
 
 EditCourse.propTypes = {
-  openEditCoursePopUp: PropTypes.bool,
+  openEditUserPopUp: PropTypes.bool,
   EditSuccess: PropTypes.func,
   closePopUpEdit: PropTypes.func,
-  dataCourse: PropTypes.object,
+  dataUser: PropTypes.object,
 };

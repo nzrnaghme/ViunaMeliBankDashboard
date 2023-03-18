@@ -58,7 +58,7 @@ const styles = (theme) => ({
 });
 
 const useStyles = makeStyles(styles);
-export default function CreateCourse(props) {
+export default function CreateUser(props) {
     const roleUser = getItem('role')
     const userId = getItem('id')
 

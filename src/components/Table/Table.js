@@ -41,8 +41,9 @@ export default function CustomTable(props) {
     handleChangePage,
     handleChangeRowsPerPage,
     removeCourse,
-    editCourse,
-    courses,
+    removeUser,
+    EditUser,
+    Users,
     group,
     editGroup,
     removeGroup,
@@ -105,7 +106,7 @@ export default function CustomTable(props) {
           </TableHead>
         ) : null}
         <TableBody>
-          {courses && tableData
+          {Users && tableData
             ? tableData
               .slice(
                 currentPage * rowsCount,
@@ -146,7 +147,7 @@ export default function CustomTable(props) {
                         aria-label="Edit"
                         className={classes.tableActionButton}
                         onClick={() => {
-                          editCourse(row);
+                          EditUser(row);
                         }}
                       >
                         <Edit
@@ -166,7 +167,7 @@ export default function CustomTable(props) {
                         aria-label="Close"
                         className={classes.tableActionButton}
                         onClick={() => {
-                          removeCourse(row);
+                          removeUser(row);
                         }}
                       >
                         <Close
@@ -1283,9 +1284,10 @@ CustomTable.propTypes = {
   handleChangePage: PropTypes.func,
   handleChangeRowsPerPage: PropTypes.func,
 
-  courses: PropTypes.bool,
+  Users: PropTypes.bool,
   removeCourse: PropTypes.func,
-  editCourse: PropTypes.func,
+  removeUser: PropTypes.func,
+  EditUser: PropTypes.func,
 
   group: PropTypes.bool,
   editGroup: PropTypes.func,

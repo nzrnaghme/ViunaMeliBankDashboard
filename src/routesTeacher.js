@@ -5,7 +5,7 @@ import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
 import QuestionAnswerRoundedIcon from '@material-ui/icons/QuestionAnswerRounded';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
-import CourseList from "views/CourseList/CourseList.js";
+import UsersList from "views/UsersList/UsersList.js";
 import Planning from "views/Planning/Planning.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import News from "views/News/News";
@@ -30,7 +30,7 @@ const dashboardRoutes = [
     path: "/userList",
     name: "دوره ها",
     icon: "content_paste",
-    component: CourseList,
+    component: UsersList,
     layout: "/teacher",
   },
   {
