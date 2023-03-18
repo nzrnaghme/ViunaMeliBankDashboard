@@ -11,15 +11,12 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { GeneralContext } from "providers/GeneralContext";
 import RegularButton from "components/CustomButtons/Button";
-import InsertStudent from "./InsertStudent";
+import InsertRole from "./InsertRole";
 import EditRole from "./EditRole";
 
 import "./students.css";
 
-import { getAllRoles } from "api/Core/Role";
-import { deleteStudentById } from "api/Core/Student_Manage";
-import { deActiveStudentManage } from "api/Core/Student_Manage";
-import { activeStudentManage } from "api/Core/Student_Manage";
+import { getAllRoles, removeRole } from "api/Core/Role";
 import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
@@ -60,11 +57,10 @@ const useStyles = makeStyles(styles);
 
 export default function Roles() {
   const classes = useStyles();
-  const [allStudents, setAllStudents] = useState([]);
-  const [allStudentsV, setAllStudentsV] = useState([]);
+  const [allRoles, setAllRoles] = useState([]);
   const [
-    currentPage_MainbarMyCourses,
-    setCurrentPage_MainbarMyCourses,
+    currentPage_MainbarMyRoles,
+    setCurrentPage_MainbarMyRoles,
   ] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -78,7 +74,7 @@ export default function Roles() {
   const [openEditRole, setOpenEditRole] = useState(false);
   const [dataRole, setDataRole] = useState();
 
-  const [openInsertStudent, setOpenInsertStudent] = useState(false);
+  const [openInsertRole, setOpenInsertRole] = useState(false);
 
 
   useEffect(() => {
@@ -97,22 +93,31 @@ export default function Roles() {
       }));
     }
 
-    setAllStudentsV(newData);
+    setAllRoles(newData);
   };
 
-  const removeRole = (id) => {
+  const removeRoles = (row) => {
     onConfirmSetter(
       "مطمئن به حذف نقش هستید؟",
       async () => {
-        let response = await deleteStudentById(id);
-        if (response.data.success) {
-          let newStudent = allStudents.filter((item) => item.id != id);
-          setAllStudents(newStudent);
+        const roleName = row.title
+        const data = Object.create(
+          {
+            roleName: {
+              ROLE_STATUS: row.ROLE_STATUS,
+              ROLE_DESCRIPTION: row.ROLE_DESCRIPTION,
+            },
+          },
+        );
+        data[roleName] = data["roleName"];
+        let response = await removeRole(data);
+        if (response.data === "SUCCESSFUL") {
+          trackPromise(getRoles());
           setOpenToast(true);
-          onToast(response.data.message[0].message, "success");
+          onToast("گروه با موفقیت حذف شد", "success");
         }
       },
-      () => {}
+      () => { }
     );
     setConfirmPopupOpen(true);
   };
@@ -122,31 +127,6 @@ export default function Roles() {
     getAllDataRole(item);
   };
 
-  const changeActivate = async (id, active) => {
-    if (active) {
-      deActiveStudent(id);
-    } else activeStudent(id);
-  };
-
-  const deActiveStudent = async (id) => {
-    let response = await deActiveStudentManage(id);
-    if (response.data.result) {
-      onToast("وضعیت نقش آپدیت شد", "success");
-      setOpenToast(true);
-      getRoles();
-    }
-  };
-
-  const activeStudent = async (id) => {
-    let response = await activeStudentManage(id);
-    if (response.data.result) {
-      onToast("وضعیت نقش آپدیت شد", "success");
-      setOpenToast(true);
-      getRoles();
-    }
-  };
-
-
   const getAllDataRole = (item) => {
     if (item) {
       setDataRole(item);
@@ -155,12 +135,12 @@ export default function Roles() {
   };
 
   const handleChangePage = (event, newPage) => {
-    setCurrentPage_MainbarMyCourses(newPage);
+    setCurrentPage_MainbarMyRoles(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
-    setCurrentPage_MainbarMyCourses(0);
+    setCurrentPage_MainbarMyRoles(0);
   };
 
   return (
@@ -171,7 +151,7 @@ export default function Roles() {
             <RegularButton
               color="success"
               onClick={() => {
-                setOpenInsertStudent(true);
+                setOpenInsertRole(true);
               }}
             >
               افزودن نقش
@@ -184,7 +164,7 @@ export default function Roles() {
               <h4 className={classes.cardTitleWhite}>تمام نقش‌ها</h4>
             </CardHeader>
             <CardBody>
-              {allStudentsV && Object.keys(allStudentsV).length > 0 ? (
+              {allRoles && Object.keys(allRoles).length > 0 ? (
                 <Table
                   tableHeaderColor="info"
                   tableHead={[
@@ -195,17 +175,16 @@ export default function Roles() {
                     "آیدی",
                     "عملیات",
                   ]}
-                  tableData={allStudentsV}
-                  currentPage={currentPage_MainbarMyCourses}
+                  tableData={allRoles}
+                  currentPage={currentPage_MainbarMyRoles}
                   rowsCount={rowsPerPage}
-                  removeStudent={(id) => {
-                    removeRole(id);
+                  removeRole={(row) => {
+                    removeRoles(row);
                   }}
                   editRole={editRole}
-                  changeActivate={changeActivate}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
-                  student
+                  roles
                 />
               ) : (
                 <div
@@ -244,17 +223,17 @@ export default function Roles() {
         />
       )}
 
-      {openInsertStudent && (
-        <InsertStudent
-          openPopUpInsertStudent={openInsertStudent}
+      {openInsertRole && (
+        <InsertRole
+          openPopUpInsertRole={openInsertRole}
           InsertSuccess={() => {
             setOpenToast(true);
             onToast("گروه اضافه شد", "success");
             getRoles();
-            setOpenInsertStudent(false);
+            setOpenInsertRole(false);
           }}
           closePopUp={() => {
-            setOpenInsertStudent(false);
+            setOpenInsertRole(false);
           }}
         />
       )}

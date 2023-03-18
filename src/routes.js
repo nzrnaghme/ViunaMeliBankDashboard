@@ -15,7 +15,7 @@ import Groups from "views/Groups/Groups.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
-import Roles from "views/Students/Roles";
+import Roles from "views/Roles/Roles";
 
 const dashboardRoutes = [
   {

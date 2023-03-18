@@ -49,9 +49,10 @@ export default function CustomTable(props) {
     addGroupMember,
     groupMember,
     addMemberToGroup,
-    student,
-    removeStudent,
+    roles,
+    removeRole,
     editRole,
+    removeStudent,
     editLessons,
     removeLessons,
     lessons,
@@ -330,7 +331,7 @@ export default function CustomTable(props) {
                 </TableRow>
               ))
             : ""}
-          {student && tableData
+          {roles && tableData
             ? tableData
               .slice(
                 currentPage * rowsCount,
@@ -390,7 +391,7 @@ export default function CustomTable(props) {
                         aria-label="Close"
                         className={classes.tableActionButton}
                         onClick={() => {
-                          removeStudent(row.id);
+                          removeRole(row);
                         }}
                       >
                         <Close
@@ -1273,11 +1274,13 @@ CustomTable.propTypes = {
   groupMember: PropTypes.bool,
   addMemberToGroup: PropTypes.func,
 
-  student: PropTypes.bool,
+  roles: PropTypes.bool,
   editRole: PropTypes.func,
-  removeStudent: PropTypes.func,
+  removeRole: PropTypes.func,
   editCourseStudent: PropTypes.func,
 
+  removeStudent: PropTypes.func,
+  
   lessons: PropTypes.bool,
   editLessons: PropTypes.func,
   removeLessons: PropTypes.func,

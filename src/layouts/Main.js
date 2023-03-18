@@ -31,7 +31,7 @@ import sidebar from "./../assets/img/sidebar-10.png";
 // import myBg01 from "./../assets/img/bg01.png";
 // import myBg02 from "./../assets/img/bg01.png";
 import myBg03 from "./../assets/img/bg03.png";
-import Roles from "views/Students/Roles";
+import Roles from "views/Roles/Roles";
 
 const useStyles = makeStyles(styles);
 

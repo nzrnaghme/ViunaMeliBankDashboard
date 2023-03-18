@@ -67,9 +67,9 @@ export const Role_Status = [
 ];
 
 const useStyles = makeStyles(styles);
-export default function InsertStudent(props) {
+export default function InsertRole(props) {
   const classes = useStyles();
-  const { InsertSuccess, openPopUpInsertStudent, closePopUp } = props;
+  const { InsertSuccess, openPopUpInsertRole, closePopUp } = props;
   const { setOpenToast, onToast } = useContext(GeneralContext);
 
   const [title, setTitle] = useState();
@@ -106,7 +106,7 @@ export default function InsertStudent(props) {
 
   return (
     <PopUpCustome
-      open={openPopUpInsertStudent}
+      open={openPopUpInsertRole}
       handleClose={() => {
         closePopUp();
       }}
@@ -146,7 +146,7 @@ export default function InsertStudent(props) {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomSelectInput
-                      labelText="وضعیت کاربر"
+                      labelText="وضعیت نقش"
                       value={status}
                       options={Role_Status}
                       handleChange={(e) => {
@@ -219,8 +219,8 @@ export default function InsertStudent(props) {
   );
 }
 
-InsertStudent.propTypes = {
+InsertRole.propTypes = {
   closePopUp: PropTypes.func,
-  openPopUpInsertStudent: PropTypes.bool,
+  openPopUpInsertRole: PropTypes.bool,
   InsertSuccess: PropTypes.func,
 };
