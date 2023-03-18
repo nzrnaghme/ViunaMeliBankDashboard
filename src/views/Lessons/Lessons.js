@@ -229,7 +229,7 @@ export default function LessonList() {
 
             {openAddCourseInLesson && imgLesson && idLesson &&
                 <CreateUser
-                    openCreateCoursePopUp={openAddCourseInLesson}
+                    openCreateUserPopUp={openAddCourseInLesson}
                     CreateSuccess={() => {
                         setOpenToast(true)
                         onToast("دوره اضافه شد", "success")

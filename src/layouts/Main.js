@@ -16,7 +16,6 @@ import Dashboard from "views/Dashboard/Dashboard";
 import UserProfile from "views/UserProfile/UserProfile";
 import UsersList from "views/UsersList/UsersList";
 import Groups from "views/Groups/Groups";
-import Students from "views/Students/Students";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
 import News from "views/News/News";
@@ -32,6 +31,7 @@ import sidebar from "./../assets/img/sidebar-10.png";
 // import myBg01 from "./../assets/img/bg01.png";
 // import myBg02 from "./../assets/img/bg01.png";
 import myBg03 from "./../assets/img/bg03.png";
+import Roles from "views/Students/Roles";
 
 const useStyles = makeStyles(styles);
 
@@ -115,7 +115,7 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/user"} component={UserProfile} />
               <Route path={"/admin/userList"} component={UsersList} />
               <Route path={"/admin/Groups"} component={Groups} />
-              <Route path={"/admin/students"} component={Students} />
+              <Route path={"/admin/students"} component={Roles} />
               <Route path={"/admin/lessons"} component={LessonList} />
               <Route path={"/admin/comments"} component={Comments} />
               <Route path={"/admin/news"} component={News} />
