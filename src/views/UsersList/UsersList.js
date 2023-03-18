@@ -70,7 +70,7 @@ export default function UsersList() {
   ] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [UserDetail, setUserDetail] = useState();
+  const [userDetail, setUserDetail] = useState();
   const [openPopUpEditUser, setOpenPopUpEditUser] = useState(false);
 
   const [openPopUpCreateUser, setOpenPopUpCreateUser] = useState(false);
@@ -87,16 +87,16 @@ export default function UsersList() {
   const removeSelectUser = async (row) => {
     console.log(row);
 
-    const groupName = row.USER_USERNAME
+    const userName = row.USER_USERNAME
     const data = Object.create(
       {
-        groupName: {
+        userName: {
           GROUP_STATUS: row.USER_STATUS.toString(),
           GROUP_DESCRIPTION: row.USER_DESCRIPTION,
         },
       },
     );
-    data[groupName] = data["groupName"];
+    data[userName] = data["userName"];
     let response = await removeUser(data);
     if (response.data === "SUCCESSFUL") {
       setOpenToast(true);
@@ -105,7 +105,8 @@ export default function UsersList() {
     }
   };
 
-  const editUser = async (data) => {
+  const EditUsers = (data) => {
+    console.log("!1111111111111111111",data);
     setUserDetail(data);
     setOpenPopUpEditUser(true);
   };
@@ -168,7 +169,7 @@ export default function UsersList() {
                     });
                     setConfirmPopupOpen(true);
                   }}
-                  EditUser={editUser}
+                  EditUser={EditUsers}
                   Users
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
@@ -194,10 +195,10 @@ export default function UsersList() {
         </GridItem>
       </GridContainer>
 
-      {openPopUpEditUser && UserDetail && (
+      {openPopUpEditUser && userDetail && (
         <EditUser
-          dataUser={UserDetail}
-          openEditCoursePopUp={openPopUpEditUser}
+          dataUser={userDetail}
+          openEditUserPopUp={openPopUpEditUser}
           closePopUpEdit={() => {
             setOpenPopUpEditUser(false);
           }}
@@ -213,12 +214,12 @@ export default function UsersList() {
 
       {openPopUpCreateUser && (
         <CreateUser
-          openCreateCoursePopUp={openPopUpCreateUser}
+          openCreateUserPopUp={openPopUpCreateUser}
           CreateSuccess={() => {
             setOpenPopUpCreateUser(false);
 
             setOpenToast(true);
-            onToast("دوره اضافه شد", "success");
+            onToast("کاربر اضافه شد", "success");
             getUsers();
           }}
           closePopUpCreate={() => {
