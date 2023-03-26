@@ -23,12 +23,7 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import styles from "assets/jss/material-dashboard-react/views/rtlStyle.js";
 
-import { getAllStudet } from "api/Core/Student_Manage";
-import { getAllTeachers } from "api/Core/Employe_Manage";
-import { getAllCourse } from "api/Core/Course";
 import { trackPromise } from "react-promise-tracker";
-import { getAllCategory } from "api/Core/Lesson";
-import { getAllLesson } from "api/Core/Lesson";
 import { getListUser } from "api/Core/User";
 import { getAllGroups } from "api/Core/Group";
 import { getAllRoles } from "api/Core/Role";
