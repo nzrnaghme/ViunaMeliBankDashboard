@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
-import register from "assets/img/register.jpeg";
+import register from "assets/img/login01.png";
 import login from "assets/img/login01.png";
 import { makeStyles } from "@material-ui/core/styles";
 import RegisterPage from "views/Pages/RegisterPage";

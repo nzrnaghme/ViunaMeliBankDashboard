@@ -10,7 +10,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Icon from "@material-ui/core/Icon";
 import styles from "assets/jss/material-dashboard-react/views/loginPageStyle.js";
-import photo from "assets/img/photo.png";
+import photo from "assets/img/bg.png";
 //custome component
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
