@@ -32,7 +32,6 @@ export default function App() {
     const [open, setOpen] = React.useState(false);
     const [openToast, setOpenToast] = React.useState(false);
     const [toast, setToast] = React.useState({});
-    const [hover, setHover] = React.useState('amir');
 
     const onConfirmSetter = (
         msg,
@@ -44,8 +43,6 @@ export default function App() {
 
     return (
         <GeneralContext.Provider value={{
-            hover,
-            setHover,
             confirmPopupOpen: open,
             setConfirmPopupOpen: setOpen,
             confirmMsg: confirm.msg,
