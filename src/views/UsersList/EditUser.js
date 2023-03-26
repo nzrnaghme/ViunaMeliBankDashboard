@@ -194,6 +194,8 @@ export default function EditCourse(props) {
                     flexDirection: "row",
                     bottom: 20,
                     cursor: "pointer",
+                    marginTop: 20,
+                    justifyContent: "center"
                   }}
                 >
                   <RegularButton

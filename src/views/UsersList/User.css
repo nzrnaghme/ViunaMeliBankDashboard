@@ -2,6 +2,15 @@
     margin: -4px -7px !important;
 }
 
+.popUpCreateCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
+    margin: -2px -2px !important;
+}
+
+.popUpCreateCourse .CardTitle {
+    width: 66% !important;
+}
+
+
 .bodyEditCourse {
     display: flex;
     flex-direction: column;
@@ -11,6 +20,9 @@
     min-width: 236px;
 }
 
+.popUpCreateCourse .MuiDialog-container .MuiPaper-root {
+    width: 1000px;
+}
 
 .popUpEditCourse .MuiDialog-container .MuiPaper-root {
     width: 900px;
@@ -41,13 +53,13 @@
     width: 900px;
 }
 
-.bodyCreateUser .avatarPhotoLesson .MuiAvatar-root{
+.bodyCreateUser .avatarPhotoLesson .MuiAvatar-root {
     height: 200px;
     width: 200px;
     margin: auto;
 }
 
-.bodyEditCourse .avatarPhotoLesson .MuiAvatar-root{
+.bodyEditCourse .avatarPhotoLesson .MuiAvatar-root {
     height: 200px;
     width: 200px;
     margin: auto;
@@ -78,15 +90,15 @@
 
 }
 
-.MuiSelect-icon{
+.MuiSelect-icon {
     right: 94% !important;
 }
 
-.CardTitle{
+.CardTitle {
     position: fixed !important;
     width: 61% !important;
 }
 
-.bodyStyleCard{
+.bodyStyleCard {
     margin-top: 20px;
 }

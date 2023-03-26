@@ -114,7 +114,7 @@ export default function InsertRole(props) {
     >
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <Card className="CardEditStudent">
+          <Card className="CardEditStudent" style={{ boxShadow: "none" }}>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>افزودن نقش</h4>
             </CardHeader>

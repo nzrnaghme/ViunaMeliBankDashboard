@@ -13,25 +13,14 @@ import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 // import bgImage from "assets/img/sidebar-9.png";
 import logo from "assets/img/logo4.png";
 import Dashboard from "views/Dashboard/Dashboard";
-import UserProfile from "views/UserProfile/UserProfile";
 import UsersList from "views/UsersList/UsersList";
 import Groups from "views/Groups/Groups";
-import LessonList from "views/Lessons/Lessons";
-import Comments from "views/Comments/Comments";
-import News from "views/News/News";
-import Planning from "views/Planning/Planning";
-import Support from "views/Support/Support";
-import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
-import Suggest from "views/Suggest/Suggest";
-// import { GeneralContext } from "providers/GeneralContext";
+import Roles from "views/Roles/Roles";
 let ps;
 
 //bg import
 import sidebar from "./../assets/img/sidebar-10.png";
-// import myBg01 from "./../assets/img/bg01.png";
-// import myBg02 from "./../assets/img/bg01.png";
 import myBg03 from "./../assets/img/bg03.png";
-import Roles from "views/Roles/Roles";
 
 const useStyles = makeStyles(styles);
 
@@ -112,21 +101,10 @@ export default function Main({ ...rest }) {
           <div className={classes.container}>
             <Switch>
               <Route path={"/admin/dashboard"} component={Dashboard} />
-              <Route path={"/admin/user"} component={UserProfile} />
               <Route path={"/admin/userList"} component={UsersList} />
               <Route path={"/admin/Groups"} component={Groups} />
               <Route path={"/admin/roles"} component={Roles} />
-              <Route path={"/admin/lessons"} component={LessonList} />
-              <Route path={"/admin/comments"} component={Comments} />
-              <Route path={"/admin/news"} component={News} />
-              <Route path={"/admin/planning"} component={Planning} />
-              <Route path={"/admin/support"} component={Support} />
-              <Route path={"/admin/contactMe"} component={Suggest} />
-
-              <Route
-                path={"/admin/questionAnswer"}
-                component={QuestionAnswer}
-              />
+            
 
               <Redirect to="/admin/dashboard" from="/" />
             </Switch>

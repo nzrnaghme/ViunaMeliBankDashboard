@@ -18,17 +18,18 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 // @material-ui/icons
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
-import { loginEmployee } from "api/Core/Login_Register";
+// import { loginEmployee } from "api/Core/Login_Register";
 import { setItem } from "api/storage/storage";
 
 //captcha pic
 import captchaPic from "./../../assets/img/captcha.png";
+import { loginUser } from "api/Core/Login";
 
 const useStyles = makeStyles(styles);
 export default function LoginPage() {
   const classes = useStyles();
   const [check, setCheck] = useState(false);
-  const [email, setEmail] = useState();
+  const [userName, setUserName] = useState();
   const [pass, setPass] = useState();
   const [captcha, setCaptcha] = useState();
 
@@ -38,18 +39,38 @@ export default function LoginPage() {
 
   const login = async (e) => {
     e.preventDefault();
-    const data = {
-      email,
-      password: pass,
-    };
-    let response = await loginEmployee(data);
-    if (response.data.message[0].eventId === 200) {
-      setItem("id", response.data.result.employeeModel._id);
-      setItem("role", response.data.result.employeeModel.role);
-      setItem("token", response.data.result.jwtToken);
-      if (response.data.result.employeeModel.role === "admin")
-        window.location = "/admin/dashboard";
-      else window.location = "/teacher/dashboard";
+    const userN = userName;
+    const data = Object.create(
+      {
+        userN: {
+          PASSWORD: pass,
+          USER_DESCRIPTION: "loginUser",
+        },
+      },
+    );
+    data[userN] = data["userN"];
+    let response = await loginUser(data);
+    if (response.data) {
+      switch (response.data) {
+        case 1:
+          window.location = "/admin/dashboard";
+          setItem("role", "admin");
+          break;
+        case 2:
+          window.location = "/admin/dashboard";
+          setItem("role", "admin");
+
+          break;
+        case 3:
+          window.location = "/admin/dashboard";
+          setItem("role", "admin");
+
+          break;
+
+        default:
+          window.location = "/admin/dashboard";
+          break;
+      }
     }
   };
 
@@ -66,33 +87,16 @@ export default function LoginPage() {
                 <h4 className={classes.cardTitle}>
                   سامانه مدیریت بانک ملی ایران
                 </h4>
-                {/* <div className={classes.socialLine}>
-                  {[
-                    "fa fa-facebook-square",
-                    "fa fa-twitter",
-                    "fa fa-google-plus",
-                  ].map((prop, key) => {
-                    return (
-                      <Button
-                        color="transparent"
-                        justIcon
-                        key={key}
-                        className={classes.customButtonClass}
-                      >
-                        <i className={prop} />
-                      </Button>
-                    );
-                  })}
-                </div> */}
+
               </CardHeader>
               <CardBody>
                 <CustomInput
                   rtlActive
-                  labelText="ایمیل"
+                  labelText="نام کاربری"
                   id="name"
-                  value={email}
+                  value={userName}
                   onChange={(e) => {
-                    setEmail(e);
+                    setUserName(e);
                   }}
                   formControlProps={{
                     fullWidth: true,

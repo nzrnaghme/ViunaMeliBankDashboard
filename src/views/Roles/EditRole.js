@@ -116,7 +116,7 @@ export default function EditRole(props) {
     >
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <Card className="CardEditStudent">
+          <Card className="CardEditStudent" style={{ boxShadow: "none" }}>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>بروزرسانی نقش</h4>
             </CardHeader>

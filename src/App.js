@@ -27,7 +27,6 @@ const cacheRtl = createCache({
 });
 
 export default function App() {
-    const userId = getItem('id')
     const roleUser = getItem('role')
     const [confirm, setConfirm] = React.useState({});
     const [open, setOpen] = React.useState(false);
@@ -66,14 +65,14 @@ export default function App() {
                         <Toast />
                         <Loading />
                         <Switch>
-                            {userId && roleUser === 'admin' ?
+                            {roleUser === 'admin' ?
                                 <Route path="/admin" component={Main} /> :
                                 <Route path="/auth" component={Auth} />
                             }
 
 
 
-                            {userId && roleUser ?
+                            {roleUser ?
                                 <Redirect from="/" to="/admin/dashboard" /> :
                                 <Redirect from="/" to="/auth/login-page" />}
                         </Switch>

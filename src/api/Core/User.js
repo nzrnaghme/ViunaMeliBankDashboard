@@ -10,3 +10,4 @@ export const insertUser = (payload) => api.post(ADD_USER, payload)
 export const editUser = (payload) => api.post(EDIT_USER, payload)
 
 export const addUserToRole = (payload) => api.post(ADD_USER_ROLE, payload)
+

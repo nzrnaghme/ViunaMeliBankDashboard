@@ -24,6 +24,9 @@ export const EDIT_ROLE = `${API_V}role/editroles?api_key=X-API-Key&API_KEY_VALUE
 export const ADD_ROLE = `${API_V}role/addroles?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const REMOVE_ROLE = `${API_V}role/removeroles?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
+//Login
+export const LOGINUSER = `${API_V}login/normaluser?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+
 //login register
 export const REGISTER = `${API}auth/register`
 export const LOGIN = `${API}auth/login`

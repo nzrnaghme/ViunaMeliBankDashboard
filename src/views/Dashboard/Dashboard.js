@@ -29,6 +29,9 @@ import { getAllCourse } from "api/Core/Course";
 import { trackPromise } from "react-promise-tracker";
 import { getAllCategory } from "api/Core/Lesson";
 import { getAllLesson } from "api/Core/Lesson";
+import { getListUser } from "api/Core/User";
+import { getAllGroups } from "api/Core/Group";
+import { getAllRoles } from "api/Core/Role";
 
 const useStyles = makeStyles(styles);
 
@@ -146,10 +149,10 @@ export default function RTLPage() {
 
   useEffect(() => {
     trackPromise(getAllUser());
-    trackPromise(getTeacher());
-    trackPromise(getAllCourses());
-    trackPromise(getCategory());
-    trackPromise(getAllLessons());
+    trackPromise(getGroups());
+    trackPromise(getRoles());
+    // trackPromise(getCategory());
+    // trackPromise(getAllLessons());
   }, [])
 
   const changeDate = (date) => {
@@ -159,98 +162,95 @@ export default function RTLPage() {
   }
 
   const getAllUser = async () => {
-    let response = await getAllStudet();
-    if (response.data.result) {
-      setCountStudents(response.data.result.length);
-      const sortedActivities = (response.data.result.reverse());
-      setNearStudents(changeDate(sortedActivities[0].registerDate))
-      setAllStudent(sortedActivities)
+    let response = await getListUser();
+    if (response.data) {
+      setCountStudents(Object.keys(response.data).length);
     }
   }
 
-  const getTeacher = async () => {
-    let response = await getAllTeachers();
-    if (response.data.result) {
-      setCountTeachers(response.data.result.length);
-      const sortedActivities = (response.data.result.reverse());
-      setNearTeachers(changeDate(sortedActivities[0].registerDate))
-      setAllTeacher(sortedActivities);
-      let chartlabel = response.data.result.map((item) =>
-        item.fullName
-      )
+  const getGroups = async () => {
+    let response = await getAllGroups();
+    if (response.data) {
+      setCountTeachers(Object.keys(response.data).length);
+      // const sortedActivities = (response.data.result.reverse());
+      // setNearTeachers(changeDate(sortedActivities[0].registerDate))
+      // setAllTeacher(sortedActivities);
+      // let chartlabel = response.data.result.map((item) =>
+      //   item.fullName
+      // )
 
-      let chartSeries = response.data.result.map((item) =>
-        item.courses.length
-      )
+      // let chartSeries = response.data.result.map((item) =>
+      //   item.courses.length
+      // )
 
-      const data = {
-        labels: chartlabel,
-        series: [chartSeries]
-      }
-      setChartTeacher(data)
+      // const data = {
+      //   labels: chartlabel,
+      //   series: [chartSeries]
+      // }
+      // setChartTeacher(data)
     }
   }
 
-  const getAllCourses = async () => {
-    let response = await getAllCourse();
-    if (response.data.result) {
-      setCountCourses(response.data.result.length);
-      const sortedActivities = (response.data.result.sort((a, b) => b.endDate - a.endDate));
-      setNearCourses(sortedActivities[0].endDate.split("T")[0])
+  const getRoles = async () => {
+    let response = await getAllRoles();
+    if (response.data) {
+      setCountCourses(Object.keys(response.data).length);
+      // const sortedActivities = (response.data.result.sort((a, b) => b.endDate - a.endDate));
+      // setNearCourses(sortedActivities[0].endDate.split("T")[0])
     }
   }
 
-  const getCategory = async () => {
-    let response = await getAllCategory();
-    if (response.data.result) {
-      let category = response.data.result.map((item) => item.name);
-      labelLesson.current = category
-    }
-  }
+  // const getCategory = async () => {
+  //   let response = await getAllCategory();
+  //   if (response.data.result) {
+  //     let category = response.data.result.map((item) => item.name);
+  //     labelLesson.current = category
+  //   }
+  // }
 
-  const getAllLessons = async () => {
-    let response = await getAllLesson();
-    if (response.data.result) {
-      let category1 = response.data.result.filter((item) => item.category === 1)
-      let lengthCourse1 = category1.map((item) => item.courses.length)
-      let countCourses1 = sumCourse(lengthCourse1);
+  // const getAllLessons = async () => {
+  //   let response = await getAllLesson();
+  //   if (response.data.result) {
+  //     let category1 = response.data.result.filter((item) => item.category === 1)
+  //     let lengthCourse1 = category1.map((item) => item.courses.length)
+  //     let countCourses1 = sumCourse(lengthCourse1);
 
-      let category2 = response.data.result.filter((item) => item.category === 2)
-      let lengthCourse2 = category2.map((item) => item.courses.length);
-      let countCourses2 = sumCourse(lengthCourse2);
+  //     let category2 = response.data.result.filter((item) => item.category === 2)
+  //     let lengthCourse2 = category2.map((item) => item.courses.length);
+  //     let countCourses2 = sumCourse(lengthCourse2);
 
-      let category3 = response.data.result.filter((item) => item.category === 3)
-      let lengthCourse3 = category3.map((item) => item.courses.length);
-      let countCourses3 = sumCourse(lengthCourse3);
+  //     let category3 = response.data.result.filter((item) => item.category === 3)
+  //     let lengthCourse3 = category3.map((item) => item.courses.length);
+  //     let countCourses3 = sumCourse(lengthCourse3);
 
-      let category4 = response.data.result.filter((item) => item.category === 4)
-      let lengthCourse4 = category4.map((item) => item.courses.length);
-      let countCourses4 = sumCourse(lengthCourse4);
+  //     let category4 = response.data.result.filter((item) => item.category === 4)
+  //     let lengthCourse4 = category4.map((item) => item.courses.length);
+  //     let countCourses4 = sumCourse(lengthCourse4);
 
-      let category5 = response.data.result.filter((item) => item.category === 5)
-      let lengthCourse5 = category5.map((item) => item.courses.length);
-      let countCourses5 = sumCourse(lengthCourse5);
+  //     let category5 = response.data.result.filter((item) => item.category === 5)
+  //     let lengthCourse5 = category5.map((item) => item.courses.length);
+  //     let countCourses5 = sumCourse(lengthCourse5);
 
-      let category6 = response.data.result.filter((item) => item.category === 6)
-      let lengthCourse6 = category6.map((item) => item.courses.length);
-      let countCourses6 = sumCourse(lengthCourse6);
+  //     let category6 = response.data.result.filter((item) => item.category === 6)
+  //     let lengthCourse6 = category6.map((item) => item.courses.length);
+  //     let countCourses6 = sumCourse(lengthCourse6);
 
-      let category7 = response.data.result.filter((item) => item.category === 7)
-      let lengthCourse7 = category7.map((item) => item.courses.length);
-      let countCourses7 = sumCourse(lengthCourse7);
+  //     let category7 = response.data.result.filter((item) => item.category === 7)
+  //     let lengthCourse7 = category7.map((item) => item.courses.length);
+  //     let countCourses7 = sumCourse(lengthCourse7);
 
-      let category8 = response.data.result.filter((item) => item.category === 8)
-      let lengthCourse8 = category8.map((item) => item.courses.length);
-      let countCourses8 = sumCourse(lengthCourse8);
+  //     let category8 = response.data.result.filter((item) => item.category === 8)
+  //     let lengthCourse8 = category8.map((item) => item.courses.length);
+  //     let countCourses8 = sumCourse(lengthCourse8);
 
-      const data = {
-        labels: labelLesson.current,
-        series: [[countCourses1, countCourses2, countCourses3, countCourses4, countCourses5, countCourses6, countCourses7, countCourses8]]
-      }
+  //     const data = {
+  //       labels: labelLesson.current,
+  //       series: [[countCourses1, countCourses2, countCourses3, countCourses4, countCourses5, countCourses6, countCourses7, countCourses8]]
+  //     }
 
-      setChartLesson(data)
-    }
-  }
+  //     setChartLesson(data)
+  //   }
+  // }
 
   const sumCourse = (allCourse) => {
     const initialValue = 0;
@@ -288,17 +288,17 @@ export default function RTLPage() {
               <CardIcon color="warning">
                 <PeopleOutlineRoundedIcon />
               </CardIcon>
-              <p className={classes.cardCategory}>تعداد دانشجویان</p>
+              <p className={classes.cardCategory}>تعداد کاربران</p>
               <h3 className={classes.cardTitle}>
                 {digitsEnToFa(countStudents ? countStudents : 0)} <small>نفر</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
-              <div className={classes.stats}>
+              {/* <div className={classes.stats}>
                 <Update />
                 آخرین فرد
                 <small style={{ paddingRight: 5 }}>{digitsEnToFa(nearStudents ? nearStudents : 0)}</small>
-              </div>
+              </div> */}
             </CardFooter>
           </Card>
         </GridItem>
@@ -308,17 +308,17 @@ export default function RTLPage() {
               <CardIcon color="success">
                 <LocalLibraryRoundedIcon />
               </CardIcon>
-              <p className={classes.cardCategory}>تعداد اساتید</p>
+              <p className={classes.cardCategory}>تعداد گروه ها</p>
               <h3 className={classes.cardTitle}>
                 {digitsEnToFa(countTeachers ? countTeachers : 0)} <small>نفر</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
-              <div className={classes.stats}>
+              {/* <div className={classes.stats}>
                 <DateRange />
                 آخرین استاد
                 <small style={{ paddingRight: 5 }}>{digitsEnToFa(nearTeachers ? nearTeachers : 0)}</small>
-              </div>
+              </div> */}
             </CardFooter>
           </Card>
         </GridItem>
@@ -328,23 +328,23 @@ export default function RTLPage() {
               <CardIcon color="info">
                 <AssignmentRoundedIcon />
               </CardIcon>
-              <p className={classes.cardCategory}>تعداد دوره ها</p>
+              <p className={classes.cardCategory}>تعداد نقش ها</p>
               <h3 className={classes.cardTitle}>
                 {digitsEnToFa(countCourses ? countCourses : 0)} <small></small>
               </h3>
             </CardHeader>
             <CardFooter stats>
-              <div className={classes.stats}>
+              {/* <div className={classes.stats}>
                 <Update />
                 آخرین دوره
                 <small style={{ paddingRight: 5 }}>{digitsEnToFa(nearCourses ? nearCourses : 0)}</small>
-              </div>
+              </div> */}
             </CardFooter>
           </Card>
         </GridItem>
 
       </GridContainer>
-      <GridContainer>
+      {/* <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           <Card chart>
             <CardHeader color="success">
@@ -429,7 +429,7 @@ export default function RTLPage() {
               </CardBody>
             </Card>}
         </GridItem>
-      </GridContainer>
+      </GridContainer> */}
     </div>
   );
 }

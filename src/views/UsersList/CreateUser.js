@@ -199,6 +199,7 @@ export default function CreateUser(props) {
                                         bottom: 20,
                                         cursor: "pointer",
                                         marginTop: 20,
+                                        justifyContent: "center"
                                     }}
                                 >
                                     <RegularButton
