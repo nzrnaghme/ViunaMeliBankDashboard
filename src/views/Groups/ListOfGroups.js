@@ -133,7 +133,7 @@ export default function ListOfUGroups(props) {
                             {currentGroup != undefined && currentGroup.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["اسم گروه", "توضیحات گروه", "وضعیت گروه", "کد گروه", "عملیات"]}
+                                    tableHead={["اسم گروه", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
 
                                     tableData={currentGroup}
                                     currentPage={currentPage_MainbarCurrentGroup}

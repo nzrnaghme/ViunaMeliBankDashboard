@@ -119,28 +119,18 @@ export default function EditTeacher(props) {
                         <CardBody className="bodyEditGroup bodyStyleCard">
                             <div>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             disabled
                                             rtlActive
-                                            labelText="نام گروه"
+                                            labelText="اسم گروه"
                                             value={dataGroup.GROUP_USERNAME}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
                                         />
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            disabled
-                                            rtlActive
-                                            labelText="کد گروه"
-                                            value={dataGroup.GROUP_ID}
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
+                                   
 
                                 </GridContainer>
                                 <GridContainer>
@@ -158,7 +148,7 @@ export default function EditTeacher(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="توضیخات"
+                                            labelText="توضیحات"
                                             value={description}
                                             onChange={(e) => {
                                                 setDescription(e);

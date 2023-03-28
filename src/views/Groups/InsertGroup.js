@@ -127,7 +127,7 @@ export default function InsertGroup(props) {
 
                                         <CustomInput
                                             rtlActive
-                                            labelText="نام گروه"
+                                            labelText="اسم گروه"
                                             value={nameNew}
                                             formControlProps={{
                                                 fullWidth: true,
@@ -160,7 +160,7 @@ export default function InsertGroup(props) {
 
                                         <CustomInput
                                             rtlActive
-                                            labelText="توضیخات"
+                                            labelText="توضیحات"
                                             value={description}
                                             onChange={(e) => {
                                                 setDescription(e);

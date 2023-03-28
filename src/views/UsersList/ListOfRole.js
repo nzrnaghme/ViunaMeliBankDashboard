@@ -131,7 +131,7 @@ export default function ListOfRole(props) {
                             {currentUsers != undefined && currentUsers.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["اسم نقش", "توضیحات نقش", "وضعیت نقش", "کد نقش", "عملیات"]}
+                                    tableHead={["اسم نقش", "توضیحات نقش", "وضعیت", "عملیات"]}
                                     tableData={currentUsers}
                                     currentPage={currentPage_MainbarCurrentUser}
                                     handleChangePage={handleChangePage}

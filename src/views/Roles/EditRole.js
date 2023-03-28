@@ -13,7 +13,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { GeneralContext } from "providers/GeneralContext";
 
-import "./students.css";
+import "./role.css";
 import { trackPromise } from "react-promise-tracker";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { editRole } from "api/Core/Role";
@@ -126,7 +126,7 @@ export default function EditRole(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
-                      labelText="عنوان"
+                      labelText="اسم نقش"
                       value={dataRole.title}
                       formControlProps={{
                         fullWidth: true,
@@ -137,7 +137,7 @@ export default function EditRole(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     {Role_Status && Role_Status.length > 0 &&
                       <CustomSelectInput
-                        labelText="وضعیت"
+                        labelText="وضعیت نقش"
                         value={status}
                         options={Role_Status}
                         handleChange={(e) => {

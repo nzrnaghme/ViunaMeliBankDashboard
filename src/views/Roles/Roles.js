@@ -14,7 +14,7 @@ import RegularButton from "components/CustomButtons/Button";
 import InsertRole from "./InsertRole";
 import EditRole from "./EditRole";
 
-import "./students.css";
+import "./role.css";
 
 import { getAllRoles, removeRole } from "api/Core/Role";
 import { trackPromise } from "react-promise-tracker";
@@ -169,10 +169,9 @@ export default function Roles() {
                   tableHeaderColor="info"
                   tableHead={[
                     "ردیف",
-                    "عنوان",
+                    "اسم نقش",
                     "توضیحات",
-                    "وضعیت",
-                    "آیدی",
+                    "وضعیت نقش",
                     "عملیات",
                   ]}
                   tableData={allRoles}

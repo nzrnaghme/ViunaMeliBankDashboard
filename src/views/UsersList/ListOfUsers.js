@@ -131,7 +131,7 @@ export default function ListOfGroup(props) {
                             {currentUsers != undefined && currentUsers.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["اسم گروه", "توضیحات گروه", "وضعیت گروه", "کد گروه", "عملیات"]}
+                                    tableHead={["اسم گروه", "توضیحات گروه", "وضعیت", "عملیات"]}
                                     tableData={currentUsers}
                                     currentPage={currentPage_MainbarCurrentUser}
                                     handleChangePage={handleChangePage}

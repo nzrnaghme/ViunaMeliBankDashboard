@@ -124,7 +124,7 @@ export default function InsertRole(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
-                      labelText="نام نقش"
+                      labelText="اسم نقش"
                       value={title}
                       onChange={(e) => {
                         setTitle(e);
@@ -159,7 +159,7 @@ export default function InsertRole(props) {
                   <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
                       rtlActive
-                      labelText="توضیخات"
+                      labelText="توضیحات"
                       value={description}
                       formControlProps={{
                         fullWidth: true,

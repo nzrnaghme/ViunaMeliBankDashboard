@@ -133,9 +133,6 @@ export default function CustomTable(props) {
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.USER_ID}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top"
                       title="ویرایش"
@@ -249,9 +246,6 @@ export default function CustomTable(props) {
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_ID}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top"
                       title="ویرایش"
@@ -340,9 +334,6 @@ export default function CustomTable(props) {
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_ID}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top-start"
                       title="اضافه کردن گروه به گروه مورد نظر"
@@ -387,9 +378,6 @@ export default function CustomTable(props) {
                     ) : (
                       <CloseIcon color="error" />
                     )}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.ROLE_ID}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     <Tooltip
@@ -441,9 +429,6 @@ export default function CustomTable(props) {
                     ) : (
                       <CloseIcon color="error" />
                     )}
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    {row.ROLE_ID}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     <Tooltip

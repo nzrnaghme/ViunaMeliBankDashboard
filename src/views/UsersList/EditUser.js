@@ -126,23 +126,12 @@ export default function EditCourse(props) {
 
               <div>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
                       disabled
                       rtlActive
-                      labelText="نام کاربری"
+                      labelText="اسم کاربری"
                       value={dataUser.USER_USERNAME}
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
-                    <CustomInput
-                      disabled
-                      rtlActive
-                      labelText="کد کاربر"
-                      value={dataUser.USER_ID}
                       formControlProps={{
                         fullWidth: true,
                       }}
@@ -151,17 +140,6 @@ export default function EditCourse(props) {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
-                    {/* <CustomInput
-                      rtlActive
-                      labelText="وضعیت کاربر"
-                      value={condition}
-                      onChange={(e) => {
-                        setCondition(e.target.value);
-                      }}
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                    /> */}
                     {User_Status && User_Status.length > 0 &&
                       <CustomSelectInput
                         labelText="وضعیت کاربر"

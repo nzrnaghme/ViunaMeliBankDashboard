@@ -14,6 +14,7 @@
 .bodyEditCourse {
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
 }
 
 .bodyEditCourse div .MuiGrid-root .MuiGrid-grid-xs-12 {

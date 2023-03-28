@@ -10,7 +10,7 @@ import DashboardPage from "views/Dashboard/Dashboard";
 const dashboardRoutes = [
   {
     path: "/dashboard",
-    name: "داشبرد",
+    name: "داشبورد",
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin",

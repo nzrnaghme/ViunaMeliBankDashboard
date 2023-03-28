@@ -133,13 +133,13 @@ export default function CreateUser(props) {
                         <CardHeader color="warning" className="CardTitle">
                             <h4 className={classes.cardTitleWhite}>افزودن کاربر</h4>
                         </CardHeader>
-                        <CardBody className="bodyCreateCourse">
+                        <CardBody className="bodyCreateCourse" style={{ marginTop: 20 }}>
                             <div>
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="نام کاربری"
+                                            labelText="اسم کاربری"
                                             value={name}
                                             onChange={(e) => {
                                                 setName(e);

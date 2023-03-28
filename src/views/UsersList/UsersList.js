@@ -161,10 +161,9 @@ export default function UsersList() {
                   tableHeaderColor="info"
                   tableHead={[
                     "ردیف",
-                    "نام کاربری",
+                    "اسم کاربری",
                     "توضیحات",
                     "وضعیت کاربر",
-                    "کد کاربر",
                     "عملیات",
                   ]}
                   tableData={Object.values(allUsers)}
