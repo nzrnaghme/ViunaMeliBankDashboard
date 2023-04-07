@@ -18,6 +18,7 @@ import "./role.css";
 
 import { getAllRoles, removeRole } from "api/Core/Role";
 import { trackPromise } from "react-promise-tracker";
+import ListOfRole from "./listOfRole";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -62,7 +63,6 @@ export default function Roles() {
     currentPage_MainbarMyRoles,
     setCurrentPage_MainbarMyRoles,
   ] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const {
     setConfirmPopupOpen,
@@ -76,13 +76,20 @@ export default function Roles() {
 
   const [openInsertRole, setOpenInsertRole] = useState(false);
 
+  const [openRole, setOpenRole] = useState(false)
+  const [dataRoleTo, setDataRoleTo] = useState()
+
 
   useEffect(() => {
     trackPromise(getRoles());
   }, []);
 
-  const getRoles = async () => {
-    let response1 = await getAllRoles();
+  const getRoles = async (currentPage) => {
+    const data = {
+      first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyRoles.toString(),
+      max: "10"
+    }
+    let response1 = await getAllRoles(data);
 
     if (response1.data) {
       var newData = Object.values(response1.data).map((item, index) => ({
@@ -134,13 +141,15 @@ export default function Roles() {
     }
   };
 
-  const handleChangePage = (event, newPage) => {
-    setCurrentPage_MainbarMyRoles(newPage);
+  const handleChangePage = (currentPage) => {
+    setCurrentPage_MainbarMyRoles(currentPage + 10);
+    getRoles(currentPage + 10)
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setCurrentPage_MainbarMyRoles(0);
+  const handleChangeRowsPerPage = (currentPage) => {
+    let currPage = currentPage - 10;
+    setCurrentPage_MainbarMyRoles(currPage);
+    getRoles(currPage)
   };
 
   return (
@@ -168,7 +177,6 @@ export default function Roles() {
                 <Table
                   tableHeaderColor="info"
                   tableHead={[
-                    "ردیف",
                     "اسم نقش",
                     "توضیحات",
                     "وضعیت نقش",
@@ -176,7 +184,6 @@ export default function Roles() {
                   ]}
                   tableData={allRoles}
                   currentPage={currentPage_MainbarMyRoles}
-                  rowsCount={rowsPerPage}
                   removeRole={(row) => {
                     removeRoles(row);
                   }}
@@ -184,6 +191,10 @@ export default function Roles() {
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
                   roles
+                  addRole={(row) => {
+                    setDataRoleTo(row)
+                    setOpenRole(true);
+                  }}
                 />
               ) : (
                 <div
@@ -236,6 +247,20 @@ export default function Roles() {
           }}
         />
       )}
+
+      {openRole && dataRoleTo &&
+        <ListOfRole
+          openListRolePopUp={openRole}
+          closePopUpList={() => { setOpenRole(false) }}
+          dataRoleTo={dataRoleTo}
+          InsertSuccess={() => {
+            setOpenToast(true);
+            onToast("گروه بروزرسانی شد", "success");
+            getRoles()
+            setOpenRole(false)
+          }}
+        />
+      }
 
     </>
   );

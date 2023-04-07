@@ -18,7 +18,6 @@ import { GeneralContext } from "providers/GeneralContext";
 // import { getItem } from "api/storage/storage";
 import { trackPromise } from "react-promise-tracker";
 import { removeUser } from "api/Core/User";
-import ListOfRole from "./ListOfRole";
 
 const styles = {
   cardCategoryWhite: {
@@ -70,7 +69,6 @@ export default function UsersList() {
     currentPage_MainbarMyUsers,
     setCurrentPage_MainbarMyUsers,
   ] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [userDetail, setUserDetail] = useState();
   const [openPopUpEditUser, setOpenPopUpEditUser] = useState(false);
@@ -80,20 +78,21 @@ export default function UsersList() {
   const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
   const [dataGroupToGroup, setDataGroupToGroup] = useState()
 
-  const [openRoleToUser, setOpenRoleToUser] = useState(false)
-  const [dataRoleToUser, setDataRoleToUser] = useState()
 
   useEffect(() => {
     trackPromise(getUsers());
   }, []);
 
-  const getUsers = async () => {
-    let response1 = await getListUser();
+  const getUsers = async (currentPage) => {
+    const data = {
+      first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyUsers.toString(),
+      max: "10"
+    }
+    let response1 = await getListUser(data);
     setAllUsers(response1.data);
   };
 
   const removeSelectUser = async (row) => {
-    console.log(row);
 
     const userName = row.USER_USERNAME
     const data = Object.create(
@@ -124,15 +123,16 @@ export default function UsersList() {
   };
 
 
-  const handleChangePage = (event, newPage) => {
-    setCurrentPage_MainbarMyUsers(newPage);
+  const handleChangePage = (currentPage) => {
+    setCurrentPage_MainbarMyUsers(currentPage + 10);
+    getUsers(currentPage + 10)
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setCurrentPage_MainbarMyUsers(0);
+  const handleChangeRowsPerPage = (currentPage) => {
+    let currPage = currentPage - 10;
+    setCurrentPage_MainbarMyUsers(currPage);
+    getUsers(currPage)
   };
-
 
   return (
     <>
@@ -160,7 +160,6 @@ export default function UsersList() {
                 <Table
                   tableHeaderColor="info"
                   tableHead={[
-                    "ردیف",
                     "اسم کاربری",
                     "توضیحات",
                     "وضعیت کاربر",
@@ -168,7 +167,6 @@ export default function UsersList() {
                   ]}
                   tableData={Object.values(allUsers)}
                   currentPage={currentPage_MainbarMyUsers}
-                  rowsCount={rowsPerPage}
                   removeUser={(row) => {
                     onConfirmSetter("آیا برای حذف کاربر مطمئن هستید؟", () => {
                       trackPromise(removeSelectUser(row));
@@ -179,13 +177,9 @@ export default function UsersList() {
                   Users
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
-                  addGroupToGroup={(row) => {
+                  addUserToGroup={(row) => {
                     setDataGroupToGroup(row)
                     setOpenGroupToGroup(true);
-                  }}
-                  addRoleToGroup={(row) => {
-                    setDataRoleToUser(row);
-                    setOpenRoleToUser(true);
                   }}
                 />
               ) : (
@@ -201,7 +195,7 @@ export default function UsersList() {
                   }}
                 >
                   {" "}
-                  دوره وجود ندارد
+                  کاربری وجود ندارد
                 </div>
               )}
             </CardBody>
@@ -247,14 +241,6 @@ export default function UsersList() {
           closePopUpList={() => { setOpenGroupToGroup(false) }}
           InsertSuccess={getUsers}
           openListGrouptPopUp={openGroupToGroup} />
-      }
-      {openRoleToUser && dataRoleToUser &&
-        <ListOfRole
-          dataUserToGroup={dataRoleToUser}
-          closePopUpList={() => { setOpenRoleToUser(false) }}
-          InsertSuccess={getUsers}
-          openListGrouptPopUp={openRoleToUser}
-        />
       }
 
     </>

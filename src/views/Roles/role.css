@@ -46,6 +46,12 @@
     right: 14% !important;
 }
 
+.tabsRole .MuiTabs-scroller .MuiTabs-flexContainer .MuiTab-root{
+    width: 35% !important;
+    font-family: bakh;
+    max-width: 100%;
+}
+
 
 @media screen and (max-width:749px) {
     .popUpCreateStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {

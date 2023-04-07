@@ -54,7 +54,6 @@ export default function Groups() {
   const classes = useStyles();
   const [allGroups, setAllGroups] = useState([]);
   const [currentPage_MainbarMyGroup, setCurrentPage_MainbarMyGroup] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [openInsertGroup, setOpenInsertGroup] = useState(false)
   const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
@@ -69,8 +68,12 @@ export default function Groups() {
     trackPromise(getGroups());
   }, [])
 
-  const getGroups = async () => {
-    let response = await getAllGroups();
+  const getGroups = async (currentPage) => {
+    const data = {
+      first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyGroup.toString(),
+      max: "10"
+    }
+    let response = await getAllGroups(data);
 
     if (response.data) {
       var newData = Object.values(response.data).map((item, index) => ({
@@ -110,13 +113,16 @@ export default function Groups() {
     setOpenUpdateGroup(true);
   }
 
-  const handleChangePage = (event, newPage) => {
-    setCurrentPage_MainbarMyGroup(newPage)
-  }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setCurrentPage_MainbarMyGroup(0);
+  const handleChangePage = (currentPage) => {
+    setCurrentPage_MainbarMyGroup(currentPage + 10);
+    getGroups(currentPage + 10)
+  };
+
+  const handleChangeRowsPerPage = (currentPage) => {
+    let currPage = currentPage - 10;
+    setCurrentPage_MainbarMyGroup(currPage);
+    getGroups(currPage)
   };
 
 
@@ -140,12 +146,11 @@ export default function Groups() {
               {allGroups && Object.keys(allGroups).length > 0 ?
                 <Table
                   tableHeaderColor="info"
-                  tableHead={["ردیف", "اسم گروه", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
+                  tableHead={[ "اسم گروه", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
                   tableData={allGroups}
                   currentPage={currentPage_MainbarMyGroup}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
-                  rowsCount={rowsPerPage}
                   editGroup={editGroup}
                   removeGroup={(row) => {
                     onConfirmSetter('آیا برای حذف گروه مطمئن هستید؟', () => {
@@ -156,7 +161,6 @@ export default function Groups() {
                   addGroupToGroup={(row) => {
                     setDataGroupToGroup(row)
                     setOpenGroupToGroup(true);
-
                   }}
                   group
                 /> :
@@ -208,7 +212,7 @@ export default function Groups() {
             setOpenToast(true);
             onToast("گروه بروزرسانی شد", "success");
             getGroups()
-            setOpenUpdateGroup(false)
+            setOpenGroupToGroup(false)
           }}
         />
       }

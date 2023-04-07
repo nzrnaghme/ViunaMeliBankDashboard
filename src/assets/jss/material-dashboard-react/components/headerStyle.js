@@ -11,7 +11,7 @@ import {
   // grayColor,
 } from "assets/jss/material-dashboard-react.js";
 
-const headerStyle = () => ({
+const headerStyle = (theme) => ({
   appBar: {
     backgroundColor: "transparent",
     // boxShadow: "none",
@@ -37,10 +37,13 @@ const headerStyle = () => ({
     // background: "rgba(255, 255, 255, 0.8)",
     right: "4.2%",
     margin: "10px 25px",
-    boxShadow:'none'
+    boxShadow: 'none',
+    [theme.breakpoints.down("md")]: {
+      right: "-0.82%"
+    },
     // boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
   },
-  appBar2:{
+  appBar2: {
     background: "rgba(255, 255, 255, 0.88)",
     boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
 

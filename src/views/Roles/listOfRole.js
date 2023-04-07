@@ -17,13 +17,8 @@ import CardBody from "components/Card/CardBody.js";
 import { GeneralContext } from "providers/GeneralContext";
 import { trackPromise } from "react-promise-tracker";
 import { getAllGroups } from "api/Core/Group";
-import { addGroupToGroup } from "api/Core/Group";
-import { listGroupToGroup } from "api/Core/Group";
-import { getAllRoles } from "api/Core/Role";
-import { listRoleOfUser } from "api/Core/User";
-import { removeGroupToGroup } from "api/Core/Group";
-import { addMemberToRole } from "api/Core/Role";
-import { removeMemberToRole } from "api/Core/Role";
+import { listMemberToRole, getAllRoles, addMemberToRole, removeMemberToRole } from "api/Core/Role";
+import { getListUser } from "api/Core/User";
 
 
 const styles = (theme) => ({
@@ -61,45 +56,52 @@ const styles = (theme) => ({
 });
 const useStyles = makeStyles(styles);
 
-export default function ListOfGroups(props) {
+export default function ListOfRole(props) {
     const classes = useStyles();
     const [currentPage_MainbarCurrentGroup, setCurrentPage_MainbarCurrentGroup] = useState(0);
 
     const [itemTabs, setItemTabs] = useState(0);
     const [allRoles, setAllRoles] = useState();
 
-    const [allGroup, setAllGroups] = useState()
+    const [allGroup, setAllGroups] = useState();
 
     const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
     const [rowsPerPageGroup, setRowsPerPageGroup] = useState(10);
-    const [currentGroupToGroup, setCurrentGroupToGroup] = useState([])
+    const [currentGroupToGroup, setCurrentGroupToGroup] = useState([]);
 
     const [currentPage_MainbarCurrentRole, setCurrentPage_MainbarCurrentRole] = useState(0);
     const [rowsPerPageRole, setRowsPerPageRole] = useState(10);
-    const [currentRoleToGroup, setCurrentRoleToGroup] = useState([])
+    const [currentRoleToGroup, setCurrentRoleToGroup] = useState([]);
+
+    const [currentPage_MainbarCurrentUser, setCurrentPage_MainbarCurrentUser] = useState(0);
+    const [rowsPerPageUser, setRowsPerPageUser] = useState(10);
+    const [currentRoleToUser, setCurrentRoleToUser] = useState([]);
+    const [allMember, setAllMember] = useState();
 
     const {
-        openListGrouptPopUp,
+        openListRolePopUp,
         InsertSuccess,
         closePopUpList,
-        dataGroupToGroup } = props
+        dataRoleTo } = props
 
     useEffect(() => {
-        trackPromise(getGroups(dataGroupToGroup.GROUP_USERNAME))
-        trackPromise(getRoles(dataGroupToGroup.GROUP_USERNAME))
+        trackPromise(getGroups(dataRoleTo.title));
+        trackPromise(getRoles(dataRoleTo.title));
+        trackPromise(getMember(dataRoleTo.title));
+
     }, [])
 
-    const getGroups = async (groupName) => {
+    const getGroups = async (roleName) => {
         const data = {
             first: "0",
             max: "1000"
         }
-        let data2 = {
-            GROUP_NAME: groupName
-        }
-        let responseCurrent = await listGroupToGroup(data2);
         let response = await getAllGroups(data);
-
+        let data2 = {
+            ROLE_NAME: roleName,
+            MEMBER_TYPE: "GROUP"
+        }
+        let responseCurrent = await listMemberToRole(data2)
         if (responseCurrent.data) {
             var currentGroup = Object.values(responseCurrent.data).map((item) => (
                 item.GROUP_NAME
@@ -107,50 +109,49 @@ export default function ListOfGroups(props) {
             setCurrentGroupToGroup(currentGroup);
         }
         if (response.data) {
-            var newData = Object.values(response.data).map((item, index) => ({
+            let newData = Object.values(response.data).map((item, index) => ({
                 GROUP_USERNAME: Object.keys(response.data)[index],
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
             }));
-            var responceCurrent = newData.filter((item) => item.GROUP_USERNAME != dataGroupToGroup.GROUP_USERNAME)
-            // setAllGroups(responceCurrent);
+            var responceCurrent = newData.filter((item) => item.GROUP_USERNAME != dataRoleTo.GROUP_USERNAME)
         }
+        if (currentGroup.length > 0) {
+            var select = responceCurrent.filter((e) => (
+                currentGroup.includes(e.GROUP_NAME)
+            ))
 
-        var select = responceCurrent.filter((e) => (
-            currentGroup.includes(e.GROUP_USERNAME)
-        ))
+            var AllGroups = responceCurrent.filter((e) => (
+                !currentGroup.includes(e.GROUP_NAME)
+            ))
 
-        var AllGroups = responceCurrent.filter((e) => (
-            !currentGroup.includes(e.GROUP_USERNAME)
-        ))
+            select.forEach(element1 => {
+                AllGroups.unshift(element1)
+            });
 
-        select.forEach(element1 => {
-            AllGroups.unshift(element1)
-        });
-
-        setAllGroups(AllGroups);
+            setAllGroups(AllGroups);
+        } else setAllGroups(responceCurrent)
 
     };
 
-    const getRoles = async (groupName) => {
+    const getRoles = async (roleName) => {
         const data = {
             first: "0",
             max: "1000"
         }
         let response = await getAllRoles(data);
-
         let data2 = {
-            GROUP_NAME: groupName
+            ROLE_NAME: roleName,
+            MEMBER_TYPE: "ROLE"
         }
-        let responseCurrent = await listRoleOfUser(data2)
+        let responseCurrent = await listMemberToRole(data2)
         if (responseCurrent.data) {
             var currentRole = Object.values(responseCurrent.data).map((item) => (
                 item.ROLE_NAME
             ))
             setCurrentRoleToGroup(currentRole);
         }
-
         if (response.data) {
             var newData = Object.values(response.data).map((item, index) => ({
                 title: Object.keys(response.data)[index],
@@ -158,21 +159,67 @@ export default function ListOfGroups(props) {
                 ROLE_ID: item.ROLE_ID,
                 ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
             }));
-            // setAllRoles(newData);
+
         }
+        if (currentRole.length > 0) {
+            var select = newData.filter((e) => (
+                currentRole.includes(e.title)
+            ))
 
-        var select = newData.filter((e) => (
-            currentRole.includes(e.title)
-        ))
+            var AllRoles = newData.filter((e) => (
+                !currentRole.includes(e.title)
+            ))
 
-        var AllRoles = newData.filter((e) => (
-            !currentRole.includes(e.title)
-        ))
+            select.forEach(element1 => {
+                AllRoles.unshift(element1)
+            });
 
-        select.forEach(element1 => {
-            AllRoles.unshift(element1)
-        });
-        setAllRoles(AllRoles)
+            setAllRoles(AllRoles);
+        } else setAllRoles(newData)
+
+    };
+
+    const getMember = async (roleName) => {
+        const data = {
+            first: "0",
+            max: "1000"
+        }
+        let response = await getListUser(data);
+        let data2 = {
+            ROLE_NAME: roleName,
+            MEMBER_TYPE: "USER"
+        }
+        let responseCurrent = await listMemberToRole(data2)
+        if (responseCurrent.data) {
+            var currentRole = Object.values(responseCurrent.data).map((item) => (
+                item.ROLE_NAME
+            ))
+            setCurrentRoleToUser(currentRole);
+        }
+        if (response.data) {
+            var newData = Object.values(response.data).map((item) => ({
+                USER_USERNAME: item.USER_USERNAME,
+                USER_DESCRIPTION: item.USER_DESCRIPTION,
+                USER_STATUS: item.USER_STATUS,
+            }));
+
+        }
+        if (currentRole.length > 0) {
+            var select = newData.filter((e) => (
+                currentRole.includes(e.title)
+            ))
+
+            var AllRoles = newData.filter((e) => (
+                !currentRole.includes(e.title)
+            ))
+
+            select.forEach(element1 => {
+                AllRoles.unshift(element1)
+            });
+
+            setAllMember(AllRoles);
+        } else setAllMember(newData)
+
     };
 
     const handleChangeRowsPerPageGroup = (event) => {
@@ -193,82 +240,45 @@ export default function ListOfGroups(props) {
         setCurrentPage_MainbarCurrentRole(newPage)
     }
 
-    const addGroupToGroups = async (row) => {
-        const groupName = dataGroupToGroup.GROUP_USERNAME
+    const handleChangeRowsPerPageUser = (event) => {
+        setRowsPerPageUser(+event.target.value);
+        setCurrentPage_MainbarCurrentUser(0);
+    };
+
+    const handleChangePageUser = (event, newPage) => {
+        setCurrentPage_MainbarCurrentUser(newPage)
+    }
+
+    const addRoleToGroups = async (row) => {
+        const roleName = dataRoleTo.title
         const data = Object.create(
             {
-                groupName: {
+                roleName: {
                     MEMBER_TYPE: "GROUP",
                     MEMBER: row.GROUP_USERNAME,
                 },
             },
         );
-        data[groupName] = data["groupName"];
+        data[roleName] = data["roleName"];
 
-        let response = await addGroupToGroup(data);
+        let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
             setOpenToast(true);
             onToast("گروه با موفقیت اضافه شد", "success");
+            getGroups(dataRoleTo.title)
         } else {
             setOpenToast(true);
             onToast("گروه قبلا اضافه شده است", "error");
         }
     }
 
-    const removeGroup = async (row) => {
-
-        const groupName = row.GROUP_USERNAME
-        const data = Object.create(
-            {
-                groupName: {
-                    MEMBER_TYPE: "GROUP",
-                    MEMBER: dataGroupToGroup.GROUP_USERNAME,
-                },
-            },
-        );
-        data[groupName] = data["groupName"];
-
-        let response = await removeGroupToGroup(data);
-        if (response.data === "SUCCESSFUL") {
-            setOpenToast(true);
-            onToast("گروه با موفقیت از کاربر حذف شد", "success");
-            getGroups(dataGroupToGroup.GROUP_USERNAME);
-        } else {
-            setOpenToast(true);
-            onToast("گروه از کاربر حذف نشد", "error");
-        }
-    }
-
-    const addGroupToRoles = async (row) => {
-        const roleName = row.title
-        const data = Object.create(
-            {
-                roleName: {
-                    MEMBER_TYPE: "GROUP",
-                    MEMBER: dataGroupToGroup.GROUP_USERNAME,
-                },
-            },
-        );
-        data[roleName] = data["roleName"];
-        let response = await addMemberToRole(data);
-        if (response.data === "SUCCESSFUL") {
-            setOpenToast(true);
-            onToast("نقش با موفقیت به کاربر اضافه شد", "success");
-            getRoles(dataGroupToGroup.GROUP_USERNAME);
-
-        } else {
-            setOpenToast(true);
-            onToast("نقش قبلا به کاربر اضافه شده است", "error");
-        }
-    }
-
     const removeGroupToRole = async (row) => {
-        const roleName = row.title
+        const roleName = dataRoleTo.title
         const data = Object.create(
             {
                 roleName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: dataGroupToGroup.GROUP_USERNAME,
+                    MEMBER: row.GROUP_USERNAME,
                 },
             },
         );
@@ -277,11 +287,104 @@ export default function ListOfGroups(props) {
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
             setOpenToast(true);
-            onToast("نقش با موفقیت از کاربر حذف شد", "success");
-            getRoles(dataGroupToGroup.GROUP_USERNAME);
+            onToast("گروه با موفقیت از نقش حذف شد", "success");
+            getGroups(dataRoleTo.title)
         } else {
             setOpenToast(true);
-            onToast("نقش از کاربر حذف نشد", "error");
+            onToast("گروه از نقش حذف نشد", "error");
+        }
+    }
+
+    const addRoleToRoles = async (row) => {
+        const roleName = dataRoleTo.title
+        const data = Object.create(
+            {
+                roleName: {
+                    MEMBER_TYPE: "ROLE",
+                    MEMBER: row.title,
+                },
+            },
+        );
+        data[roleName] = data["roleName"];
+
+        let response = await addMemberToRole(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("نقش با موفقیت اضافه شد", "success");
+            getRoles(dataRoleTo.title)
+        } else {
+            setOpenToast(true);
+            onToast("نقش قبلا اضافه شده است", "error");
+        }
+    }
+
+    const removeRoleToRole = async (row) => {
+        const roleName = dataRoleTo.title
+        const data = Object.create(
+            {
+                roleName: {
+                    MEMBER_TYPE: "ROLE",
+                    MEMBER: row.title,
+                },
+            },
+        );
+        data[roleName] = data["roleName"];
+
+        let response = await removeMemberToRole(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("نقش با موفقیت از نقش حذف شد", "success");
+            getRoles(dataRoleTo.title)
+        } else {
+            setOpenToast(true);
+            onToast("نقش از نقش حذف نشد", "error");
+        }
+    }
+
+    const addRoleToUser = async (row) => {
+        const roleName = dataRoleTo.title
+        const data = Object.create(
+            {
+                roleName: {
+                    MEMBER_TYPE: "USER",
+                    MEMBER: row.USER_USERNAME,
+                },
+            },
+        );
+        data[roleName] = data["roleName"];
+
+        let response = await addMemberToRole(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("نقش به کاربر با موفقیت اضافه شد", "success");
+            getMember(dataRoleTo.title)
+        } else {
+            setOpenToast(true);
+            onToast("نقش به کاربر قبلا اضافه شده است", "error");
+        }
+    }
+
+
+    const removeRoleToUser = async (row) => { 
+        const roleName = dataRoleTo.title
+        const data = Object.create(
+            {
+                roleName: {
+                    MEMBER_TYPE: "ROLE",
+                    MEMBER: row.USER_USERNAME,
+                },
+            },
+        );
+        data[roleName] = data["roleName"];
+
+        let response = await removeMemberToRole(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("کاربر با موفقیت از نقش حذف شد", "success");
+            getMember(dataRoleTo.title)
+        } else {
+            setOpenToast(true);
+            onToast("کاربر از نقش حذف نشد", "error");
         }
     }
 
@@ -291,14 +394,14 @@ export default function ListOfGroups(props) {
 
     return (
         <PopUpCustome
-            open={openListGrouptPopUp}
+            open={openListRolePopUp}
             handleClose={() => { closePopUpList() }}
             className="popUpAllCurrentStudent">
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning" className="CardTitle">
-                            <h4 className={classes.cardTitleWhite}>اضافه کردن به گروه {dataGroupToGroup.GROUP_USERNAME}</h4>
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن به نقش {dataRoleTo.title}</h4>
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
 
@@ -308,10 +411,12 @@ export default function ListOfGroups(props) {
                                 textColor="secondary"
                                 onChange={handleChange}
                                 aria-label="disabled tabs example"
-                                className="tabsUser"
+                                className="tabsRole"
                             >
                                 <Tab label="گروه" />
                                 <Tab label="نقش" />
+                                <Tab label="کاربر" />
+
                             </Tabs>
 
                             {itemTabs === 0 &&
@@ -329,7 +434,7 @@ export default function ListOfGroups(props) {
                                     addToGroup={(row) => {
                                         onConfirmSetter('آیا برای اضافه کردن گروه مطمئن هستید؟', () => {
                                             console.log(row);
-                                            trackPromise(addGroupToGroups(row))
+                                            trackPromise(addRoleToGroups(row))
                                         })
                                         setConfirmPopupOpen(true)
 
@@ -337,7 +442,7 @@ export default function ListOfGroups(props) {
                                     currentGroupToUser={currentGroupToGroup}
                                     removeGroupToGroup={(row) => {
                                         onConfirmSetter('آیا برای حذف کردن گروه از گروه مطمئن هستید؟', () => {
-                                            trackPromise(removeGroup(row))
+                                            trackPromise(removeGroupToRole(row))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}
@@ -355,7 +460,7 @@ export default function ListOfGroups(props) {
                                         handleChangeRowsPerPage={handleChangeRowsPerPageRole}
                                         addRoleToGroup={(row) => {
                                             onConfirmSetter('آیا برای اضافه کردن نقش به گروه مطمئن هستید؟', () => {
-                                                trackPromise(addGroupToRoles(row))
+                                                trackPromise(addRoleToRoles(row))
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
@@ -363,20 +468,45 @@ export default function ListOfGroups(props) {
                                         currentRoleToGroup={currentRoleToGroup}
                                         removeRoleToGroup={(row) => {
                                             onConfirmSetter('آیا برای حذف کردن نقش از گروه مطمئن هستید؟', () => {
-                                                trackPromise(removeGroupToRole(row))
+                                                trackPromise(removeRoleToRole(row))
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
                                     /> :
-                                    <div style={{
-                                        textAlign: 'center',
-                                        marginTop: 10,
-                                        backgroundColor: "#ec7254",
-                                        color: "white",
-                                        borderRadius: 5,
-                                        paddingTop: 10,
-                                        paddingBottom: 10
-                                    }}>گروهی ثبت نام نکرده</div>}
+                                    itemTabs === 2 && currentRoleToUser != undefined &&
+                                        allMember != undefined && allMember.length > 0 ?
+                                        <Table
+                                            tableHeaderColor="info"
+                                            tableHead={["اسم کاربر", "توضیحات کاربر", "وضعیت", "عملیات"]}
+                                            tableData={allMember}
+                                            rowsCount={rowsPerPageUser}
+                                            currentPage={currentPage_MainbarCurrentUser}
+                                            handleChangePage={handleChangePageUser}
+                                            handleChangeRowsPerPage={handleChangeRowsPerPageUser}
+                                            addRoleToGroup={(row) => {
+                                                onConfirmSetter('آیا برای اضافه کردن نقش به کاربر مطمئن هستید؟', () => {
+                                                    trackPromise(addRoleToUser(row))
+                                                })
+                                                setConfirmPopupOpen(true)
+                                            }}
+                                            roleToUser
+                                            currentRoleToGroup={currentRoleToGroup}
+                                            removeRoleToGroup={(row) => {
+                                                onConfirmSetter('آیا برای حذف کردن نقش از کاربر مطمئن هستید؟', () => {
+                                                    trackPromise(removeRoleToUser(row))
+                                                })
+                                                setConfirmPopupOpen(true)
+                                            }}
+                                        /> :
+                                        <div style={{
+                                            textAlign: 'center',
+                                            marginTop: 10,
+                                            backgroundColor: "#ec7254",
+                                            color: "white",
+                                            borderRadius: 5,
+                                            paddingTop: 10,
+                                            paddingBottom: 10
+                                        }}>گروهی ثبت نام نکرده</div>}
                         </CardBody>
                         {allGroup != undefined && allGroup.length > 0 &&
                             <div style={{ display: "flex", justifyContent: "center" }}>
@@ -393,9 +523,9 @@ export default function ListOfGroups(props) {
     )
 }
 
-ListOfGroups.propTypes = {
-    openListGrouptPopUp: PropTypes.bool,
+ListOfRole.propTypes = {
+    openListRolePopUp: PropTypes.bool,
     InsertSuccess: PropTypes.func,
     closePopUpList: PropTypes.func,
-    dataGroupToGroup: PropTypes.array
+    dataRoleTo: PropTypes.array
 };

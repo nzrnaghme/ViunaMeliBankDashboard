@@ -21,6 +21,7 @@ let ps;
 //bg import
 import sidebar from "./../assets/img/sidebar-10.png";
 import myBg03 from "./../assets/img/bg03.png";
+import Setting from "views/Setting/Setting";
 
 const useStyles = makeStyles(styles);
 
@@ -104,6 +105,7 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/userList"} component={UsersList} />
               <Route path={"/admin/Groups"} component={Groups} />
               <Route path={"/admin/roles"} component={Roles} />
+              <Route path={"/admin/setting"} component={Setting} />
             
 
               <Redirect to="/admin/dashboard" from="/" />

@@ -82,6 +82,17 @@
     width: 900px;
 }
 
+.tabsUser .MuiTabs-scroller .MuiTabs-flexContainer .MuiTab-root{
+    width: 50% !important;
+    font-family: bakh;
+    max-width: 100%;
+}
+
+.MuiTabs-flexContainer{
+    margin-top: 20px;
+}
+
+
 
 @media screen and (max-width:749px) {
     .bodyEditCourse {

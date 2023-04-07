@@ -1,7 +1,7 @@
-import { ADD_USER, ADD_USER_ROLE, EDIT_USER, LIST_USERS, REMOVE_USER } from "../endpoints";
+import { ADD_USER, ADD_USER_ROLE, EDIT_USER, LIST_USERS, REMOVE_USER, LIST_GROUP_USER, REMOVE_USER_GROUP, LIST_ROLE_USER } from "../endpoints";
 import api from "../interceptor";
 
-export const getListUser = () => api.post(LIST_USERS);
+export const getListUser = (payload) => api.post(LIST_USERS, payload);
 
 export const removeUser = (payload) => api.post(REMOVE_USER, payload)
 
@@ -11,3 +11,8 @@ export const editUser = (payload) => api.post(EDIT_USER, payload)
 
 export const addUserToRole = (payload) => api.post(ADD_USER_ROLE, payload)
 
+export const listGroupOfUser = (payload) => api.post(LIST_GROUP_USER, payload)
+
+export const removeUserFromGroup = (payload) => api.post(REMOVE_USER_GROUP, payload)
+
+export const listRoleOfUser = (payload) => api.post(LIST_ROLE_USER, payload)

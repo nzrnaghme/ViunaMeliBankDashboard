@@ -3,6 +3,9 @@ import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import GridItem from "components/Grid/GridItem.js";
@@ -12,10 +15,16 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { GeneralContext } from "providers/GeneralContext";
-import { trackPromise } from "react-promise-tracker";
-import { addGroupToGroup } from "api/Core/Group";
-import { getAllGroups } from "api/Core/Group";
 
+import { trackPromise } from "react-promise-tracker";
+import { getAllGroups } from "api/Core/Group";
+import { getAllRoles } from "api/Core/Role";
+import { listGroupOfUser } from "api/Core/User";
+import { removeUserFromGroup } from "api/Core/User";
+import { listRoleOfUser } from "api/Core/User";
+import { addGroupMember } from "api/Core/Group";
+import { addMemberToRole } from "api/Core/Role";
+import { removeMemberToRole } from "api/Core/Role";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -53,13 +62,20 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function ListOfGroup(props) {
-    const classes = useStyles();
-    const [currentPage_MainbarCurrentUser, setCurrentPage_MainbarCurrentUser] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    const [currentUsers, setCurrentUsers] = useState()
-
     const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+    const classes = useStyles();
+
+    const [currentPage_MainbarCurrentGroup, setCurrentPage_MainbarCurrentGroup] = useState(0);
+    const [rowsPerPageGroup, setRowsPerPageGroup] = useState(10);
+    const [allGroups, setAllGroups] = useState()
+    const [currentGroupToUser, setCurrentGroupToUser] = useState()
+
+    const [itemTabs, setItemTabs] = useState(0);
+
+    const [currentPage_MainbarCurrentRole, setCurrentPage_MainbarCurrentRole] = useState(0);
+    const [allRoles, setAllRoles] = useState();
+    const [rowsPerPageRole, setRowsPerPageRole] = useState(10);
+    const [currentRoleToUser, setCurrentRoleToUser] = useState()
 
     const {
         openListGrouptPopUp,
@@ -68,11 +84,26 @@ export default function ListOfGroup(props) {
         dataUserToGroup } = props
 
     useEffect(() => {
-        trackPromise(getGroups())
+        trackPromise(getGroups(dataUserToGroup.USER_USERNAME))
+        trackPromise(getRoles(dataUserToGroup.USER_USERNAME))
     }, [])
 
-    const getGroups = async () => {
-        let response = await getAllGroups();
+    const getGroups = async (userName) => {
+        const data = {
+            first: "0",
+            max: "1000"
+        }
+        let response = await getAllGroups(data);
+        let data2 = {
+            USER_USERNAME: userName
+        }
+        let responseCurrent = await listGroupOfUser(data2);
+        if (responseCurrent.data) {
+            var currentGroup = Object.values(responseCurrent.data).map((item) => (
+                item.GROUP_NAME
+            ))
+            setCurrentGroupToUser(currentGroup);
+        }
         if (response.data) {
             var newData = Object.values(response.data).map((item, index) => ({
                 GROUP_USERNAME: Object.keys(response.data)[index],
@@ -80,21 +111,83 @@ export default function ListOfGroup(props) {
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
             }));
-            setCurrentUsers(newData);
         }
+
+        var select = newData.filter((e) => (
+            currentGroup.includes(e.GROUP_USERNAME)
+        ))
+
+        var AllGroups = newData.filter((e) => (
+            !currentGroup.includes(e.GROUP_USERNAME)
+        ))
+
+        select.forEach(element1 => {
+            AllGroups.unshift(element1)
+        });
+        setAllGroups(AllGroups)
     };
 
-    const handleChangePage = (event, newPage) => {
-        setCurrentPage_MainbarCurrentUser(newPage)
+    const getRoles = async (userName) => {
+        const data = {
+            first: "0",
+            max: "1000"
+        }
+        let data2 = {
+            USER_USERNAME: userName
+        }
+        let response = await getAllRoles(data);
+
+        let responseCurrent = await listRoleOfUser(data2)
+        if (responseCurrent.data) {
+            var currentRole = Object.values(responseCurrent.data).map((item) => (
+                item.ROLE_NAME
+            ))
+            setCurrentRoleToUser(currentRole);
+        }
+        if (response.data) {
+            var newData = Object.values(response.data).map((item, index) => ({
+                title: Object.keys(response.data)[index],
+                ROLE_STATUS: item.ROLE_STATUS,
+                ROLE_ID: item.ROLE_ID,
+                ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
+            }));
+        }
+
+        var select = newData.filter((e) => (
+            currentRole.includes(e.title)
+        ))
+
+        var AllRoles = newData.filter((e) => (
+            !currentRole.includes(e.title)
+        ))
+
+        select.forEach(element1 => {
+            AllRoles.unshift(element1)
+        });
+        setAllRoles(AllRoles)
+    };
+
+
+    const handleChangeRowsPerPageGroup = (event) => {
+        setRowsPerPageGroup(+event.target.value);
+        setCurrentPage_MainbarCurrentGroup(0);
+    };
+
+    const handleChangePageGroup = (event, newPage) => {
+        setCurrentPage_MainbarCurrentGroup(newPage)
     }
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setCurrentPage_MainbarCurrentUser(0);
+    const handleChangeRowsPerPageRole = (event) => {
+        setRowsPerPageRole(+event.target.value);
+        setCurrentPage_MainbarCurrentRole(0);
     };
 
+    const handleChangePageRole = (event, newPage) => {
+        setCurrentPage_MainbarCurrentRole(newPage)
+    }
+
+
     const addUserToGroup = async (row) => {
-        console.log(row);
         const groupName = row.GROUP_USERNAME
         const data = Object.create(
             {
@@ -106,13 +199,87 @@ export default function ListOfGroup(props) {
         );
         data[groupName] = data["groupName"];
 
-        let response = await addGroupToGroup(data);
+        let response = await addGroupMember(data);
         if (response.data === "SUCCESSFUL") {
             setOpenToast(true);
             onToast("گروه با موفقیت به کاربر اضافه شد", "success");
         } else {
             setOpenToast(true);
             onToast("گروه قبلا به کاربر اضافه شده است", "error");
+        }
+    }
+
+
+    const addUserToRoles = async (row) => {
+        const roleName = row.title
+        const data = Object.create(
+            {
+                roleName: {
+                    MEMBER_TYPE: "USER",
+                    MEMBER: dataUserToGroup.USER_USERNAME,
+                },
+            },
+        );
+        data[roleName] = data["roleName"];
+
+        let response = await addMemberToRole(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("نقش با موفقیت به کاربر اضافه شد", "success");
+
+        } else {
+            setOpenToast(true);
+            onToast("نقش قبلا به کاربر اضافه شده است", "error");
+        }
+    }
+
+    const handleChange = (event, newValue) => {
+        setItemTabs(newValue);
+    };
+
+    const removeGroup = async (row) => {
+        const groupName = row.GROUP_USERNAME
+        const data = Object.create(
+            {
+                groupName: {
+                    MEMBER_TYPE: "USER",
+                    MEMBER: dataUserToGroup.USER_USERNAME,
+                },
+            },
+        );
+        data[groupName] = data["groupName"];
+
+        let response = await removeUserFromGroup(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("گروه با موفقیت از کاربر حذف شد", "success");
+            getGroups(dataUserToGroup.USER_USERNAME);
+        } else {
+            setOpenToast(true);
+            onToast("گروه از کاربر حذف نشد", "error");
+        }
+    }
+
+    const removeUserToRole = async (row) => {
+        const roleName = row.title
+        const data = Object.create(
+            {
+                roleName: {
+                    MEMBER_TYPE: "USER",
+                    MEMBER: dataUserToGroup.USER_USERNAME,
+                },
+            },
+        );
+        data[roleName] = data["roleName"];
+
+        let response = await removeMemberToRole(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("نقش با موفقیت از کاربر حذف شد", "success");
+            getRoles(dataUserToGroup.USER_USERNAME);
+        } else {
+            setOpenToast(true);
+            onToast("نقش از کاربر حذف نشد", "error");
         }
     }
 
@@ -125,38 +292,85 @@ export default function ListOfGroup(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning" className="CardTitle">
-                            <h4 className={classes.cardTitleWhite}>اضافه کردن کاربر{dataUserToGroup.USER_USERNAME} به گروه های زیر </h4>
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن کاربر {dataUserToGroup.USER_USERNAME} </h4>
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
-                            {currentUsers != undefined && currentUsers.length > 0 ?
+
+                            <Tabs
+                                value={itemTabs}
+                                indicatorColor="secondary"
+                                textColor="secondary"
+                                onChange={handleChange}
+                                aria-label="disabled tabs example"
+                                className="tabsUser"
+                            >
+                                <Tab label="گروه" />
+                                <Tab label="نقش" />
+                            </Tabs>
+
+                            {itemTabs === 0 && currentGroupToUser != undefined && allGroups != undefined && allGroups.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
                                     tableHead={["اسم گروه", "توضیحات گروه", "وضعیت", "عملیات"]}
-                                    tableData={currentUsers}
-                                    currentPage={currentPage_MainbarCurrentUser}
-                                    handleChangePage={handleChangePage}
-                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
-                                    rowsCount={rowsPerPage}
-                                    addGroupToGroup={(row) => {
+                                    rowsCount={rowsPerPageGroup}
+                                    tableData={allGroups}
+                                    currentPage={currentPage_MainbarCurrentGroup}
+                                    handleChangePage={handleChangePageGroup}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPageGroup}
+                                    addToUser={(row) => {
                                         onConfirmSetter('آیا برای اضافه کردن گروه به کاربر مطمئن هستید؟', () => {
                                             trackPromise(addUserToGroup(row))
                                         })
                                         setConfirmPopupOpen(true)
-
                                     }}
-                                    groupToGroup
+                                    currentGroupToUser={currentGroupToUser}
+                                    removeGroupToUser={(row) => {
+                                        onConfirmSetter('آیا برای حذف کردن گروه از کاربر مطمئن هستید؟', () => {
+                                            trackPromise(removeGroup(row))
+                                        })
+                                        setConfirmPopupOpen(true)
+                                    }}
+                                    userToGroup
                                 /> :
-                                <div style={{
-                                    textAlign: 'center',
-                                    marginTop: 10,
-                                    backgroundColor: "#ec7254",
-                                    color: "white",
-                                    borderRadius: 5,
-                                    paddingTop: 10,
-                                    paddingBottom: 10
-                                }}>کاربری ثبت نام نکرده</div>}
+                                itemTabs === 1 && allRoles != undefined && allRoles.length > 0 ?
+                                    <Table
+                                        tableHeaderColor="info"
+                                        tableHead={["اسم نقش", "توضیحات نقش", "وضعیت", "عملیات"]}
+                                        tableData={allRoles}
+                                        rowsCount={rowsPerPageRole}
+                                        currentPage={currentPage_MainbarCurrentRole}
+                                        handleChangePage={handleChangePageRole}
+                                        handleChangeRowsPerPage={handleChangeRowsPerPageRole}
+                                        addToUser={(row) => {
+                                            onConfirmSetter('آیا برای اضافه کردن نقش به کاربر مطمئن هستید؟', () => {
+                                                trackPromise(addUserToRoles(row))
+                                            })
+                                            setConfirmPopupOpen(true)
+                                        }}
+
+                                        userToRole
+                                        currentRoleToUser={currentRoleToUser}
+                                        removeRoleToUser={(row) => {
+                                            onConfirmSetter('آیا برای حذف کردن نقش از کاربر مطمئن هستید؟', () => {
+                                                trackPromise(removeUserToRole(row))
+                                            })
+                                            setConfirmPopupOpen(true)
+                                        }}
+                                    />
+                                    :
+                                    <div style={{
+                                        textAlign: 'center',
+                                        marginTop: 10,
+                                        backgroundColor: "#ec7254",
+                                        color: "white",
+                                        borderRadius: 5,
+                                        paddingTop: 10,
+                                        paddingBottom: 10
+                                    }}>موردی یافت نشد</div>
+                            }
+
                         </CardBody>
-                        {currentUsers != undefined && currentUsers.length > 0 &&
+                        {itemTabs === 0 && allGroups != undefined && allGroups.length > 0 &&
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <RegularButton
                                     color="success"
@@ -164,6 +378,7 @@ export default function ListOfGroup(props) {
                                     onClick={InsertSuccess}>ثبت تغییرات</RegularButton>
                             </div>
                         }
+
                     </Card>
                 </GridItem>
             </GridContainer>
