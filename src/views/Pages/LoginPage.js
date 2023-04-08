@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -20,6 +20,7 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
 // import { loginEmployee } from "api/Core/Login_Register";
 import { setItem } from "api/storage/storage";
+import { GeneralContext } from "providers/GeneralContext";
 
 //captcha pic
 import captchaPic from "./../../assets/img/captcha.png";
@@ -32,12 +33,18 @@ export default function LoginPage() {
   const [userName, setUserName] = useState();
   const [pass, setPass] = useState();
   const [captcha, setCaptcha] = useState();
+  const {
+    setOpenToast,
+    onToast,
+    setLosdingShow
+  } = useContext(GeneralContext);
 
   const handleToggle = (value) => {
     setCheck(value.target.checked);
   };
 
   const login = async (e) => {
+    setLosdingShow(true)
     e.preventDefault();
     const userN = userName;
     const data = Object.create(
@@ -51,20 +58,30 @@ export default function LoginPage() {
     data[userN] = data["userN"];
     let response = await loginUser(data);
     if (response.data) {
+      setLosdingShow(false)
       switch (response.data) {
+        case 0:
+          setOpenToast(true);
+          onToast("ورود موفقیت آمیز نبود", "error")
+          break;
         case 1:
           window.location = "/admin/dashboard";
           setItem("role", "admin");
+
           break;
         case 2:
-          window.location = "/admin/dashboard";
-          setItem("role", "admin");
+          setOpenToast(true);
+          onToast("کاربر قفل شده", "error")
 
           break;
         case 3:
-          window.location = "/admin/dashboard";
-          setItem("role", "admin");
+          setOpenToast(true);
+          onToast("کاربر فعال نیست", "error")
 
+          break;
+        case 4:
+          setOpenToast(true);
+          onToast("کاربر تعریف نشده", "error")
           break;
 
         default:
