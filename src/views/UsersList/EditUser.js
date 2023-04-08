@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import { trackPromise } from "react-promise-tracker";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -17,7 +16,6 @@ import { GeneralContext } from "providers/GeneralContext";
 
 import "./User.css";
 import { editUser } from "api/Core/User";
-// import { User_Status } from "variables/general";
 
 export const User_Status = [
   {
@@ -67,7 +65,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function EditCourse(props) {
   const classes = useStyles();
-  const { setOpenToast, onToast } = useContext(GeneralContext);
+  const { setOpenToast, onToast ,setLosdingShow} = useContext(GeneralContext);
 
   const {
     openEditUserPopUp,
@@ -88,6 +86,8 @@ export default function EditCourse(props) {
 
 
   const updateDataCourse = async () => {
+    setLosdingShow(true)
+
     const userName = dataUser.USER_USERNAME;
     const data = Object.create(
       {
@@ -100,8 +100,12 @@ export default function EditCourse(props) {
     data[userName] = data["userName"];
     let response = await editUser(data);
     if (response.data === "SUCCESSFUL") {
+      setLosdingShow(false)
+
       EditSuccess();
     } else {
+      setLosdingShow(false)
+
       setOpenToast(true);
       onToast("کاربر بروزرسانی نشد", "error");
       closePopUpEdit();
@@ -180,7 +184,7 @@ export default function EditCourse(props) {
                     color="info"
                     size="sm"
                     onClick={() => {
-                      trackPromise(updateDataCourse());
+                      (updateDataCourse());
                     }}
                   >
                     ثبت تغییرات

@@ -15,8 +15,6 @@ import EditUser from "./EditUser";
 import CreateUser from "./CreateUser";
 import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
-// import { getItem } from "api/storage/storage";
-import { trackPromise } from "react-promise-tracker";
 import { removeUser } from "api/Core/User";
 
 const styles = {
@@ -61,6 +59,7 @@ export default function UsersList() {
     onConfirmSetter,
     setOpenToast,
     onToast,
+    setLosdingShow
   } = useContext(GeneralContext);
 
   const [allUsers, setAllUsers] = useState({});
@@ -80,19 +79,24 @@ export default function UsersList() {
 
 
   useEffect(() => {
-    trackPromise(getUsers());
+    getUsers()
   }, []);
 
   const getUsers = async (currentPage) => {
+    setLosdingShow(true)
+
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyUsers.toString(),
       max: "10"
     }
     let response1 = await getListUser(data);
     setAllUsers(response1.data);
+    setLosdingShow(false)
+
   };
 
   const removeSelectUser = async (row) => {
+    setLosdingShow(true)
 
     const userName = row.USER_USERNAME
     const data = Object.create(
@@ -106,9 +110,17 @@ export default function UsersList() {
     data[userName] = data["userName"];
     let response = await removeUser(data);
     if (response.data === "SUCCESSFUL") {
+      setLosdingShow(false)
+
       setOpenToast(true);
       onToast("کاربر با موفقیت حذف شد", "success");
-      trackPromise(getUsers());
+      getUsers()
+    }else {
+      setLosdingShow(false)
+
+      setOpenToast(true);
+      onToast("کاربر با حذف نشد", "error");
+
     }
   };
 
@@ -169,7 +181,7 @@ export default function UsersList() {
                   currentPage={currentPage_MainbarMyUsers}
                   removeUser={(row) => {
                     onConfirmSetter("آیا برای حذف کاربر مطمئن هستید؟", () => {
-                      trackPromise(removeSelectUser(row));
+                      (removeSelectUser(row));
                     });
                     setConfirmPopupOpen(true);
                   }}

@@ -1,13 +1,16 @@
-import React from "react";
-import { usePromiseTracker } from "react-promise-tracker";
+import React, { useContext } from "react";
+import { GeneralContext } from "providers/GeneralContext";
 import "./destroy.css"
 
 export default function Loading() {
-    const { promiseInProgress } = usePromiseTracker();
+
+    const {
+        loadingShow
+    } = useContext(GeneralContext)
 
     return (
         <>
-            {promiseInProgress &&
+            {loadingShow &&
 
                 <div id="allLoading">
                     <div id="container">

@@ -32,6 +32,8 @@ export default function App() {
     const [open, setOpen] = React.useState(false);
     const [openToast, setOpenToast] = React.useState(false);
     const [toast, setToast] = React.useState({});
+    const [loadingShow, setLosdingShow] = React.useState(false);
+
 
     const onConfirmSetter = (
         msg,
@@ -53,7 +55,9 @@ export default function App() {
             openToast: openToast,
             setOpenToast: setOpenToast,
             onToast,
-            varient: toast.varient
+            varient: toast.varient,
+            loadingShow,
+            setLosdingShow
         }} >
             <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>

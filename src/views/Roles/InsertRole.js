@@ -17,7 +17,8 @@ import { GeneralContext } from "providers/GeneralContext";
 // @material-ui/icons
 import PersonIcon from "@material-ui/icons/Person";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import { trackPromise } from "react-promise-tracker";
+
+//api
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { addRole } from "api/Core/Role";
 
@@ -70,13 +71,15 @@ const useStyles = makeStyles(styles);
 export default function InsertRole(props) {
   const classes = useStyles();
   const { InsertSuccess, openPopUpInsertRole, closePopUp } = props;
-  const { setOpenToast, onToast } = useContext(GeneralContext);
+  const { setOpenToast, onToast ,setLosdingShow} = useContext(GeneralContext);
 
   const [title, setTitle] = useState();
   const [status, setStatus] = useState(0);
   const [description, setDescription] = useState();
 
   const insertRole = async () => {
+    setLosdingShow(true)
+
     if (title && description) {
       const roleName = title
       const data = Object.create(
@@ -91,13 +94,20 @@ export default function InsertRole(props) {
 
       let response = await addRole(data);
       if (response.data === "SUCCESSFUL")
-        InsertSuccess();
+       {
+        setLosdingShow(false)
+
+         InsertSuccess();}
       else {
+        setLosdingShow(false)
+
         setOpenToast(true)
         onToast("گروه اضافه نشد", "error")
         closePopUp()
       }
     } else {
+      setLosdingShow(false)
+
       setOpenToast(true)
       onToast("گروه اضافه نشد", "error")
       closePopUp()
@@ -195,7 +205,7 @@ export default function InsertRole(props) {
                     color="info"
                     size="sm"
                     onClick={() => {
-                      trackPromise(insertRole());
+                      insertRole();
                     }}
                   >
                     ثبت تغییرات

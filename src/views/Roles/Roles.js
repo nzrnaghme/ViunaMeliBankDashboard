@@ -9,15 +9,14 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { GeneralContext } from "providers/GeneralContext";
 import RegularButton from "components/CustomButtons/Button";
 import InsertRole from "./InsertRole";
 import EditRole from "./EditRole";
+import { GeneralContext } from "providers/GeneralContext";
 
 import "./role.css";
 
 import { getAllRoles, removeRole } from "api/Core/Role";
-import { trackPromise } from "react-promise-tracker";
 import ListOfRole from "./listOfRole";
 
 const styles = (theme) => ({
@@ -69,6 +68,7 @@ export default function Roles() {
     onConfirmSetter,
     setOpenToast,
     onToast,
+    setLosdingShow
   } = useContext(GeneralContext);
 
   const [openEditRole, setOpenEditRole] = useState(false);
@@ -81,10 +81,12 @@ export default function Roles() {
 
 
   useEffect(() => {
-    trackPromise(getRoles());
+    getRoles();
   }, []);
 
   const getRoles = async (currentPage) => {
+    setLosdingShow(true)
+
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyRoles.toString(),
       max: "10"
@@ -101,9 +103,13 @@ export default function Roles() {
     }
 
     setAllRoles(newData);
+    setLosdingShow(false)
+
   };
 
   const removeRoles = (row) => {
+    setLosdingShow(true)
+
     onConfirmSetter(
       "مطمئن به حذف نقش هستید؟",
       async () => {
@@ -119,9 +125,17 @@ export default function Roles() {
         data[roleName] = data["roleName"];
         let response = await removeRole(data);
         if (response.data === "SUCCESSFUL") {
-          trackPromise(getRoles());
+          setLosdingShow(false)
+
+          getRoles()
           setOpenToast(true);
           onToast("گروه با موفقیت حذف شد", "success");
+        }else{
+          setLosdingShow(false)
+
+          getRoles()
+          setOpenToast(true);
+          onToast("گروه حذف نشد", "error");
         }
       },
       () => { }
@@ -135,6 +149,7 @@ export default function Roles() {
   };
 
   const getAllDataRole = (item) => {
+    
     if (item) {
       setDataRole(item);
       setOpenEditRole(true);

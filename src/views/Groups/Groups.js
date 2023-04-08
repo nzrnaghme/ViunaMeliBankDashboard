@@ -14,7 +14,6 @@ import EditGroup from "./EditGroup";
 
 import { GeneralContext } from "providers/GeneralContext";
 import { getAllGroups } from "api/Core/Group";
-import { trackPromise } from "react-promise-tracker";
 import { removeGroup } from "api/Core/Group";
 import ListOfUGroups from "./ListOfGroups";
 
@@ -56,7 +55,7 @@ export default function Groups() {
   const [currentPage_MainbarMyGroup, setCurrentPage_MainbarMyGroup] = useState(0);
 
   const [openInsertGroup, setOpenInsertGroup] = useState(false)
-  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast,setLosdingShow } = useContext(GeneralContext);
 
   const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
   const [dataGroup, setDataGroup] = useState()
@@ -65,10 +64,12 @@ export default function Groups() {
   const [dataGroupToGroup, setDataGroupToGroup] = useState()
 
   useEffect(() => {
-    trackPromise(getGroups());
+    getGroups();
   }, [])
 
   const getGroups = async (currentPage) => {
+    setLosdingShow(true)
+
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyGroup.toString(),
       max: "10"
@@ -84,10 +85,14 @@ export default function Groups() {
       }));
 
       setAllGroups(newData);
+      setLosdingShow(false)
+
     }
   }
 
   const removeSelectGroup = async (row) => {
+    setLosdingShow(true)
+
     const groupName = row.GROUP_USERNAME
     const data = Object.create(
       {
@@ -100,11 +105,16 @@ export default function Groups() {
     data[groupName] = data["groupName"];
 
     let response = await removeGroup(data);
-    console.log(response);
     if (response.data === "SUCCESSFUL") {
+      setLosdingShow(false)
       setOpenToast(true);
       onToast("گروه با موفقیت حذف شد", "success");
-      trackPromise(getGroups());
+      getGroups();
+    }else{
+      setLosdingShow(false)
+      setOpenToast(true);
+      onToast("گروه حذف نشد", "success");
+      getGroups();
     }
   }
 
@@ -154,7 +164,7 @@ export default function Groups() {
                   editGroup={editGroup}
                   removeGroup={(row) => {
                     onConfirmSetter('آیا برای حذف گروه مطمئن هستید؟', () => {
-                      trackPromise(removeSelectGroup(row))
+                      removeSelectGroup(row)
                     })
                     setConfirmPopupOpen(true)
                   }}

@@ -16,7 +16,6 @@ import { getItem } from "api/storage/storage";
 import { GeneralContext } from "providers/GeneralContext";
 
 import "./User.css";
-import { trackPromise } from "react-promise-tracker";
 import { insertUser } from "api/Core/User";
 
 // new
@@ -69,7 +68,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function CreateUser(props) {
-    const { setOpenToast, onToast } = useContext(GeneralContext);
+    const { setOpenToast, onToast ,setLosdingShow} = useContext(GeneralContext);
     const roleUser = getItem('role')
     // const userId = getItem('id')
 
@@ -90,6 +89,8 @@ export default function CreateUser(props) {
 
 
     const createNewCourse = async () => {
+        setLosdingShow(true)
+
         if (name && pass && description) {
             const userName = name;
             const data = Object.create(
@@ -105,14 +106,20 @@ export default function CreateUser(props) {
             console.log(data, "22");
             let response = await insertUser(data);
             if (response.data === "SUCCESSFUL") {
+                setLosdingShow(false)
+
                 CreateSuccess();
 
             } else {
+                setLosdingShow(false)
+
                 setOpenToast(true);
                 onToast("کاربر با اضافه نشد", "error");
                 closePopUpCreate();
             }
         } else {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("کاربر اضافه نشد", "error");
             closePopUpCreate();
@@ -206,7 +213,7 @@ export default function CreateUser(props) {
                                         color="info"
                                         size="sm"
                                         onClick={() => {
-                                            trackPromise(createNewCourse());
+                                            (createNewCourse());
                                         }}
                                     >
                                         ثبت تغییرات

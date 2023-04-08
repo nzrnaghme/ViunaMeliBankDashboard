@@ -14,7 +14,8 @@ import CardBody from "components/Card/CardBody.js";
 import { GeneralContext } from "providers/GeneralContext";
 
 import "./role.css";
-import { trackPromise } from "react-promise-tracker";
+
+//‌api
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { editRole } from "api/Core/Role";
 
@@ -72,7 +73,7 @@ export default function EditRole(props) {
     EditSuccess,
     closePopUpEdit,
     dataRole } = props;
-  const { setOpenToast, onToast } = useContext(GeneralContext);
+  const { setOpenToast, onToast,setLosdingShow } = useContext(GeneralContext);
 
   const [description, setDescription] = useState();
   const [status, setStatus] = useState();
@@ -84,6 +85,8 @@ export default function EditRole(props) {
 
 
   const updateRole = async () => {
+    setLosdingShow(true)
+
     const roleName = dataRole.title
     const data = Object.create(
       {
@@ -96,9 +99,14 @@ export default function EditRole(props) {
     data[roleName] = data["roleName"];
     let response = await editRole(data);
     if (response.data === "SUCCESSFUL")
-      EditSuccess();
+     {
+      setLosdingShow(false)
 
+      EditSuccess();
+}
     else {
+      setLosdingShow(false)
+
       setOpenToast(true)
       onToast("نفش بروزرسانی نشد", "error")
       closePopUpEdit();
@@ -175,7 +183,7 @@ export default function EditRole(props) {
                   color="info"
                   size="sm"
                   onClick={() => {
-                    trackPromise(updateRole());
+                    updateRole();
                   }}
                 >
                   ثبت تغییرات

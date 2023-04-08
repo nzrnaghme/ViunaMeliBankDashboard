@@ -10,7 +10,6 @@ import CardBody from "components/Card/CardBody.js";
 import Table from "components/Table/Table.js";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { trackPromise } from "react-promise-tracker";
 import { getAllConfigs } from "api/Core/Config";
 
 const styles = {
@@ -46,8 +45,6 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function Setting() {
-    // const roleUser = getItem("role");
-    // const userId = getItem('id')
 
     const classes = useStyles();
     const [allConfig, setAllConfig] = useState()
@@ -60,19 +57,24 @@ export default function Setting() {
         onConfirmSetter,
         // setOpenToast,
         // onToast,
+        setLosdingShow
     } = useContext(GeneralContext);
 
     useEffect(() => {
-        trackPromise(getConfig())
+        getConfig()
     }, [])
 
     const getConfig = async (currentPage) => {
+        setLosdingShow(true)
+
         const data = {
             first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyConfig.toString(),
             max: "10"
         }
         let response1 = await getAllConfigs(data);
         setAllConfig(response1.data);
+        setLosdingShow(false)
+
     }
 
     const handleChangePage = (currentPage) => {
@@ -116,7 +118,7 @@ export default function Setting() {
                                     currentPage={currentPage_MainbarMyConfig}
                                     removeConfig={(row) => {
                                         onConfirmSetter("آیا برای حذف تنظیمات مطمئن هستید؟", () => {
-                                            trackPromise(removeSelectConfig(row));
+                                            removeSelectConfig(row);
                                         });
                                         setConfirmPopupOpen(true);
                                     }}

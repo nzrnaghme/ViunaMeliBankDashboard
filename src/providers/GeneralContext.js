@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 export const GeneralContext = createContext({
     hover: false,
-    setHover: () => {},
+    setHover: () => { },
     confirmMsg: null,
     confirmPopupOpen: false,
     setConfirmPopupOpen: () => { },
@@ -14,4 +14,6 @@ export const GeneralContext = createContext({
     setOpenToast: () => { },
     varient: "success",
     onToast: (msgToast, varient) => { console.log(msgToast); console.log(varient); },
+    loadingShow: false,
+    setLosdingShow: () => { }
 });

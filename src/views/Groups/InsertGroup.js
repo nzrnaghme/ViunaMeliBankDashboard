@@ -18,7 +18,6 @@ import PersonIcon from '@material-ui/icons/Person';
 import { GeneralContext } from "providers/GeneralContext";
 
 import "./group.css"
-import { trackPromise } from "react-promise-tracker";
 import { addGroup } from "api/Core/Group";
 
 export const User_Status = [
@@ -70,18 +69,21 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function InsertGroup(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
+    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
 
     const {
         InsertSuccess,
         openPopUpInsertGroup,
         closePopUp
     } = props;
+
     const [nameNew, setNameNew] = useState()
     const [condition, setCondition] = useState(0);
     const [description, setDescription] = useState(null);
 
     const InsertGroup = async () => {
+        setLosdingShow(true)
+
         if (nameNew && description) {
             const groupName = nameNew
             const data = Object.create(
@@ -94,14 +96,21 @@ export default function InsertGroup(props) {
             );
             data[groupName] = data["groupName"];
             let response = await addGroup(data);
-            if (response.data === "SUCCESSFUL")
+            if (response.data === "SUCCESSFUL") {
+                setLosdingShow(false)
+
                 InsertSuccess();
+            }
             else {
+                setLosdingShow(false)
+
                 setOpenToast(true)
                 onToast("گروه اضافه نشد", "error")
                 closePopUp()
             }
         } else {
+            setLosdingShow(false)
+
             setOpenToast(true)
             onToast("گروه اضافه نشد", "error")
             closePopUp()
@@ -187,7 +196,7 @@ export default function InsertGroup(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { trackPromise(InsertGroup()) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { InsertGroup() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

@@ -11,7 +11,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { trackPromise } from "react-promise-tracker";
+
 import { editeGroup } from "api/Core/Group";
 import { GeneralContext } from "providers/GeneralContext";
 
@@ -64,7 +64,7 @@ const useStyles = makeStyles(styles);
 
 export default function EditTeacher(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
+    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
 
     const {
         openEditTeacherPopUp,
@@ -81,6 +81,8 @@ export default function EditTeacher(props) {
     }, [dataGroup]);
 
     const updateDataGroup = async () => {
+        setLosdingShow(true)
+
         const groupName = dataGroup.GROUP_USERNAME
         const data = Object.create(
             {
@@ -93,10 +95,15 @@ export default function EditTeacher(props) {
         data[groupName] = data["groupName"];
 
         let response = await editeGroup(data);
-        if (response.data === "SUCCESSFUL")
+        if (response.data === "SUCCESSFUL") {
+            setLosdingShow(false)
+
             EditSuccess();
+        }
 
         else {
+            setLosdingShow(false)
+
             setOpenToast(true)
             onToast("گروه بروزرسانی نشد", "error")
             closePopUpEdit();
@@ -130,7 +137,7 @@ export default function EditTeacher(props) {
                                             }}
                                         />
                                     </GridItem>
-                                   
+
 
                                 </GridContainer>
                                 <GridContainer>
@@ -174,7 +181,7 @@ export default function EditTeacher(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { trackPromise(updateDataGroup()) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { updateDataGroup() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

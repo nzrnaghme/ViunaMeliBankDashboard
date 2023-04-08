@@ -14,8 +14,8 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+
 import { GeneralContext } from "providers/GeneralContext";
-import { trackPromise } from "react-promise-tracker";
 import { getAllGroups } from "api/Core/Group";
 import { listMemberToRole, getAllRoles, addMemberToRole, removeMemberToRole } from "api/Core/Role";
 import { getListUser } from "api/Core/User";
@@ -65,7 +65,7 @@ export default function ListOfRole(props) {
 
     const [allGroup, setAllGroups] = useState();
 
-    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast ,setLosdingShow} = useContext(GeneralContext);
     const [rowsPerPageGroup, setRowsPerPageGroup] = useState(10);
     const [currentGroupToGroup, setCurrentGroupToGroup] = useState([]);
 
@@ -85,13 +85,15 @@ export default function ListOfRole(props) {
         dataRoleTo } = props
 
     useEffect(() => {
-        trackPromise(getGroups(dataRoleTo.title));
-        trackPromise(getRoles(dataRoleTo.title));
-        trackPromise(getMember(dataRoleTo.title));
+        getGroups(dataRoleTo.title);
+        getRoles(dataRoleTo.title);
+        getMember(dataRoleTo.title);
 
     }, [])
 
     const getGroups = async (roleName) => {
+        setLosdingShow(true)
+
         const data = {
             first: "0",
             max: "1000"
@@ -132,10 +134,13 @@ export default function ListOfRole(props) {
 
             setAllGroups(AllGroups);
         } else setAllGroups(responceCurrent)
+        setLosdingShow(false)
 
     };
 
     const getRoles = async (roleName) => {
+        setLosdingShow(true)
+
         const data = {
             first: "0",
             max: "1000"
@@ -176,10 +181,13 @@ export default function ListOfRole(props) {
 
             setAllRoles(AllRoles);
         } else setAllRoles(newData)
+        setLosdingShow(false)
 
     };
 
     const getMember = async (roleName) => {
+        setLosdingShow(true)
+
         const data = {
             first: "0",
             max: "1000"
@@ -219,6 +227,7 @@ export default function ListOfRole(props) {
 
             setAllMember(AllRoles);
         } else setAllMember(newData)
+        setLosdingShow(false)
 
     };
 
@@ -250,6 +259,8 @@ export default function ListOfRole(props) {
     }
 
     const addRoleToGroups = async (row) => {
+        setLosdingShow(true)
+
         const roleName = dataRoleTo.title
         const data = Object.create(
             {
@@ -263,16 +274,22 @@ export default function ListOfRole(props) {
 
         let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("گروه با موفقیت اضافه شد", "success");
             getGroups(dataRoleTo.title)
         } else {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("گروه قبلا اضافه شده است", "error");
         }
     }
 
     const removeGroupToRole = async (row) => {
+        setLosdingShow(true)
+
         const roleName = dataRoleTo.title
         const data = Object.create(
             {
@@ -286,16 +303,22 @@ export default function ListOfRole(props) {
 
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
+            setLosdingShow(true)
+
             setOpenToast(true);
             onToast("گروه با موفقیت از نقش حذف شد", "success");
             getGroups(dataRoleTo.title)
         } else {
+            setLosdingShow(true)
+
             setOpenToast(true);
             onToast("گروه از نقش حذف نشد", "error");
         }
     }
 
     const addRoleToRoles = async (row) => {
+        setLosdingShow(true)
+
         const roleName = dataRoleTo.title
         const data = Object.create(
             {
@@ -309,16 +332,22 @@ export default function ListOfRole(props) {
 
         let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("نقش با موفقیت اضافه شد", "success");
             getRoles(dataRoleTo.title)
         } else {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("نقش قبلا اضافه شده است", "error");
         }
     }
 
     const removeRoleToRole = async (row) => {
+        setLosdingShow(true)
+
         const roleName = dataRoleTo.title
         const data = Object.create(
             {
@@ -332,16 +361,22 @@ export default function ListOfRole(props) {
 
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("نقش با موفقیت از نقش حذف شد", "success");
             getRoles(dataRoleTo.title)
         } else {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("نقش از نقش حذف نشد", "error");
         }
     }
 
     const addRoleToUser = async (row) => {
+        setLosdingShow(true)
+
         const roleName = dataRoleTo.title
         const data = Object.create(
             {
@@ -355,10 +390,14 @@ export default function ListOfRole(props) {
 
         let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("نقش به کاربر با موفقیت اضافه شد", "success");
             getMember(dataRoleTo.title)
         } else {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("نقش به کاربر قبلا اضافه شده است", "error");
         }
@@ -366,6 +405,8 @@ export default function ListOfRole(props) {
 
 
     const removeRoleToUser = async (row) => { 
+        setLosdingShow(true)
+
         const roleName = dataRoleTo.title
         const data = Object.create(
             {
@@ -379,10 +420,14 @@ export default function ListOfRole(props) {
 
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("کاربر با موفقیت از نقش حذف شد", "success");
             getMember(dataRoleTo.title)
         } else {
+            setLosdingShow(false)
+
             setOpenToast(true);
             onToast("کاربر از نقش حذف نشد", "error");
         }
@@ -433,8 +478,7 @@ export default function ListOfRole(props) {
                                     handleChangeRowsPerPage={handleChangeRowsPerPageGroup}
                                     addToGroup={(row) => {
                                         onConfirmSetter('آیا برای اضافه کردن گروه مطمئن هستید؟', () => {
-                                            console.log(row);
-                                            trackPromise(addRoleToGroups(row))
+                                            addRoleToGroups(row)
                                         })
                                         setConfirmPopupOpen(true)
 
@@ -442,7 +486,7 @@ export default function ListOfRole(props) {
                                     currentGroupToUser={currentGroupToGroup}
                                     removeGroupToGroup={(row) => {
                                         onConfirmSetter('آیا برای حذف کردن گروه از گروه مطمئن هستید؟', () => {
-                                            trackPromise(removeGroupToRole(row))
+                                            removeGroupToRole(row)
                                         })
                                         setConfirmPopupOpen(true)
                                     }}
@@ -460,7 +504,7 @@ export default function ListOfRole(props) {
                                         handleChangeRowsPerPage={handleChangeRowsPerPageRole}
                                         addRoleToGroup={(row) => {
                                             onConfirmSetter('آیا برای اضافه کردن نقش به گروه مطمئن هستید؟', () => {
-                                                trackPromise(addRoleToRoles(row))
+                                                addRoleToRoles(row)
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
@@ -468,7 +512,7 @@ export default function ListOfRole(props) {
                                         currentRoleToGroup={currentRoleToGroup}
                                         removeRoleToGroup={(row) => {
                                             onConfirmSetter('آیا برای حذف کردن نقش از گروه مطمئن هستید؟', () => {
-                                                trackPromise(removeRoleToRole(row))
+                                                removeRoleToRole(row)
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
@@ -485,7 +529,7 @@ export default function ListOfRole(props) {
                                             handleChangeRowsPerPage={handleChangeRowsPerPageUser}
                                             addRoleToGroup={(row) => {
                                                 onConfirmSetter('آیا برای اضافه کردن نقش به کاربر مطمئن هستید؟', () => {
-                                                    trackPromise(addRoleToUser(row))
+                                                    addRoleToUser(row)
                                                 })
                                                 setConfirmPopupOpen(true)
                                             }}
@@ -493,7 +537,7 @@ export default function ListOfRole(props) {
                                             currentRoleToGroup={currentRoleToGroup}
                                             removeRoleToGroup={(row) => {
                                                 onConfirmSetter('آیا برای حذف کردن نقش از کاربر مطمئن هستید؟', () => {
-                                                    trackPromise(removeRoleToUser(row))
+                                                    removeRoleToUser(row)
                                                 })
                                                 setConfirmPopupOpen(true)
                                             }}
