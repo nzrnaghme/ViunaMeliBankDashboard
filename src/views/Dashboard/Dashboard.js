@@ -24,9 +24,9 @@ import CardFooter from "components/Card/CardFooter.js";
 import styles from "assets/jss/material-dashboard-react/views/rtlStyle.js";
 
 import { trackPromise } from "react-promise-tracker";
-import { getListUser } from "api/Core/User";
-import { getAllGroups } from "api/Core/Group";
-import { getAllRoles } from "api/Core/Role";
+import { countOfUser } from "api/Core/User";
+import { countOfGroup } from "api/Core/Group";
+import { countOfRole } from "api/Core/Role";
 
 const useStyles = makeStyles(styles);
 
@@ -157,16 +157,16 @@ export default function RTLPage() {
   }
 
   const getAllUser = async () => {
-    let response = await getListUser();
+    let response = await countOfUser();
     if (response.data) {
-      setCountStudents(Object.keys(response.data).length);
+      setCountStudents(Object.values(response.data)[0]);
     }
   }
 
   const getGroups = async () => {
-    let response = await getAllGroups();
+    let response = await countOfGroup();
     if (response.data) {
-      setCountTeachers(Object.keys(response.data).length);
+      setCountTeachers(Object.values(response.data)[0]);
       // const sortedActivities = (response.data.result.reverse());
       // setNearTeachers(changeDate(sortedActivities[0].registerDate))
       // setAllTeacher(sortedActivities);
@@ -187,9 +187,9 @@ export default function RTLPage() {
   }
 
   const getRoles = async () => {
-    let response = await getAllRoles();
+    let response = await countOfRole();
     if (response.data) {
-      setCountCourses(Object.keys(response.data).length);
+      setCountCourses(Object.values(response.data)[0]);
       // const sortedActivities = (response.data.result.sort((a, b) => b.endDate - a.endDate));
       // setNearCourses(sortedActivities[0].endDate.split("T")[0])
     }
