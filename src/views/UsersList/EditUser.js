@@ -126,7 +126,7 @@ export default function EditCourse(props) {
             <CardHeader color="warning" className="CardTitle">
               <h4 className={classes.cardTitleWhite}>آپدیت کاربر</h4>
             </CardHeader>
-            <CardBody className="bodyEditCourse bodyStyleCard">
+            <CardBody className="bodyEditCourse bodyStyleCard" style={{ marginTop: 52 }}>
 
               <div>
                 <GridContainer>

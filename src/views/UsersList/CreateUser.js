@@ -68,7 +68,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function CreateUser(props) {
-    const { setOpenToast, onToast ,setLosdingShow} = useContext(GeneralContext);
+    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
     const roleUser = getItem('role')
     // const userId = getItem('id')
 
@@ -135,15 +135,15 @@ export default function CreateUser(props) {
             className="popUpCreateCourse"
         >
             <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={12} >
                     <Card className="CardEditCourse" style={{ boxShadow: "none" }}>
                         <CardHeader color="warning" className="CardTitle">
                             <h4 className={classes.cardTitleWhite}>افزودن کاربر</h4>
                         </CardHeader>
-                        <CardBody className="bodyCreateCourse" style={{ marginTop: 20 }}>
+                        <CardBody className="bodyCreateCourse" style={{ marginTop: 25 }}>
                             <div>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                <GridContainer >
+                                    <GridItem xs={12} sm={12} md={6} >
                                         <CustomInput
                                             rtlActive
                                             labelText="اسم کاربری"
@@ -233,7 +233,7 @@ export default function CreateUser(props) {
                     </Card>
                 </GridItem>
             </GridContainer>
-        </PopUpCustome>
+        </PopUpCustome >
     );
 }
 

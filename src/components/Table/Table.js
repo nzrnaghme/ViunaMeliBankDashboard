@@ -184,6 +184,12 @@ export default function CustomTable(props) {
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
+                    {row.CNF_NAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.CNF_TYPE}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
                     {row.CNF_DESCRIPTION}
                   </TableCell>
                   <TableCell className={classes.tableCell}>

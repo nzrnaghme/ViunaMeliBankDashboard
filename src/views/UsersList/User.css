@@ -1,9 +1,9 @@
 .popUpEditCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
-    margin: -4px -7px !important;
+    margin: 0px -7px !important;
 }
 
 .popUpCreateCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
-    margin: -2px -2px !important;
+    margin: 0px -2px !important;
 }
 
 .popUpCreateCourse .CardTitle {
@@ -92,16 +92,6 @@
     margin-top: 20px;
 }
 
-
-
-@media screen and (max-width:749px) {
-    .bodyEditCourse {
-        display: flex;
-        flex-direction: column;
-    }
-
-}
-
 .MuiSelect-icon {
     right: 94% !important;
 }
@@ -114,3 +104,16 @@
 .bodyStyleCard {
     margin-top: 20px;
 }
+
+@media screen and (max-width:749px) {
+    .bodyEditCourse {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .CardTitle {
+        width: 72% !important;
+    }
+}
+
+

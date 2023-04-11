@@ -41,7 +41,10 @@ export const LOGINUSER = `${API_V}login/normaluser?api_key=X-API-Key&API_KEY_VAL
 
 
 //config
-export const LISTCONFIG = `${API_V}config/lstconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const LIST_CONFIG = `${API_V}config/lstconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const REMOVE_CONFIG = `${API_V}config/removeconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const ADD_CONFIG = `${API_V}config/addconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const EDIT_CONFIG = `${API_V}config/editconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
 
 //register employee
 export const REGISTER_EMPLOYEE = `${API}auth/employee/register`

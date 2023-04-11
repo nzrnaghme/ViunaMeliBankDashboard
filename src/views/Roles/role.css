@@ -60,12 +60,12 @@
 
     .bodyEditStudent {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     .bodyCreateStudent {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     .photoEditStudent {

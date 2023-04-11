@@ -44,7 +44,7 @@
 
     .bodyEditGroup {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     .MuiGrid-root .datePicker_form .rmdp-container {
@@ -52,6 +52,10 @@
     }
 }
 
-.bodyStyleCard{
+.bodyStyleCard {
     margin-top: 20px;
+}
+
+.MuiFormControl-fullWidth {
+    margin: 10px 0 0 0 !important;
 }

@@ -8,9 +8,12 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import Table from "components/Table/Table.js";
-
+import RegularButton from "components/CustomButtons/Button";
+import EditGroup from "./EditConfig"
+import InsertConfig from "./InsertConfig"
+// api
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllConfigs } from "api/Core/Config";
+import { getAllConfigs, removeConfig } from "api/Core/Config";
 
 const styles = {
     cardCategoryWhite: {
@@ -52,11 +55,19 @@ export default function Setting() {
         currentPage_MainbarMyConfig,
         setCurrentPage_MainbarMyConfig,
     ] = useState(0);
+    //add
+    const [openInsertConfig, setOpenInsertConfig] = useState(false)
+
+
+    //edit
+    const [dataConfig, setDataConfig] = useState()
+    const [openUpdateConfig, setOpenUpdateConfig] = useState(false)
+
     const {
         setConfirmPopupOpen,
         onConfirmSetter,
-        // setOpenToast,
-        // onToast,
+        setOpenToast,
+        onToast,
         setLosdingShow
     } = useContext(GeneralContext);
 
@@ -88,17 +99,56 @@ export default function Setting() {
         getConfig(currPage)
     };
 
-    const removeSelectConfig = async () => {
+    const removeSelectConfig = async (row) => {
+        setLosdingShow(true);
+        const configName = row.CNF_TYPE;
+        const data = Object.create(
+            {
+                configName: {
+                    CNF_TYPE: row.CNF_TYPE,
+                    CNF_STATE: row.CNF_STATE,
+                    CNF_DESCRIPTION: row.CNF_DESCRIPTION,
+                    CNF_NAME: row.CNF_NAME
+                },
+            },
+        );
+        data[configName] = data["configName"];
+
+        let response = await removeConfig(data);
+        if (response.data === "SUCCESSFUL") {
+            setOpenToast(true);
+            onToast("گروه با موفقیت حذف شد", "success");
+            getConfig();
+        } else {
+            setOpenToast(true);
+            onToast("گروه حذف نشد", "error");
+        }
+
+        setLosdingShow(false);
+    }
+
+    const EditConfig = async (row) => {
+        setDataConfig(row);
+        setOpenUpdateConfig(true);
 
     }
 
-    const EditConfig = async () => {
 
-    }
-    console.log(allConfig, "allConfig",);
     return (
         <>
             <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                    <div className="btnAdd">
+                        <RegularButton
+                            color="success"
+                            onClick={() => {
+                                setOpenInsertConfig(true)
+                            }}
+                        >
+                            افزودن تنظیمات
+                        </RegularButton>
+                    </div>
+                </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
                         <CardHeader color="warning">
@@ -111,7 +161,9 @@ export default function Setting() {
                                     tableHead={[
                                         "نوع تنظیمات",
                                         "وضعیت",
-                                        "مقادیر",
+                                        "نام",
+                                        "نوع",
+                                        "توضیحات",
                                         "عملیات",
                                     ]}
                                     tableData={Object.values(allConfig)}
@@ -149,7 +201,30 @@ export default function Setting() {
                     </Card>
                 </GridItem>
             </GridContainer>
+            {openUpdateConfig && dataConfig &&
+                <EditGroup
+                    openEditConfigPopUp={openUpdateConfig}
+                    dataConfig={dataConfig}
+                    closePopUpEdit={() => { setOpenUpdateConfig(false) }}
+                    EditSuccess={() => {
+                        setOpenToast(true);
+                        onToast("تنظیمات بروزرسانی شد", "success");
+                        getAllConfigs()
+                        setOpenUpdateConfig(false)
+                    }} />
+            }
 
+            {openInsertConfig &&
+                <InsertConfig
+                    openPopUpInsertConfig={openInsertConfig}
+                    closePopUp={() => { setOpenInsertConfig(false) }}
+                    InsertSuccess={() => {
+                        setOpenToast(true);
+                        onToast("تنظیمات اضافه شد", "success");
+                        getAllConfigs();
+                        setOpenInsertConfig(false);
+                    }} />
+            }
         </>
     );
 }
