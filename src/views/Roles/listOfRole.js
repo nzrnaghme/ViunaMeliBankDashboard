@@ -101,7 +101,7 @@ export default function ListOfRole(props) {
         let response = await getAllGroups(data);
         let data2 = {
             ROLE_NAME: roleName,
-            MEMBER_TYPE: "GROUP"
+            MEMBER_TYPE: "ENT_GROUP"
         }
         let responseCurrent = await listMemberToRole(data2)
         if (responseCurrent.data) {
@@ -148,7 +148,7 @@ export default function ListOfRole(props) {
         let response = await getAllRoles(data);
         let data2 = {
             ROLE_NAME: roleName,
-            MEMBER_TYPE: "ROLE"
+            MEMBER_TYPE: "ENT_ROLE"
         }
         let responseCurrent = await listMemberToRole(data2)
         if (responseCurrent.data) {
@@ -195,7 +195,7 @@ export default function ListOfRole(props) {
         let response = await getListUser(data);
         let data2 = {
             ROLE_NAME: roleName,
-            MEMBER_TYPE: "USER"
+            MEMBER_TYPE: "ENT_USER"
         }
         let responseCurrent = await listMemberToRole(data2)
         if (responseCurrent.data) {

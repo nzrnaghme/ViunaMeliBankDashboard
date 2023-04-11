@@ -221,6 +221,7 @@ export default function ListOfGroup(props) {
 
             setOpenToast(true);
             onToast("گروه با موفقیت به کاربر اضافه شد", "success");
+            getGroups(dataUserToGroup.USER_USERNAME)
         } else {
             setLosdingShow(false)
 
@@ -250,7 +251,7 @@ export default function ListOfGroup(props) {
 
             setOpenToast(true);
             onToast("نقش با موفقیت به کاربر اضافه شد", "success");
-
+            getRoles(dataUserToGroup.USER_USERNAME)
         } else {
             setLosdingShow(false)
 

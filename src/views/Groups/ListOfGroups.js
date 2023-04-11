@@ -218,6 +218,7 @@ export default function ListOfGroups(props) {
 
             setOpenToast(true);
             onToast("گروه با موفقیت اضافه شد", "success");
+            getGroups(dataGroupToGroup.GROUP_USERNAME)
         } else {
             setLosdingShow(false)
 
