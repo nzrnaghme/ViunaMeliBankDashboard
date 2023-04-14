@@ -230,12 +230,12 @@ export default function ListOfGroups(props) {
         setLosdingShow(true)
 
 
-        const groupName = row.GROUP_USERNAME
+        const groupName = dataGroupToGroup.GROUP_USERNAME
         const data = Object.create(
             {
                 groupName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: dataGroupToGroup.GROUP_USERNAME,
+                    MEMBER: row.GROUP_USERNAME,
                 },
             },
         );
