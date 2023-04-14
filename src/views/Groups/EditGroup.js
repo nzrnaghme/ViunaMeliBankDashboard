@@ -123,7 +123,7 @@ export default function EditTeacher(props) {
                         <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>بروزرسانی گروه</h4>
                         </CardHeader>
-                        <CardBody className="bodyEditGroup bodyStyleCard">
+                        <CardBody className="bodyEditGroup">
                             <div>
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}>

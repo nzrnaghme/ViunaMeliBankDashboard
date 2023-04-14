@@ -16,9 +16,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllGroups, addGroupToGroup, listGroupToGroup, removeGroupToGroup } from "api/Core/Group";
+import { getAllGroups, addGroupToGroup, listGroupToGroup, removeGroupToGroup, listRoleOfGroup } from "api/Core/Group";
 import { getAllRoles, removeMemberToRole, addMemberToRole } from "api/Core/Role";
-import { listRoleOfUser } from "api/Core/User";
 
 
 const styles = (theme) => ({
@@ -89,7 +88,7 @@ export default function ListOfGroups(props) {
 
         const data = {
             first: "0",
-            max: "1000"
+            max: "10000"
         }
         let data2 = {
             GROUP_NAME: groupName
@@ -138,14 +137,14 @@ export default function ListOfGroups(props) {
 
         const data = {
             first: "0",
-            max: "1000"
+            max: "10000"
         }
         let response = await getAllRoles(data);
 
         let data2 = {
             GROUP_NAME: groupName
         }
-        let responseCurrent = await listRoleOfUser(data2)
+        let responseCurrent = await listRoleOfGroup(data2)
         if (responseCurrent.data) {
             var currentRole = Object.values(responseCurrent.data).map((item) => (
                 item.ROLE_NAME

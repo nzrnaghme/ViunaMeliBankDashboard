@@ -1,13 +1,10 @@
-.popUpEditCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
+/* .popUpEditCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
     margin: 0px -7px !important;
-}
+} */
 
-.popUpCreateCourse .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
-    margin: 0px -2px !important;
-}
 
 .popUpCreateCourse .CardTitle {
-    width: 66% !important;
+    width: 69% !important;
 }
 
 

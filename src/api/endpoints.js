@@ -10,6 +10,7 @@ export const ADD_USER_ROLE = `${API_V}role/addmembertorole?api_key=X-API-Key&API
 export const LIST_GROUP_USER = `${API_V}user/lstgroupsofuser?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const LIST_ROLE_USER = `${API_V}user/lstrolesofuser?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const COUNT_USER = `${API_V}user/userscount?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const CHANGE_PASS = `${API_V}user/changeuserspassword?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
 
 //Group
@@ -23,6 +24,7 @@ export const LIST_GROUP_GROUP = `${API_V}group/lstgroupsofgroup?api_key=X-API-Ke
 export const REMOVE_USER_GROUP = `${API_V}group/removeuserfromgroup?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const REMOVE_GROUP_GROUP = `${API_V}group/removegroupfromgroup?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const COUNT_GROUP = `${API_V}group/groupscount?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const LIST_ROLE_GROUP = `${API_V}group/lstrolesofgroup?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
 
 //Roll

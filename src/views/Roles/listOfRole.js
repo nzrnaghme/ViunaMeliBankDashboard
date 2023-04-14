@@ -65,7 +65,7 @@ export default function ListOfRole(props) {
 
     const [allGroup, setAllGroups] = useState();
 
-    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast ,setLosdingShow} = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
     const [rowsPerPageGroup, setRowsPerPageGroup] = useState(10);
     const [currentGroupToGroup, setCurrentGroupToGroup] = useState([]);
 
@@ -111,21 +111,21 @@ export default function ListOfRole(props) {
             setCurrentGroupToGroup(currentGroup);
         }
         if (response.data) {
-            let newData = Object.values(response.data).map((item, index) => ({
+            var newData = Object.values(response.data).map((item, index) => ({
                 GROUP_USERNAME: Object.keys(response.data)[index],
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
             }));
-            var responceCurrent = newData.filter((item) => item.GROUP_USERNAME != dataRoleTo.GROUP_USERNAME)
         }
         if (currentGroup.length > 0) {
-            var select = responceCurrent.filter((e) => (
-                currentGroup.includes(e.GROUP_NAME)
+
+            var select = newData.filter((e) => (
+                currentGroup.includes(e.GROUP_USERNAME)
             ))
 
-            var AllGroups = responceCurrent.filter((e) => (
-                !currentGroup.includes(e.GROUP_NAME)
+            var AllGroups = newData.filter((e) => (
+                !currentGroup.includes(e.GROUP_USERNAME)
             ))
 
             select.forEach(element1 => {
@@ -133,7 +133,7 @@ export default function ListOfRole(props) {
             });
 
             setAllGroups(AllGroups);
-        } else setAllGroups(responceCurrent)
+        } else setAllGroups(newData)
         setLosdingShow(false)
 
     };
@@ -199,10 +199,10 @@ export default function ListOfRole(props) {
         }
         let responseCurrent = await listMemberToRole(data2)
         if (responseCurrent.data) {
-            var currentRole = Object.values(responseCurrent.data).map((item) => (
-                item.ROLE_NAME
+            var currentUser = Object.values(responseCurrent.data).map((item) => (
+                item.USER_USERNAME
             ))
-            setCurrentRoleToUser(currentRole);
+            setCurrentRoleToUser(currentUser);
         }
         if (response.data) {
             var newData = Object.values(response.data).map((item) => ({
@@ -210,24 +210,25 @@ export default function ListOfRole(props) {
                 USER_DESCRIPTION: item.USER_DESCRIPTION,
                 USER_STATUS: item.USER_STATUS,
             }));
-
         }
-        if (currentRole.length > 0) {
+        if (currentUser.length > 0) {
             var select = newData.filter((e) => (
-                currentRole.includes(e.title)
+                currentUser.includes(e.USER_USERNAME)
             ))
 
-            var AllRoles = newData.filter((e) => (
-                !currentRole.includes(e.title)
+
+            var AllUsers = newData.filter((e) => (
+                !currentUser.includes(e.USER_USERNAME)
             ))
+
 
             select.forEach(element1 => {
-                AllRoles.unshift(element1)
+                AllUsers.unshift(element1)
             });
 
-            setAllMember(AllRoles);
-        } else setAllMember(newData)
-        setLosdingShow(false)
+            setAllMember(AllUsers);
+        } else setAllMember(newData);
+        setLosdingShow(false);
 
     };
 
@@ -404,14 +405,14 @@ export default function ListOfRole(props) {
     }
 
 
-    const removeRoleToUser = async (row) => { 
+    const removeRoleToUser = async (row) => {
         setLosdingShow(true)
 
         const roleName = dataRoleTo.title
         const data = Object.create(
             {
                 roleName: {
-                    MEMBER_TYPE: "ROLE",
+                    MEMBER_TYPE: "USER",
                     MEMBER: row.USER_USERNAME,
                 },
             },
@@ -534,7 +535,7 @@ export default function ListOfRole(props) {
                                                 setConfirmPopupOpen(true)
                                             }}
                                             roleToUser
-                                            currentRoleToGroup={currentRoleToGroup}
+                                            currentRoleToGroup={currentRoleToUser}
                                             removeRoleToGroup={(row) => {
                                                 onConfirmSetter('آیا برای حذف کردن نقش از کاربر مطمئن هستید؟', () => {
                                                     removeRoleToUser(row)

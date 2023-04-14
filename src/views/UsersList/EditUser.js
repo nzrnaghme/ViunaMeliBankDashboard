@@ -126,7 +126,7 @@ export default function EditCourse(props) {
             <CardHeader color="warning" className="CardTitle">
               <h4 className={classes.cardTitleWhite}>آپدیت کاربر</h4>
             </CardHeader>
-            <CardBody className="bodyEditCourse bodyStyleCard" style={{ marginTop: 52 }}>
+            <CardBody className="bodyEditCourse bodyStyleCard">
 
               <div>
                 <GridContainer>
@@ -159,8 +159,8 @@ export default function EditCourse(props) {
                       rtlActive
                       labelText="توضیخات"
                       value={description}
-                      handleChange={(e) => {
-                        setDescription(e.target.value);
+                      onChange={(e) => {
+                        setDescription(e);
                       }}
                       formControlProps={{
                         fullWidth: true,

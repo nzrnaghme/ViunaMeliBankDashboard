@@ -143,6 +143,12 @@ h6 {
   font-family: bakh;
 }
 
+p{
+  font-weight: 100;
+  line-height: 0.5em;
+  font-family: bakh;
+}
+
 a {
   color: #9c27b0;
   text-decoration: none;

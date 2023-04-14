@@ -55,7 +55,7 @@ export default function Groups() {
   const [currentPage_MainbarMyGroup, setCurrentPage_MainbarMyGroup] = useState(0);
 
   const [openInsertGroup, setOpenInsertGroup] = useState(false)
-  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast,setLosdingShow } = useContext(GeneralContext);
+  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
 
   const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
   const [dataGroup, setDataGroup] = useState()
@@ -76,7 +76,7 @@ export default function Groups() {
     }
     let response = await getAllGroups(data);
 
-    if (response.data) {
+    if (Object.values(response.data).length > 0) {
       var newData = Object.values(response.data).map((item, index) => ({
         GROUP_USERNAME: Object.keys(response.data)[index],
         GROUP_STATUS: item.GROUP_STATUS,
@@ -85,9 +85,14 @@ export default function Groups() {
       }));
 
       setAllGroups(newData);
-      setLosdingShow(false)
-
+    } else {
+      setCurrentPage_MainbarMyGroup(currentPage_MainbarMyGroup - 10);
+      onToast("گروهی دیگر وجود ندارد", "warning")
+      setOpenToast(true)
     }
+
+    setLosdingShow(false)
+
   }
 
   const removeSelectGroup = async (row) => {
@@ -110,7 +115,7 @@ export default function Groups() {
       setOpenToast(true);
       onToast("گروه با موفقیت حذف شد", "success");
       getGroups();
-    }else{
+    } else {
       setLosdingShow(false)
       setOpenToast(true);
       onToast("گروه حذف نشد", "success");
@@ -156,7 +161,7 @@ export default function Groups() {
               {allGroups && Object.keys(allGroups).length > 0 ?
                 <Table
                   tableHeaderColor="info"
-                  tableHead={[ "اسم گروه", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
+                  tableHead={["اسم گروه", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
                   tableData={allGroups}
                   currentPage={currentPage_MainbarMyGroup}
                   handleChangePage={handleChangePage}

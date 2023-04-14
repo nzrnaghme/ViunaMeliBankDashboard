@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -13,10 +12,6 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 import { GeneralContext } from "providers/GeneralContext";
-
-// @material-ui/icons
-import PersonIcon from "@material-ui/icons/Person";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
 
 //api
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
@@ -71,16 +66,16 @@ const useStyles = makeStyles(styles);
 export default function InsertRole(props) {
   const classes = useStyles();
   const { InsertSuccess, openPopUpInsertRole, closePopUp } = props;
-  const { setOpenToast, onToast ,setLosdingShow} = useContext(GeneralContext);
+  const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
 
   const [title, setTitle] = useState();
   const [status, setStatus] = useState(0);
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState(null);
 
   const insertRole = async () => {
     setLosdingShow(true)
 
-    if (title && description) {
+    if (title) {
       const roleName = title
       const data = Object.create(
         {
@@ -93,24 +88,23 @@ export default function InsertRole(props) {
       data[roleName] = data["roleName"];
 
       let response = await addRole(data);
-      if (response.data === "SUCCESSFUL")
-       {
+      if (response.data === "SUCCESSFUL") {
         setLosdingShow(false)
 
-         InsertSuccess();}
+        InsertSuccess();
+      }
       else {
         setLosdingShow(false)
 
         setOpenToast(true)
-        onToast("گروه اضافه نشد", "error")
+        onToast("نقش اضافه نشد", "error")
         closePopUp()
       }
     } else {
       setLosdingShow(false)
 
       setOpenToast(true)
-      onToast("گروه اضافه نشد", "error")
-      closePopUp()
+      onToast("اسم نقش وارد نشده", "error")
     }
   }
 
@@ -128,7 +122,7 @@ export default function InsertRole(props) {
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>افزودن نقش</h4>
             </CardHeader>
-            <CardBody className="bodyCreateStudent">
+            <CardBody className="bodyCreateStudent" style={{ marginTop: "-17px" }}>
               <div>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
@@ -143,14 +137,7 @@ export default function InsertRole(props) {
                         fullWidth: true,
                       }}
                       inputProps={{
-                        required: true,
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <PersonIcon
-                              className={classes.inputAdornmentIcon}
-                            />
-                          </InputAdornment>
-                        ),
+                        required: true
                       }}
                     />
                   </GridItem>
@@ -178,14 +165,7 @@ export default function InsertRole(props) {
                         setDescription(e);
                       }}
                       inputProps={{
-                        required: true,
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <MailOutlineIcon
-                              className={classes.inputAdornmentIcon}
-                            />
-                          </InputAdornment>
-                        ),
+                        required: true
                       }}
                     />
                   </GridItem>

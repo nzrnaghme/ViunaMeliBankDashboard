@@ -12,7 +12,6 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
-import { getItem } from "api/storage/storage";
 import { GeneralContext } from "providers/GeneralContext";
 
 import "./User.css";
@@ -69,8 +68,6 @@ const useStyles = makeStyles(styles);
 
 export default function CreateUser(props) {
     const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
-    const roleUser = getItem('role')
-    // const userId = getItem('id')
 
     const classes = useStyles();
     const {
@@ -85,44 +82,51 @@ export default function CreateUser(props) {
     const [name, setName] = useState();
     const [pass, setPass] = useState();
     const [status, setStatus] = useState(0);
-    const [description, setDescription] = useState();
+    const [description, setDescription] = useState(null);
+    const [errorName, setErrorName] = useState(false);
+    const [errorPass, setErrorPass] = useState(false);
+    const [textLeft, setTextLeft] = useState(false);
 
 
     const createNewCourse = async () => {
-        setLosdingShow(true)
+        var passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
-        if (name && pass && description) {
-            const userName = name;
-            const data = Object.create(
-                {
-                    userName: {
-                        USER_PASSWORD: pass,
-                        USER_STATUS: status.toString(),
-                        USER_DESCRIPTION: description,
+        if (name && pass) {
+
+            if (pass.length > 8 && pass.match(passw)) {
+                setLosdingShow(true);
+
+                const userName = name;
+                const data = Object.create(
+                    {
+                        userName: {
+                            USER_PASSWORD: pass,
+                            USER_STATUS: status.toString(),
+                            USER_DESCRIPTION: description,
+                        },
                     },
-                },
-            );
-            data[userName] = data["userName"];
-            console.log(data, "22");
-            let response = await insertUser(data);
-            if (response.data === "SUCCESSFUL") {
-                setLosdingShow(false)
+                );
+                data[userName] = data["userName"];
 
-                CreateSuccess();
+                let response = await insertUser(data);
+                if (response.data === "SUCCESSFUL") {
+                    setLosdingShow(false);
+                    CreateSuccess();
 
-            } else {
-                setLosdingShow(false)
+                } else {
+                    setLosdingShow(false);
+                    setOpenToast(true);
+                    onToast("کاربر با اضافه نشد", "error");
+                }
+            } else setErrorPass(true)
 
-                setOpenToast(true);
-                onToast("کاربر با اضافه نشد", "error");
-                closePopUpCreate();
-            }
+
         } else {
-            setLosdingShow(false)
-
+            setErrorName(true);
+            setErrorPass(true)
+            setLosdingShow(false);
             setOpenToast(true);
-            onToast("کاربر اضافه نشد", "error");
-            closePopUpCreate();
+            onToast("اطلاعات کافی نیست", "error");
         }
     };
 
@@ -148,7 +152,10 @@ export default function CreateUser(props) {
                                             rtlActive
                                             labelText="اسم کاربری"
                                             value={name}
+                                            error={errorName}
+
                                             onChange={(e) => {
+                                                setErrorName(false)
                                                 setName(e);
                                             }}
                                             formControlProps={{
@@ -159,13 +166,22 @@ export default function CreateUser(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
+                                            textLeft={textLeft}
                                             labelText="رمز عبور"
                                             value={pass}
                                             onChange={(e) => {
+                                                setTextLeft(true)
+                                                setErrorPass(false)
                                                 setPass(e);
                                             }}
+                                            error={errorPass}
                                             formControlProps={{
                                                 fullWidth: true,
+                                            }}
+                                            inputProps={{
+                                                required: true,
+                                                minLength: 8,
+                                                dir: "ltr"
                                             }}
                                         />
                                     </GridItem>
@@ -180,7 +196,6 @@ export default function CreateUser(props) {
                                             handleChange={(e) => {
                                                 setStatus(e.target.value);
                                             }}
-                                            disabled={roleUser === "teacher"}
                                         />
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>

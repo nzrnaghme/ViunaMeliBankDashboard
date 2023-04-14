@@ -84,7 +84,7 @@ export default function InsertGroup(props) {
     const InsertGroup = async () => {
         setLosdingShow(true)
 
-        if (nameNew && description) {
+        if (nameNew) {
             const groupName = nameNew
             const data = Object.create(
                 {
@@ -113,7 +113,7 @@ export default function InsertGroup(props) {
 
             setOpenToast(true)
             onToast("گروه اضافه نشد", "error")
-            closePopUp()
+
         }
 
     }
@@ -129,7 +129,7 @@ export default function InsertGroup(props) {
                         <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>افزودن گروه</h4>
                         </CardHeader>
-                        <CardBody className="bodyEditGroup bodyStyleCard">
+                        <CardBody className="bodyEditGroup" style={{ marginTop: "-17px" }}>
                             <div>
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}>

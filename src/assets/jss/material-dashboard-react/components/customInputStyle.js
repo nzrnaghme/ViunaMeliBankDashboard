@@ -50,7 +50,6 @@ const customInputStyle = {
   feedback: {
     position: "absolute",
     top: "18px",
-    right: "0",
     zIndex: "2",
     display: "block",
     width: "24px",

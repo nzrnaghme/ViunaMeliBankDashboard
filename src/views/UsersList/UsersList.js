@@ -12,6 +12,7 @@ import RegularButton from "components/CustomButtons/Button";
 
 import { getListUser } from "api/Core/User";
 import EditUser from "./EditUser";
+import EditPass from "./EditPass";
 import CreateUser from "./CreateUser";
 import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
@@ -75,7 +76,10 @@ export default function UsersList() {
   const [openPopUpCreateUser, setOpenPopUpCreateUser] = useState(false);
 
   const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
-  const [dataGroupToGroup, setDataGroupToGroup] = useState()
+  const [dataGroupToGroup, setDataGroupToGroup] = useState();
+
+  const [openChangePass, setOpenChangePass] = useState(false)
+  const [dataUser, setDataUser] = useState();
 
 
   useEffect(() => {
@@ -90,8 +94,14 @@ export default function UsersList() {
       max: "10"
     }
     let response1 = await getListUser(data);
-    setAllUsers(response1.data);
-    setLosdingShow(false)
+    if (Object.values(response1.data).length > 0) {
+      setAllUsers(response1.data);
+    } else {
+      setCurrentPage_MainbarMyUsers(currentPage_MainbarMyUsers - 10);
+      onToast("کاربری دیگر وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+    setLosdingShow(false);
 
   };
 
@@ -109,19 +119,16 @@ export default function UsersList() {
     );
     data[userName] = data["userName"];
     let response = await removeUser(data);
-    if (response.data === "SUCCESSFUL") {
-      setLosdingShow(false)
 
+    if (response.data === "SUCCESSFUL") {
       setOpenToast(true);
       onToast("کاربر با موفقیت حذف شد", "success");
       getUsers()
-    }else {
-      setLosdingShow(false)
-
+    } else {
       setOpenToast(true);
-      onToast("کاربر با حذف نشد", "error");
-
+      onToast("کاربر حذف نشد", "error");
     }
+    setLosdingShow(false);
   };
 
   const EditUsers = (data) => {
@@ -137,14 +144,19 @@ export default function UsersList() {
 
   const handleChangePage = (currentPage) => {
     setCurrentPage_MainbarMyUsers(currentPage + 10);
-    getUsers(currentPage + 10)
+    getUsers(currentPage + 10);
   };
 
   const handleChangeRowsPerPage = (currentPage) => {
     let currPage = currentPage - 10;
     setCurrentPage_MainbarMyUsers(currPage);
-    getUsers(currPage)
+    getUsers(currPage);
   };
+
+  const editPass = (row) => {
+    setOpenChangePass(true);
+    setDataUser(row)
+  }
 
   return (
     <>
@@ -166,7 +178,7 @@ export default function UsersList() {
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>تمام کاربران</h4>
             </CardHeader>
-            <CardBody>
+            <CardBody className="bodyStyleCard">
 
               {allUsers && Object.keys(allUsers).length > 0 ? (
                 <Table
@@ -190,9 +202,10 @@ export default function UsersList() {
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
                   addUserToGroup={(row) => {
-                    setDataGroupToGroup(row)
+                    setDataGroupToGroup(row);
                     setOpenGroupToGroup(true);
                   }}
+                  editPass={editPass}
                 />
               ) : (
                 <div
@@ -254,6 +267,22 @@ export default function UsersList() {
           InsertSuccess={getUsers}
           openListGrouptPopUp={openGroupToGroup} />
       }
+
+      {openChangePass && dataUser && (
+        <EditPass
+          dataUser={dataUser}
+          openEditUserPopUp={openChangePass}
+          closePopUpEdit={() => {
+            setOpenChangePass(false);
+          }}
+          EditSuccess={() => {
+            setOpenChangePass(false);
+            setOpenToast(true);
+            onToast("کاربر بروزرسانی شد", "success");
+            getUsers();
+          }}
+        />
+      )}
 
     </>
   );

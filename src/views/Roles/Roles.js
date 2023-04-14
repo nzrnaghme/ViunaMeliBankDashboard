@@ -93,26 +93,33 @@ export default function Roles() {
     }
     let response1 = await getAllRoles(data);
 
-    if (response1.data) {
+    if (Object.values(response1.data).length > 0) {
       var newData = Object.values(response1.data).map((item, index) => ({
         title: Object.keys(response1.data)[index],
         ROLE_STATUS: item.ROLE_STATUS,
         ROLE_ID: item.ROLE_ID,
         ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
       }));
+      setAllRoles(newData);
+
+    } else {
+      setCurrentPage_MainbarMyRoles(currentPage_MainbarMyRoles - 10);
+      onToast("نقشی دیگر وجود ندارد", "warning")
+      setOpenToast(true)
     }
 
-    setAllRoles(newData);
+
     setLosdingShow(false)
 
   };
 
   const removeRoles = (row) => {
-    setLosdingShow(true)
 
     onConfirmSetter(
       "مطمئن به حذف نقش هستید؟",
       async () => {
+        setLosdingShow(true)
+
         const roleName = row.title
         const data = Object.create(
           {
@@ -130,7 +137,7 @@ export default function Roles() {
           getRoles()
           setOpenToast(true);
           onToast("گروه با موفقیت حذف شد", "success");
-        }else{
+        } else {
           setLosdingShow(false)
 
           getRoles()
@@ -149,7 +156,7 @@ export default function Roles() {
   };
 
   const getAllDataRole = (item) => {
-    
+
     if (item) {
       setDataRole(item);
       setOpenEditRole(true);

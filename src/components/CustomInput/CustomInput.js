@@ -32,7 +32,8 @@ export default function CustomInput(props) {
     maskChar,
     multiline,
     rows,
-    disabled
+    disabled,
+    textLeft
   } = props;
 
   const labelClasses = classNames({
@@ -92,10 +93,14 @@ export default function CustomInput(props) {
 
       />
       {error ? (
-        <Clear className={classes.feedback + " " + classes.labelRootError} />
+        <Clear className={classes.feedback + " " + classes.labelRootError} style={textLeft ? { right: "0px" } : { left: "0px" }} />
       ) : success ? (
         <Check className={classes.feedback + " " + classes.labelRootSuccess} />
       ) : null}
+
+      {error &&
+        (<p style={{ color: "red", fontSize: 10 }}>{` ${labelText} به درستی وارد نشده `}</p>)
+      }
     </FormControl>
   );
 }
@@ -115,5 +120,6 @@ CustomInput.propTypes = {
   mask: PropTypes.string,
   multiline: PropTypes.bool,
   rows: PropTypes.number,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  textLeft: PropTypes.bool
 };

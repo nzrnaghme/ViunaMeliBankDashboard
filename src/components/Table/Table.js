@@ -12,10 +12,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
+//icon
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
-import RegularButton from "../CustomButtons/Button";
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import RegularButton from "../CustomButtons/Button";
+
 import "./index.css";
 
 const useStyles = makeStyles(styles);
@@ -32,6 +35,7 @@ export default function CustomTable(props) {
     removeUser,
     EditUser,
     Users,
+    editPass,
     rowsCount,
     currentGroupToUser,
     userToGroup,
@@ -91,7 +95,7 @@ export default function CustomTable(props) {
                     {row.USER_USERNAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.USER_DESCRIPTION}
+                    {row.USER_DESCRIPTION ? row.USER_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.USER_STATUS === 1 ? (
@@ -101,6 +105,28 @@ export default function CustomTable(props) {
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="تغییر رمز"
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton
+                        aria-label="Key"
+                        className={classes.tableActionButton}
+                        onClick={() => {
+                          editPass(row);
+                        }}
+                      >
+                        <VpnKeyIcon
+                          className={
+                            classes.tableActionButtonIcon
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
+
+
                     <Tooltip
                       id="tooltip-top"
                       title="ویرایش"
@@ -190,7 +216,7 @@ export default function CustomTable(props) {
                     {row.CNF_TYPE}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.CNF_DESCRIPTION}
+                    {row.CNF_DESCRIPTION ? row.CNF_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     <Tooltip
@@ -337,7 +363,7 @@ export default function CustomTable(props) {
                     {row.GROUP_USERNAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_DESCRIPTION}
+                    {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_STATUS === 1 ? (
@@ -409,7 +435,7 @@ export default function CustomTable(props) {
                     {row.title}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.ROLE_DESCRIPTION}
+                    {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_STATUS === 1 ? (
@@ -479,7 +505,7 @@ export default function CustomTable(props) {
                     {row.GROUP_USERNAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_DESCRIPTION}
+                    {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_STATUS === 1 ? (
@@ -553,7 +579,7 @@ export default function CustomTable(props) {
                     {row.title}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.ROLE_DESCRIPTION}
+                    {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_STATUS === 1 ? (
@@ -620,7 +646,7 @@ export default function CustomTable(props) {
                     {row.title}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.ROLE_DESCRIPTION}
+                    {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_STATUS === 1 ? (
@@ -709,7 +735,7 @@ export default function CustomTable(props) {
                     {row.USER_USERNAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.USER_DESCRIPTION}
+                    {row.USER_DESCRIPTION ? row.USER_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.USER_STATUS === 1 ? (
@@ -774,7 +800,7 @@ export default function CustomTable(props) {
       </Table>
 
 
-      {(userToGroup || userToRole || groupToGroup || roleToUser) ?
+      {(userToGroup || userToRole || groupToGroup || roleToUser || groupToRole) ?
         <TablePagination
           rowsPerPageOptions={[10, 10]}
           component="div"
@@ -786,6 +812,7 @@ export default function CustomTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
         : <div className="btnEditCourse">
+          <p>{`${currentPage + 10} - ${currentPage}`}</p>
           <div
             style={{
               display: "flex",
@@ -850,6 +877,7 @@ CustomTable.propTypes = {
   removeUser: PropTypes.func,
   EditUser: PropTypes.func,
   addUserToGroup: PropTypes.func,
+  editPass: PropTypes.func,
 
   group: PropTypes.bool,
   editGroup: PropTypes.func,

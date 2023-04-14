@@ -83,7 +83,14 @@ export default function Setting() {
             max: "10"
         }
         let response1 = await getAllConfigs(data);
-        setAllConfig(response1.data);
+        if (Object.values(response1.data).length > 0) {
+            setAllConfig(response1.data);
+
+        } else {
+            setCurrentPage_MainbarMyConfig(currentPage_MainbarMyConfig - 10);
+            onToast("تنظیماتی دیگر وجود ندارد", "warning")
+            setOpenToast(true)
+        }
         setLosdingShow(false)
 
     }
