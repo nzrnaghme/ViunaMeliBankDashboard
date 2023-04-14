@@ -99,7 +99,7 @@ export default function CustomInput(props) {
       ) : null}
 
       {error &&
-        (<p style={{ color: "red", fontSize: 10 }}>{` ${labelText} به درستی وارد نشده `}</p>)
+        (<p className="errorInput" style={{ color: "red", fontSize: 10 }}>{` ${labelText} به درستی وارد نشده `}</p>)
       }
     </FormControl>
   );
