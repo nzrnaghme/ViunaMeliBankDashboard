@@ -7,7 +7,8 @@ import {
     REMOVE_USER_GROUP,
     LIST_ROLE_USER,
     COUNT_USER,
-    CHANGE_PASS
+    CHANGE_PASS,
+    FIND_USER
 } from "../endpoints";
 import api from "../interceptor";
 
@@ -31,3 +32,4 @@ export const countOfUser = (payload) => api.post(COUNT_USER, payload)
 
 export const changePassword = (payload) => api.post(CHANGE_PASS, payload)
 
+export const findUser = (payload) => api.post(FIND_USER, payload)

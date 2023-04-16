@@ -6,7 +6,8 @@ import {
     LIST_MEMBER_ROLE,
     LIST_ROLLS,
     REMOVE_MEMBER_ROLE,
-    REMOVE_ROLE
+    REMOVE_ROLE,
+    FIND_ROLE
 } from "../endpoints";
 import api from "../interceptor";
 
@@ -25,3 +26,5 @@ export const removeMemberToRole = (payload) => api.post(REMOVE_MEMBER_ROLE, payl
 export const listMemberToRole = (payload) => api.post(LIST_MEMBER_ROLE, payload);
 
 export const countOfRole = (payload) => api.post(COUNT_ROLE, payload);
+
+export const findRole = (payload) => api.post(FIND_ROLE, payload);

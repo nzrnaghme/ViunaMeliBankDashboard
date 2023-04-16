@@ -272,7 +272,7 @@ export default function CustomTable(props) {
                 <TableRow key={index} className={classes.tableBodyRow}>
 
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_USERNAME}
+                    {row.GROUP_USERNAME ? row.GROUP_USERNAME : row.GROUP_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}

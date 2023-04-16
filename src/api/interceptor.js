@@ -1,6 +1,37 @@
 import axios from "axios";
 // import { getItem } from "./storage/storage"
 // import { toast } from "react-toastify";
+import React, { useContext, useEffect, useState } from "react";
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
+
+import "../components/Toast/index.css"
+
+import { GeneralContext } from "providers/GeneralContext";
+
+function TransitionRight(props) {
+    return <Slide {...props} direction="left" />;
+}
+
+export function removeLoading() {
+    const { setLosdingShow } = useContext(GeneralContext)
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        setOpen(true);
+        setLosdingShow(false);
+    }, [])
+
+    return (
+        <Snackbar
+            open={open}
+            onClose={() => { setOpen(false) }}
+            TransitionComponent={TransitionRight}
+            message={"درخواست با خطا مواجه شده"}
+            className={"red"}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        />);
+}
 
 
 const api = axios.create({
@@ -17,12 +48,14 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
+        console.log(error);
         // check if error is expected from backend
         try {
 
             if (error.code === 'ERR_NETWORK') {
+                return (<removeLoading />)
                 // toast.warning('لطفا اینترنت را بررسی کنید')
-                return Promise.reject(error);
+                // return Promise.reject(error);
             }
 
             const expectedError =
@@ -53,3 +86,5 @@ api.interceptors.response.use(
 // });
 
 export default api;
+
+

@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from '@material-ui/icons/Search';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -9,14 +12,14 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
+import CustomInput from "components/CustomInput/CustomInput";
 
-import { getListUser } from "api/Core/User";
 import EditUser from "./EditUser";
 import EditPass from "./EditPass";
 import CreateUser from "./CreateUser";
 import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
-import { removeUser } from "api/Core/User";
+import { removeUser, findUser, getListUser } from "api/Core/User";
 
 const styles = {
   cardCategoryWhite: {
@@ -51,8 +54,6 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function UsersList() {
-  // const roleUser = getItem("role");
-  // const userId = getItem('id')
 
   const classes = useStyles();
   const {
@@ -80,6 +81,9 @@ export default function UsersList() {
 
   const [openChangePass, setOpenChangePass] = useState(false)
   const [dataUser, setDataUser] = useState();
+
+  const [showSearch, setShowSearch] = useState(false)
+  const [nameSearch, setNameSearch] = useState(null)
 
 
   useEffect(() => {
@@ -158,6 +162,22 @@ export default function UsersList() {
     setDataUser(row)
   }
 
+  const searchWithNameUser = async () => {
+    setLosdingShow(true);
+    let data = {
+      USER_USERNAME: nameSearch
+    };
+    const response = await findUser(data);
+    if (Object.values(response.data).length > 0) {
+      setAllUsers(Object.values(response.data))
+    } else {
+      onToast("کاربری با این اسم وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+
+    setLosdingShow(false)
+  }
+
   return (
     <>
       <GridContainer>
@@ -171,6 +191,50 @@ export default function UsersList() {
             >
               افزودن کاربر
             </RegularButton>
+
+            <div className="searchInput">
+
+              <Tooltip
+                id="tooltip-top-start"
+                title="جستجو با اسم کاربر"
+                placement="top"
+                classes={{ tooltip: classes.tooltip }}
+              >
+                <IconButton
+                  aria-label="Key"
+                  className={classes.tableActionButton}
+                  onClick={() => {
+                    if (!nameSearch && showSearch) {
+                      setShowSearch(!showSearch);
+                      getUsers()
+                    }
+                    else if (nameSearch && showSearch) {
+                      searchWithNameUser()
+                    } else setShowSearch(!showSearch);
+                  }}
+                >
+                  <SearchIcon
+                    className={
+                      classes.tableActionButtonIcon}
+                  />
+                </IconButton>
+              </Tooltip>
+
+              {showSearch &&
+                <CustomInput
+                  rtlActive
+                  labelText="اسم کاربری"
+                  value={nameSearch}
+                  onChange={(e) => {
+                    setNameSearch(e);
+                  }}
+                  formControlProps={{
+                    fullWidth: true,
+                  }}
+                />
+              }
+            </div>
+
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>

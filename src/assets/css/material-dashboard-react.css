@@ -143,7 +143,7 @@ h6 {
   font-family: bakh;
 }
 
-.errorInput{
+.errorInput {
   font-weight: 100;
   line-height: 0.5em;
   font-family: bakh;
@@ -566,5 +566,23 @@ footer ul li a:hover {
 
 .btnAdd {
   text-align: end !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
 }
 
+.searchInput {
+  display: flex;
+  flex-direction: row;
+}
+
+/* .searchInput button:hover {
+  transition-duration: 1s;
+  background-color: lime;
+}
+
+
+.searchInput .MuiFormControl-root:active {
+  transition-duration: 10s;
+
+} */

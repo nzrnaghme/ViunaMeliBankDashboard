@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from '@material-ui/icons/Search';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -9,12 +12,13 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
+import CustomInput from "components/CustomInput/CustomInput";
+
 import InsertGroup from "./InsertGroup";
 import EditGroup from "./EditGroup";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllGroups } from "api/Core/Group";
-import { removeGroup } from "api/Core/Group";
+import { getAllGroups, removeGroup, findGroup } from "api/Core/Group";
 import ListOfUGroups from "./ListOfGroups";
 
 const styles = {
@@ -62,6 +66,9 @@ export default function Groups() {
 
   const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
   const [dataGroupToGroup, setDataGroupToGroup] = useState()
+
+  const [showSearch, setShowSearch] = useState(false)
+  const [nameSearch, setNameSearch] = useState(null)
 
   useEffect(() => {
     getGroups();
@@ -141,6 +148,23 @@ export default function Groups() {
   };
 
 
+  const searchWithNameGroup = async () => {
+    setLosdingShow(true);
+    let data = {
+      GROUP_NAME: nameSearch
+    };
+    const response = await findGroup(data);
+    if (Object.values(response.data).length > 0) {
+      setAllGroups(Object.values(response.data))
+    } else {
+      onToast("کاربری با این اسم وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+
+    setLosdingShow(false)
+  }
+
+
   return (
     <>
       <GridContainer>
@@ -150,6 +174,51 @@ export default function Groups() {
               onClick={() => {
                 setOpenInsertGroup(true)
               }} >افزودن گروه</RegularButton>
+
+
+            <div className="searchInput">
+
+              <Tooltip
+                id="tooltip-top-start"
+                title="جستجو با اسم گروه"
+                placement="top"
+                classes={{ tooltip: classes.tooltip }}
+              >
+                <IconButton
+                  aria-label="Key"
+                  className={classes.tableActionButton}
+                  onClick={() => {
+                    if (!nameSearch && showSearch) {
+                      setShowSearch(!showSearch);
+                      getGroups()
+                    }
+                    else if (nameSearch && showSearch) {
+                      searchWithNameGroup()
+                    } else setShowSearch(!showSearch);
+                  }}
+                >
+                  <SearchIcon
+                    className={
+                      classes.tableActionButtonIcon}
+                  />
+                </IconButton>
+              </Tooltip>
+
+              {showSearch &&
+                <CustomInput
+                  rtlActive
+                  labelText="اسم گروه"
+                  value={nameSearch}
+                  onChange={(e) => {
+                    setNameSearch(e);
+                  }}
+                  formControlProps={{
+                    fullWidth: true,
+                  }}
+                />
+              }
+            </div>
+
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
