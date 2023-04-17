@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from '@material-ui/icons/Search';
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -14,10 +17,11 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import CustomInput from "components/CustomInput/CustomInput";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllGroups, addGroupToGroup, listGroupToGroup, removeGroupToGroup, listRoleOfGroup } from "api/Core/Group";
-import { getAllRoles, removeMemberToRole, addMemberToRole } from "api/Core/Role";
+import { getAllGroups, addGroupToGroup, listGroupToGroup, removeGroupToGroup, listRoleOfGroup, findGroup } from "api/Core/Group";
+import { getAllRoles, removeMemberToRole, addMemberToRole, findRole } from "api/Core/Role";
 
 
 const styles = (theme) => ({
@@ -70,7 +74,10 @@ export default function ListOfGroups(props) {
 
     const [currentPage_MainbarCurrentRole, setCurrentPage_MainbarCurrentRole] = useState(0);
     const [rowsPerPageRole, setRowsPerPageRole] = useState(10);
-    const [currentRoleToGroup, setCurrentRoleToGroup] = useState([])
+    const [currentRoleToGroup, setCurrentRoleToGroup] = useState([]);
+
+    const [showSearch, setShowSearch] = useState(false)
+    const [nameSearch, setNameSearch] = useState(null)
 
     const {
         openListGrouptPopUp,
@@ -79,8 +86,8 @@ export default function ListOfGroups(props) {
         dataGroupToGroup } = props
 
     useEffect(() => {
-        getGroups(dataGroupToGroup.GROUP_USERNAME)
-        getRoles(dataGroupToGroup.GROUP_USERNAME)
+        getGroups(dataGroupToGroup.GROUP_NAME)
+        getRoles(dataGroupToGroup.GROUP_NAME)
     }, [])
 
     const getGroups = async (groupName) => {
@@ -104,21 +111,21 @@ export default function ListOfGroups(props) {
         }
         if (response.data) {
             var newData = Object.values(response.data).map((item, index) => ({
-                GROUP_USERNAME: Object.keys(response.data)[index],
+                GROUP_NAME: Object.keys(response.data)[index],
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
             }));
-            var responceCurrent = newData.filter((item) => item.GROUP_USERNAME != dataGroupToGroup.GROUP_USERNAME)
+            var responceCurrent = newData.filter((item) => item.GROUP_NAME != dataGroupToGroup.GROUP_NAME)
 
         }
         if (currentGroup.length > 0) {
             var select = responceCurrent.filter((e) => (
-                currentGroup.includes(e.GROUP_USERNAME)
+                currentGroup.includes(e.GROUP_NAME)
             ))
 
             var AllGroups = responceCurrent.filter((e) => (
-                !currentGroup.includes(e.GROUP_USERNAME)
+                !currentGroup.includes(e.GROUP_NAME)
             ))
 
             select.forEach(element1 => {
@@ -154,7 +161,7 @@ export default function ListOfGroups(props) {
 
         if (response.data) {
             var newData = Object.values(response.data).map((item, index) => ({
-                title: Object.keys(response.data)[index],
+                ROLE_NAME: Object.keys(response.data)[index],
                 ROLE_STATUS: item.ROLE_STATUS,
                 ROLE_ID: item.ROLE_ID,
                 ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
@@ -162,11 +169,11 @@ export default function ListOfGroups(props) {
         }
         if (currentRole.length > 0) {
             var select = newData.filter((e) => (
-                currentRole.includes(e.title)
+                currentRole.includes(e.ROLE_NAME)
             ))
 
             var AllRoles = newData.filter((e) => (
-                !currentRole.includes(e.title)
+                !currentRole.includes(e.ROLE_NAME)
             ))
 
             select.forEach(element1 => {
@@ -200,12 +207,12 @@ export default function ListOfGroups(props) {
     const addGroupToGroups = async (row) => {
         setLosdingShow(true)
 
-        const groupName = dataGroupToGroup.GROUP_USERNAME
+        const groupName = dataGroupToGroup.GROUP_NAME
         const data = Object.create(
             {
                 groupName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: row.GROUP_USERNAME,
+                    MEMBER: row.GROUP_NAME,
                 },
             },
         );
@@ -217,7 +224,7 @@ export default function ListOfGroups(props) {
 
             setOpenToast(true);
             onToast("گروه با موفقیت اضافه شد", "success");
-            getGroups(dataGroupToGroup.GROUP_USERNAME)
+            getGroups(dataGroupToGroup.GROUP_NAME)
         } else {
             setLosdingShow(false)
 
@@ -230,12 +237,12 @@ export default function ListOfGroups(props) {
         setLosdingShow(true)
 
 
-        const groupName = dataGroupToGroup.GROUP_USERNAME
+        const groupName = dataGroupToGroup.GROUP_NAME
         const data = Object.create(
             {
                 groupName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: row.GROUP_USERNAME,
+                    MEMBER: row.GROUP_NAME,
                 },
             },
         );
@@ -247,7 +254,7 @@ export default function ListOfGroups(props) {
 
             setOpenToast(true);
             onToast("گروه با موفقیت از کاربر حذف شد", "success");
-            getGroups(dataGroupToGroup.GROUP_USERNAME);
+            getGroups(dataGroupToGroup.GROUP_NAME);
         } else {
             setLosdingShow(false)
 
@@ -259,12 +266,12 @@ export default function ListOfGroups(props) {
     const addGroupToRoles = async (row) => {
         setLosdingShow(true)
 
-        const roleName = row.title
+        const roleName = row.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: dataGroupToGroup.GROUP_USERNAME,
+                    MEMBER: dataGroupToGroup.GROUP_NAME,
                 },
             },
         );
@@ -275,7 +282,7 @@ export default function ListOfGroups(props) {
 
             setOpenToast(true);
             onToast("نقش با موفقیت به کاربر اضافه شد", "success");
-            getRoles(dataGroupToGroup.GROUP_USERNAME);
+            getRoles(dataGroupToGroup.GROUP_NAME);
 
         } else {
             setLosdingShow(false)
@@ -288,12 +295,12 @@ export default function ListOfGroups(props) {
     const removeGroupToRole = async (row) => {
         setLosdingShow(true)
 
-        const roleName = row.title
+        const roleName = row.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: dataGroupToGroup.GROUP_USERNAME,
+                    MEMBER: dataGroupToGroup.GROUP_NAME,
                 },
             },
         );
@@ -305,7 +312,7 @@ export default function ListOfGroups(props) {
 
             setOpenToast(true);
             onToast("نقش با موفقیت از کاربر حذف شد", "success");
-            getRoles(dataGroupToGroup.GROUP_USERNAME);
+            getRoles(dataGroupToGroup.GROUP_NAME);
         } else {
             setLosdingShow(false)
 
@@ -318,6 +325,39 @@ export default function ListOfGroups(props) {
         setItemTabs(newValue);
     };
 
+    const searchWithNameUser = async () => {
+        setLosdingShow(true);
+        if (itemTabs === 0) {
+            let data = {
+                GROUP_NAME: nameSearch
+            };
+            const response = await findGroup(data);
+            if (Object.values(response.data).length > 0) {
+                setAllGroups(Object.values(response.data))
+                setRowsPerPageGroup(10)
+                setCurrentPage_MainbarCurrentGroup(0);
+            } else {
+                onToast("گروهی با این اسم وجود ندارد", "warning")
+                setOpenToast(true)
+            }
+
+        } else {
+            let data = {
+                ROLE_NAME: nameSearch
+            };
+            const response = await findRole(data);
+            if (Object.values(response.data).length > 0) {
+                setAllRoles(Object.values(response.data))
+                setRowsPerPageRole(10)
+                setCurrentPage_MainbarCurrentRole(0);
+            } else {
+                onToast("نقشی با این اسم وجود ندارد", "warning")
+                setOpenToast(true)
+            }
+        }
+        setLosdingShow(false)
+    }
+
     return (
         <PopUpCustome
             open={openListGrouptPopUp}
@@ -327,7 +367,52 @@ export default function ListOfGroups(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning" className="CardTitle">
-                            <h4 className={classes.cardTitleWhite}>اضافه کردن به گروه {dataGroupToGroup.GROUP_USERNAME}</h4>
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن به گروه {dataGroupToGroup.GROUP_NAME}</h4>
+
+                            <div className="searchInputInto">
+
+                                <Tooltip
+                                    id="tooltip-top-start"
+                                    title={`جستجو با اسم${itemTabs === 0 ? "گروه" : "نقش"}`}
+                                    placement="top"
+                                    classes={{ tooltip: classes.tooltip }}
+                                >
+                                    <IconButton
+                                        aria-label="Key"
+                                        className={classes.tableActionButton}
+                                        onClick={() => {
+                                            if (!nameSearch && showSearch) {
+                                                setShowSearch(!showSearch);
+                                                if (itemTabs === 0) getGroups(dataGroupToGroup.GROUP_NAME)
+                                                else getRoles(dataGroupToGroup.GROUP_NAME)
+                                            }
+                                            else if (nameSearch && showSearch) {
+                                                searchWithNameUser()
+                                            } else setShowSearch(!showSearch);
+                                        }}
+                                    >
+                                        <SearchIcon
+                                            className={
+                                                classes.tableActionButtonIcon}
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+
+                                {showSearch &&
+                                    <CustomInput
+                                        rtlActive
+                                        labelText={`اسم ${itemTabs === 0 ? "گروه" : "نقش"}`}
+                                        value={nameSearch}
+                                        onChange={(e) => {
+                                            setNameSearch(e);
+                                        }}
+                                        formControlProps={{
+                                            fullWidth: true,
+                                        }}
+                                    />
+                                }
+                            </div>
+
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
 
@@ -417,7 +502,7 @@ export default function ListOfGroups(props) {
                     </Card>
                 </GridItem>
             </GridContainer>
-        </PopUpCustome>
+        </PopUpCustome >
     )
 }
 

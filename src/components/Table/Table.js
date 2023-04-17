@@ -66,6 +66,8 @@ export default function CustomTable(props) {
     roleToUser
   } = props;
 
+  console.log(currentGroupToUser,"currentGroupToUser");
+
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -272,7 +274,7 @@ export default function CustomTable(props) {
                 <TableRow key={index} className={classes.tableBodyRow}>
 
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_USERNAME ? row.GROUP_USERNAME : row.GROUP_NAME}
+                    {row.GROUP_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
@@ -360,7 +362,7 @@ export default function CustomTable(props) {
               .map((row, index) => (
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_USERNAME}
+                    {row.GROUP_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
@@ -372,7 +374,7 @@ export default function CustomTable(props) {
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
                   </TableCell>
-                  {currentGroupToUser.includes(row.GROUP_USERNAME) ?
+                  {currentGroupToUser.includes(row.GROUP_NAME) ?
                     <TableCell className={classes.tableCell}>
                       <Tooltip
                         id="tooltip-top-start"
@@ -432,7 +434,7 @@ export default function CustomTable(props) {
               .map((row, index) => (
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
-                    {row.title}
+                    {row.ROLE_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
@@ -445,7 +447,7 @@ export default function CustomTable(props) {
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {currentRoleToUser.includes(row.title) ?
+                    {currentRoleToUser.includes(row.ROLE_NAME) ?
                       <Tooltip
                         id="tooltip-top-start"
                         title="حذف کردن نقش از کاربر"
@@ -502,7 +504,7 @@ export default function CustomTable(props) {
               .map((row, index) => (
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
-                    {row.GROUP_USERNAME}
+                    {row.GROUP_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
@@ -514,7 +516,7 @@ export default function CustomTable(props) {
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
                   </TableCell>
-                  {currentGroupToUser.includes(row.GROUP_USERNAME) ?
+                  {currentGroupToUser.includes(row.GROUP_NAME) ?
                     <TableCell className={classes.tableCell}>
                       <Tooltip
                         id="tooltip-top-start"
@@ -576,7 +578,7 @@ export default function CustomTable(props) {
               .map((row, index) => (
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
-                    {row.title}
+                    {row.ROLE_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
@@ -589,7 +591,7 @@ export default function CustomTable(props) {
                     )}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {currentRoleToGroup.includes(row.title) ?
+                    {currentRoleToGroup.includes(row.ROLE_NAME) ?
                       <Tooltip
                         id="tooltip-top-start"
                         title="حذف کردن نقش از گروه"
@@ -643,7 +645,7 @@ export default function CustomTable(props) {
               .map((row, index) => (
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
-                    {row.title}
+                    {row.ROLE_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}

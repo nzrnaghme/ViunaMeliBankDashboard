@@ -87,7 +87,7 @@ export default function EditRole(props) {
   const updateRole = async () => {
     setLosdingShow(true)
 
-    const roleName = dataRole.title
+    const roleName = dataRole.ROLE_NAME
     const data = Object.create(
       {
         roleName: {
@@ -135,7 +135,7 @@ export default function EditRole(props) {
                     <CustomInput
                       rtlActive
                       labelText="اسم نقش"
-                      value={dataRole.title}
+                      value={dataRole.ROLE_NAME}
                       formControlProps={{
                         fullWidth: true,
                       }}

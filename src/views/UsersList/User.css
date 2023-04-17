@@ -5,6 +5,7 @@
 
 .popUpCreateCourse .CardTitle {
     width: 69% !important;
+
 }
 
 
@@ -79,13 +80,13 @@
     width: 900px;
 }
 
-.tabsUser .MuiTabs-scroller .MuiTabs-flexContainer .MuiTab-root{
+.tabsUser .MuiTabs-scroller .MuiTabs-flexContainer .MuiTab-root {
     width: 50% !important;
     font-family: bakh;
     max-width: 100%;
 }
 
-.MuiTabs-flexContainer{
+.MuiTabs-flexContainer {
     margin-top: 20px;
 }
 
@@ -97,6 +98,7 @@
     position: fixed !important;
     width: 61% !important;
 }
+
 
 .bodyStyleCard {
     margin-top: 20px;
@@ -113,4 +115,9 @@
     }
 }
 
+@media screen and (max-width:390px) {
 
+    .CardTitle {
+        width: 55% !important;
+    }
+}

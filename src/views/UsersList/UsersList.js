@@ -183,15 +183,6 @@ export default function UsersList() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <div className="btnAdd">
-            <RegularButton
-              color="success"
-              onClick={() => {
-                createUser();
-              }}
-            >
-              افزودن کاربر
-            </RegularButton>
-
             <div className="searchInput">
 
               <Tooltip
@@ -234,6 +225,18 @@ export default function UsersList() {
                 />
               }
             </div>
+            <RegularButton
+              color="success"
+              onClick={() => {
+                createUser();
+              }}
+
+              style={{ marginRight: 15 }}
+            >
+              افزودن کاربر
+            </RegularButton>
+
+
 
           </div>
         </GridItem>

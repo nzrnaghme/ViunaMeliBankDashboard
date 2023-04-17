@@ -85,7 +85,7 @@ export default function Groups() {
 
     if (Object.values(response.data).length > 0) {
       var newData = Object.values(response.data).map((item, index) => ({
-        GROUP_USERNAME: Object.keys(response.data)[index],
+        GROUP_NAME: Object.keys(response.data)[index],
         GROUP_STATUS: item.GROUP_STATUS,
         GROUP_ID: item.GROUP_ID,
         GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
@@ -105,7 +105,7 @@ export default function Groups() {
   const removeSelectGroup = async (row) => {
     setLosdingShow(true)
 
-    const groupName = row.GROUP_USERNAME
+    const groupName = row.GROUP_NAME
     const data = Object.create(
       {
         groupName: {
@@ -170,12 +170,6 @@ export default function Groups() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12} >
           <div className="btnAdd">
-            <RegularButton color="success"
-              onClick={() => {
-                setOpenInsertGroup(true)
-              }} >افزودن گروه</RegularButton>
-
-
             <div className="searchInput">
 
               <Tooltip
@@ -218,6 +212,12 @@ export default function Groups() {
                 />
               }
             </div>
+            <RegularButton
+              color="success"
+              onClick={() => {
+                setOpenInsertGroup(true)
+              }}
+              style={{ marginRight: 15 }}>افزودن گروه</RegularButton>
 
           </div>
         </GridItem>

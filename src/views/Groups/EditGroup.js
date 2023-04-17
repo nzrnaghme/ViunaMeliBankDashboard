@@ -83,7 +83,7 @@ export default function EditTeacher(props) {
     const updateDataGroup = async () => {
         setLosdingShow(true)
 
-        const groupName = dataGroup.GROUP_USERNAME
+        const groupName = dataGroup.GROUP_NAME
         const data = Object.create(
             {
                 groupName: {
@@ -131,7 +131,7 @@ export default function EditTeacher(props) {
                                             disabled
                                             rtlActive
                                             labelText="اسم گروه"
-                                            value={dataGroup.GROUP_USERNAME}
+                                            value={dataGroup.GROUP_NAME}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}

@@ -100,7 +100,7 @@ export default function Roles() {
 
     if (Object.values(response1.data).length > 0) {
       var newData = Object.values(response1.data).map((item, index) => ({
-        title: Object.keys(response1.data)[index],
+        ROLE_NAME: Object.keys(response1.data)[index],
         ROLE_STATUS: item.ROLE_STATUS,
         ROLE_ID: item.ROLE_ID,
         ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
@@ -125,7 +125,7 @@ export default function Roles() {
       async () => {
         setLosdingShow(true)
 
-        const roleName = row.title
+        const roleName = row.ROLE_NAME
         const data = Object.create(
           {
             roleName: {
@@ -200,15 +200,6 @@ export default function Roles() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <div className="btnAdd">
-            <RegularButton
-              color="success"
-              onClick={() => {
-                setOpenInsertRole(true);
-              }}
-            >
-              افزودن نقش
-            </RegularButton>
-
             <div className="searchInput">
 
               <Tooltip
@@ -248,9 +239,21 @@ export default function Roles() {
                   formControlProps={{
                     fullWidth: true,
                   }}
+                  
                 />
               }
             </div>
+            <RegularButton
+              color="success"
+              onClick={() => {
+                setOpenInsertRole(true);
+              }}
+              style={{ marginRight: 15 }}
+            >
+              افزودن نقش
+            </RegularButton>
+
+            
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>

@@ -576,6 +576,38 @@ footer ul li a:hover {
   flex-direction: row;
 }
 
+.searchInput .MuiFormControl-fullWidth {
+  margin: -8px 0 0 0 !important;
+}
+
+.searchInput .MuiIconButton-root {
+  padding: 4px;
+}
+
+
+.searchInputInto {
+  display: flex;
+  flex-direction: row;
+}
+
+.searchInputInto .MuiFormControl-fullWidth {
+  margin: -17px 0 0 0 !important;
+}
+
+.searchInputInto .MuiIconButton-root {
+  padding: 4px;
+}
+
+.searchInputInto .MuiFormControl-root .MuiFormLabel-root{
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.CardTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 /* .searchInput button:hover {
   transition-duration: 1s;
   background-color: lime;

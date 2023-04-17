@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from '@material-ui/icons/Search';
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -14,11 +17,12 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import CustomInput from "components/CustomInput/CustomInput";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllGroups } from "api/Core/Group";
-import { listMemberToRole, getAllRoles, addMemberToRole, removeMemberToRole } from "api/Core/Role";
-import { getListUser } from "api/Core/User";
+import { getAllGroups, findGroup } from "api/Core/Group";
+import { listMemberToRole, getAllRoles, addMemberToRole, removeMemberToRole, findRole } from "api/Core/Role";
+import { getListUser, findUser } from "api/Core/User";
 
 
 const styles = (theme) => ({
@@ -78,6 +82,9 @@ export default function ListOfRole(props) {
     const [currentRoleToUser, setCurrentRoleToUser] = useState([]);
     const [allMember, setAllMember] = useState();
 
+    const [showSearch, setShowSearch] = useState(false)
+    const [nameSearch, setNameSearch] = useState(null)
+
     const {
         openListRolePopUp,
         InsertSuccess,
@@ -85,9 +92,9 @@ export default function ListOfRole(props) {
         dataRoleTo } = props
 
     useEffect(() => {
-        getGroups(dataRoleTo.title);
-        getRoles(dataRoleTo.title);
-        getMember(dataRoleTo.title);
+        getGroups(dataRoleTo.ROLE_NAME);
+        getRoles(dataRoleTo.ROLE_NAME);
+        getMember(dataRoleTo.ROLE_NAME);
 
     }, [])
 
@@ -112,7 +119,7 @@ export default function ListOfRole(props) {
         }
         if (response.data) {
             var newData = Object.values(response.data).map((item, index) => ({
-                GROUP_USERNAME: Object.keys(response.data)[index],
+                GROUP_NAME: Object.keys(response.data)[index],
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
@@ -121,11 +128,11 @@ export default function ListOfRole(props) {
         if (currentGroup.length > 0) {
 
             var select = newData.filter((e) => (
-                currentGroup.includes(e.GROUP_USERNAME)
+                currentGroup.includes(e.GROUP_NAME)
             ))
 
             var AllGroups = newData.filter((e) => (
-                !currentGroup.includes(e.GROUP_USERNAME)
+                !currentGroup.includes(e.GROUP_NAME)
             ))
 
             select.forEach(element1 => {
@@ -159,7 +166,7 @@ export default function ListOfRole(props) {
         }
         if (response.data) {
             var newData = Object.values(response.data).map((item, index) => ({
-                title: Object.keys(response.data)[index],
+                ROLE_NAME: Object.keys(response.data)[index],
                 ROLE_STATUS: item.ROLE_STATUS,
                 ROLE_ID: item.ROLE_ID,
                 ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
@@ -168,11 +175,11 @@ export default function ListOfRole(props) {
         }
         if (currentRole.length > 0) {
             var select = newData.filter((e) => (
-                currentRole.includes(e.title)
+                currentRole.includes(e.ROLE_NAME)
             ))
 
             var AllRoles = newData.filter((e) => (
-                !currentRole.includes(e.title)
+                !currentRole.includes(e.ROLE_NAME)
             ))
 
             select.forEach(element1 => {
@@ -262,12 +269,12 @@ export default function ListOfRole(props) {
     const addRoleToGroups = async (row) => {
         setLosdingShow(true)
 
-        const roleName = dataRoleTo.title
+        const roleName = dataRoleTo.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: row.GROUP_USERNAME,
+                    MEMBER: row.GROUP_NAME,
                 },
             },
         );
@@ -279,7 +286,7 @@ export default function ListOfRole(props) {
 
             setOpenToast(true);
             onToast("گروه با موفقیت اضافه شد", "success");
-            getGroups(dataRoleTo.title)
+            getGroups(dataRoleTo.ROLE_NAME)
         } else {
             setLosdingShow(false)
 
@@ -291,12 +298,12 @@ export default function ListOfRole(props) {
     const removeGroupToRole = async (row) => {
         setLosdingShow(true)
 
-        const roleName = dataRoleTo.title
+        const roleName = dataRoleTo.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
                     MEMBER_TYPE: "GROUP",
-                    MEMBER: row.GROUP_USERNAME,
+                    MEMBER: row.GROUP_NAME,
                 },
             },
         );
@@ -308,7 +315,7 @@ export default function ListOfRole(props) {
 
             setOpenToast(true);
             onToast("گروه با موفقیت از نقش حذف شد", "success");
-            getGroups(dataRoleTo.title)
+            getGroups(dataRoleTo.ROLE_NAME)
         } else {
             setLosdingShow(true)
 
@@ -320,12 +327,12 @@ export default function ListOfRole(props) {
     const addRoleToRoles = async (row) => {
         setLosdingShow(true)
 
-        const roleName = dataRoleTo.title
+        const roleName = dataRoleTo.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
                     MEMBER_TYPE: "ROLE",
-                    MEMBER: row.title,
+                    MEMBER: row.ROLE_NAME,
                 },
             },
         );
@@ -337,7 +344,7 @@ export default function ListOfRole(props) {
 
             setOpenToast(true);
             onToast("نقش با موفقیت اضافه شد", "success");
-            getRoles(dataRoleTo.title)
+            getRoles(dataRoleTo.ROLE_NAME)
         } else {
             setLosdingShow(false)
 
@@ -349,12 +356,12 @@ export default function ListOfRole(props) {
     const removeRoleToRole = async (row) => {
         setLosdingShow(true)
 
-        const roleName = dataRoleTo.title
+        const roleName = dataRoleTo.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
                     MEMBER_TYPE: "ROLE",
-                    MEMBER: row.title,
+                    MEMBER: row.ROLE_NAME,
                 },
             },
         );
@@ -366,7 +373,7 @@ export default function ListOfRole(props) {
 
             setOpenToast(true);
             onToast("نقش با موفقیت از نقش حذف شد", "success");
-            getRoles(dataRoleTo.title)
+            getRoles(dataRoleTo.ROLE_NAME)
         } else {
             setLosdingShow(false)
 
@@ -378,7 +385,7 @@ export default function ListOfRole(props) {
     const addRoleToUser = async (row) => {
         setLosdingShow(true)
 
-        const roleName = dataRoleTo.title
+        const roleName = dataRoleTo.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
@@ -395,7 +402,7 @@ export default function ListOfRole(props) {
 
             setOpenToast(true);
             onToast("نقش به کاربر با موفقیت اضافه شد", "success");
-            getMember(dataRoleTo.title)
+            getMember(dataRoleTo.ROLE_NAME)
         } else {
             setLosdingShow(false)
 
@@ -408,7 +415,7 @@ export default function ListOfRole(props) {
     const removeRoleToUser = async (row) => {
         setLosdingShow(true)
 
-        const roleName = dataRoleTo.title
+        const roleName = dataRoleTo.ROLE_NAME
         const data = Object.create(
             {
                 roleName: {
@@ -425,7 +432,7 @@ export default function ListOfRole(props) {
 
             setOpenToast(true);
             onToast("کاربر با موفقیت از نقش حذف شد", "success");
-            getMember(dataRoleTo.title)
+            getMember(dataRoleTo.ROLE_NAME)
         } else {
             setLosdingShow(false)
 
@@ -438,6 +445,54 @@ export default function ListOfRole(props) {
         setItemTabs(newValue);
     };
 
+    const searchWithNameUser = async () => {
+        setLosdingShow(true);
+        if (itemTabs === 0) {
+            let data = {
+                GROUP_NAME: nameSearch
+            };
+            const response = await findGroup(data);
+            if (Object.values(response.data).length > 0) {
+                setAllGroups(Object.values(response.data))
+                setRowsPerPageGroup(10)
+                setCurrentPage_MainbarCurrentGroup(0);
+            } else {
+                onToast("گروهی با این اسم وجود ندارد", "warning")
+                setOpenToast(true)
+            }
+
+        } else if (itemTabs === 1) {
+            let data = {
+                ROLE_NAME: nameSearch
+            };
+            const response = await findRole(data);
+            if (Object.values(response.data).length > 0) {
+                setAllRoles(Object.values(response.data))
+                setRowsPerPageRole(10)
+                setCurrentPage_MainbarCurrentRole(0);
+            } else {
+                onToast("نقشی با این اسم وجود ندارد", "warning")
+                setOpenToast(true)
+            }
+
+        } else {
+            let data = {
+                USER_USERNAME: nameSearch
+            };
+            const response = await findUser(data);
+            if (Object.values(response.data).length > 0) {
+                setAllMember(Object.values(response.data))
+                setRowsPerPageUser(10)
+                setCurrentPage_MainbarCurrentUser(0);
+            } else {
+                onToast("کاربری با این اسم وجود ندارد", "warning")
+                setOpenToast(true)
+            }
+        }
+
+        setLosdingShow(false)
+    }
+
     return (
         <PopUpCustome
             open={openListRolePopUp}
@@ -447,7 +502,52 @@ export default function ListOfRole(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning" className="CardTitle">
-                            <h4 className={classes.cardTitleWhite}>اضافه کردن به نقش {dataRoleTo.title}</h4>
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن به نقش {dataRoleTo.ROLE_NAME}</h4>
+                            <div className="searchInputInto">
+
+                                <Tooltip
+                                    id="tooltip-top-start"
+                                    title={`جستجو با اسم${itemTabs === 0 ? "گروه" : "نقش"}`}
+                                    placement="top"
+                                    classes={{ tooltip: classes.tooltip }}
+                                >
+                                    <IconButton
+                                        aria-label="Key"
+                                        className={classes.tableActionButton}
+                                        onClick={() => {
+                                            if (!nameSearch && showSearch) {
+                                                setShowSearch(!showSearch);
+                                                if (itemTabs === 0) getGroups(dataRoleTo.ROLE_NAME)
+                                                else if (itemTabs === 1) getRoles(dataRoleTo.ROLE_NAME)
+                                                else getMember(dataRoleTo.ROLE_NAME);
+                                            }
+                                            else if (nameSearch && showSearch) {
+                                                searchWithNameUser()
+                                            } else setShowSearch(!showSearch);
+                                        }}
+                                    >
+                                        <SearchIcon
+                                            className={
+                                                classes.tableActionButtonIcon}
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+
+                                {showSearch &&
+                                    <CustomInput
+                                        rtlActive
+                                        labelText={`اسم ${itemTabs === 0 ? "گروه" : itemTabs === 1 ? "نقش" : "کاربر"}`}
+                                        value={nameSearch}
+                                        onChange={(e) => {
+                                            setNameSearch(e);
+                                        }}
+                                        formControlProps={{
+                                            fullWidth: true,
+                                        }}
+                                    />
+                                }
+                            </div>
+
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
 
