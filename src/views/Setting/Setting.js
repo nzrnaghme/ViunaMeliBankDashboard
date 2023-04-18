@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
+
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -67,16 +69,14 @@ export default function Setting() {
         setConfirmPopupOpen,
         onConfirmSetter,
         setOpenToast,
-        onToast,
-        setLosdingShow
+        onToast
     } = useContext(GeneralContext);
 
     useEffect(() => {
-        getConfig()
+        trackPromise(getConfig())
     }, [])
 
     const getConfig = async (currentPage) => {
-        setLosdingShow(true)
 
         const data = {
             first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyConfig.toString(),
@@ -91,8 +91,6 @@ export default function Setting() {
             onToast("تنظیماتی دیگر وجود ندارد", "warning")
             setOpenToast(true)
         }
-        setLosdingShow(false)
-
     }
 
     const handleChangePage = (currentPage) => {
@@ -107,7 +105,6 @@ export default function Setting() {
     };
 
     const removeSelectConfig = async (row) => {
-        setLosdingShow(true);
         const configName = row.CNF_TYPE;
         const data = Object.create(
             {
@@ -130,8 +127,6 @@ export default function Setting() {
             setOpenToast(true);
             onToast("گروه حذف نشد", "error");
         }
-
-        setLosdingShow(false);
     }
 
     const EditConfig = async (row) => {
@@ -177,7 +172,7 @@ export default function Setting() {
                                     currentPage={currentPage_MainbarMyConfig}
                                     removeConfig={(row) => {
                                         onConfirmSetter("آیا برای حذف تنظیمات مطمئن هستید؟", () => {
-                                            removeSelectConfig(row);
+                                            trackPromise(removeSelectConfig(row));
                                         });
                                         setConfirmPopupOpen(true);
                                     }}
@@ -216,7 +211,7 @@ export default function Setting() {
                     EditSuccess={() => {
                         setOpenToast(true);
                         onToast("تنظیمات بروزرسانی شد", "success");
-                        getAllConfigs()
+                        trackPromise(getAllConfigs())
                         setOpenUpdateConfig(false)
                     }} />
             }
@@ -228,7 +223,7 @@ export default function Setting() {
                     InsertSuccess={() => {
                         setOpenToast(true);
                         onToast("تنظیمات اضافه شد", "success");
-                        getAllConfigs();
+                        trackPromise(getAllConfigs());
                         setOpenInsertConfig(false);
                     }} />
             }

@@ -598,7 +598,7 @@ footer ul li a:hover {
   padding: 4px;
 }
 
-.searchInputInto .MuiFormControl-root .MuiFormLabel-root{
+.searchInputInto .MuiFormControl-root .MuiFormLabel-root {
   color: rgba(0, 0, 0, 0.54) !important;
 }
 
@@ -608,13 +608,26 @@ footer ul li a:hover {
   justify-content: space-between;
 }
 
-/* .searchInput button:hover {
-  transition-duration: 1s;
-  background-color: lime;
+.hidden {
+  transition: 0.5s;
+  width: 32px;
+  overflow: hidden;
+}
+
+.show {
+  transition: 0.5s;
+  width: 214px;
 }
 
 
-.searchInput .MuiFormControl-root:active {
-  transition-duration: 10s;
 
-} */
+.showLabel {
+  display: block;
+  opacity: 1;
+  transition: 1s !important;
+}
+
+.hiddenLabel {
+  display: none;
+  opacity: 0;
+}

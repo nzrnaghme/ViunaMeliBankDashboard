@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
+
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
@@ -59,7 +61,7 @@ export default function Groups() {
   const [currentPage_MainbarMyGroup, setCurrentPage_MainbarMyGroup] = useState(0);
 
   const [openInsertGroup, setOpenInsertGroup] = useState(false)
-  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
   const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
   const [dataGroup, setDataGroup] = useState()
@@ -71,11 +73,10 @@ export default function Groups() {
   const [nameSearch, setNameSearch] = useState(null)
 
   useEffect(() => {
-    getGroups();
+    trackPromise(getGroups());
   }, [])
 
   const getGroups = async (currentPage) => {
-    setLosdingShow(true)
 
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyGroup.toString(),
@@ -98,13 +99,9 @@ export default function Groups() {
       setOpenToast(true)
     }
 
-    setLosdingShow(false)
-
   }
 
   const removeSelectGroup = async (row) => {
-    setLosdingShow(true)
-
     const groupName = row.GROUP_NAME
     const data = Object.create(
       {
@@ -118,12 +115,10 @@ export default function Groups() {
 
     let response = await removeGroup(data);
     if (response.data === "SUCCESSFUL") {
-      setLosdingShow(false)
       setOpenToast(true);
       onToast("گروه با موفقیت حذف شد", "success");
       getGroups();
     } else {
-      setLosdingShow(false)
       setOpenToast(true);
       onToast("گروه حذف نشد", "success");
       getGroups();
@@ -149,7 +144,6 @@ export default function Groups() {
 
 
   const searchWithNameGroup = async () => {
-    setLosdingShow(true);
     let data = {
       GROUP_NAME: nameSearch
     };
@@ -160,8 +154,6 @@ export default function Groups() {
       onToast("کاربری با این اسم وجود ندارد", "warning")
       setOpenToast(true)
     }
-
-    setLosdingShow(false)
   }
 
 
@@ -170,7 +162,7 @@ export default function Groups() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12} >
           <div className="btnAdd">
-            <div className="searchInput">
+            <div className={`searchInput ${showSearch ? "show" : "hidden"}`}>
 
               <Tooltip
                 id="tooltip-top-start"
@@ -184,10 +176,10 @@ export default function Groups() {
                   onClick={() => {
                     if (!nameSearch && showSearch) {
                       setShowSearch(!showSearch);
-                      getGroups()
+                      trackPromise(getGroups())
                     }
                     else if (nameSearch && showSearch) {
-                      searchWithNameGroup()
+                      trackPromise(searchWithNameGroup())
                     } else setShowSearch(!showSearch);
                   }}
                 >
@@ -198,19 +190,19 @@ export default function Groups() {
                 </IconButton>
               </Tooltip>
 
-              {showSearch &&
-                <CustomInput
-                  rtlActive
-                  labelText="اسم گروه"
-                  value={nameSearch}
-                  onChange={(e) => {
-                    setNameSearch(e);
-                  }}
-                  formControlProps={{
-                    fullWidth: true,
-                  }}
-                />
-              }
+              <CustomInput
+                rtlActive
+                labelText="اسم گروه"
+                value={nameSearch}
+                onChange={(e) => {
+                  setNameSearch(e);
+                }}
+                formControlProps={{
+                  fullWidth: true,
+                }}
+                className={showSearch ? "showLabel" : "hiddenLabel"}
+              />
+
             </div>
             <RegularButton
               color="success"
@@ -238,12 +230,12 @@ export default function Groups() {
                   editGroup={editGroup}
                   removeGroup={(row) => {
                     onConfirmSetter('آیا برای حذف گروه مطمئن هستید؟', () => {
-                      removeSelectGroup(row)
+                      trackPromise(removeSelectGroup(row));
                     })
-                    setConfirmPopupOpen(true)
+                    setConfirmPopupOpen(true);
                   }}
                   addGroupToGroup={(row) => {
-                    setDataGroupToGroup(row)
+                    setDataGroupToGroup(row);
                     setOpenGroupToGroup(true);
                   }}
                   group
@@ -271,7 +263,7 @@ export default function Groups() {
           InsertSuccess={() => {
             setOpenToast(true);
             onToast("گروه اضافه شد", "success");
-            getGroups();
+            trackPromise(getGroups());
             setOpenInsertGroup(false);
           }} />
       }
@@ -283,8 +275,8 @@ export default function Groups() {
           EditSuccess={() => {
             setOpenToast(true);
             onToast("گروه بروزرسانی شد", "success");
-            getGroups()
-            setOpenUpdateGroup(false)
+            trackPromise(getGroups());
+            setOpenUpdateGroup(false);
           }} />
       }
       {openGroupToGroup && dataGroupToGroup &&
@@ -295,8 +287,8 @@ export default function Groups() {
           InsertSuccess={() => {
             setOpenToast(true);
             onToast("گروه بروزرسانی شد", "success");
-            getGroups()
-            setOpenGroupToGroup(false)
+            trackPromise(getGroups());
+            setOpenGroupToGroup(false);
           }}
         />
       }

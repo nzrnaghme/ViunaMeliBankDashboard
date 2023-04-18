@@ -101,14 +101,14 @@ export default function Main({ ...rest }) {
         <div className={classes.content}>
           <div className={classes.container}>
             <Switch>
-              <Route path={"/admin/dashboard"} component={Dashboard} />
-              <Route path={"/admin/userList"} component={UsersList} />
-              <Route path={"/admin/Groups"} component={Groups} />
-              <Route path={"/admin/roles"} component={Roles} />
-              <Route path={"/admin/setting"} component={Setting} />
+              <Route path={"/dashboard"} component={Dashboard} />
+              <Route path={"/userList"} component={UsersList} />
+              <Route path={"/Groups"} component={Groups} />
+              <Route path={"/roles"} component={Roles} />
+              <Route path={"/setting"} component={Setting} />
             
 
-              <Redirect to="/admin/dashboard" from="/" />
+              <Redirect to="/dashboard" from="/" />
             </Switch>
           </div>
         </div>

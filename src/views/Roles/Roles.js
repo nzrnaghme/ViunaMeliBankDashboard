@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
+
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
@@ -70,8 +72,7 @@ export default function Roles() {
     setConfirmPopupOpen,
     onConfirmSetter,
     setOpenToast,
-    onToast,
-    setLosdingShow
+    onToast
   } = useContext(GeneralContext);
 
   const [openEditRole, setOpenEditRole] = useState(false);
@@ -86,11 +87,10 @@ export default function Roles() {
   const [nameSearch, setNameSearch] = useState(null)
 
   useEffect(() => {
-    getRoles();
+    trackPromise(getRoles());
   }, []);
 
   const getRoles = async (currentPage) => {
-    setLosdingShow(true)
 
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyRoles.toString(),
@@ -112,48 +112,33 @@ export default function Roles() {
       onToast("نقشی دیگر وجود ندارد", "warning")
       setOpenToast(true)
     }
-
-
-    setLosdingShow(false)
-
   };
 
-  const removeRoles = (row) => {
+  const removeRoles = async (row) => {
 
-    onConfirmSetter(
-      "مطمئن به حذف نقش هستید؟",
-      async () => {
-        setLosdingShow(true)
-
-        const roleName = row.ROLE_NAME
-        const data = Object.create(
-          {
-            roleName: {
-              ROLE_STATUS: row.ROLE_STATUS,
-              ROLE_DESCRIPTION: row.ROLE_DESCRIPTION,
-            },
-          },
-        );
-        data[roleName] = data["roleName"];
-        let response = await removeRole(data);
-        if (response.data === "SUCCESSFUL") {
-          setLosdingShow(false)
-
-          getRoles()
-          setOpenToast(true);
-          onToast("گروه با موفقیت حذف شد", "success");
-        } else {
-          setLosdingShow(false)
-
-          getRoles()
-          setOpenToast(true);
-          onToast("گروه حذف نشد", "error");
-        }
+    const roleName = row.ROLE_NAME
+    const data = Object.create(
+      {
+        roleName: {
+          ROLE_STATUS: row.ROLE_STATUS,
+          ROLE_DESCRIPTION: row.ROLE_DESCRIPTION,
+        },
       },
-      () => { }
     );
-    setConfirmPopupOpen(true);
-  };
+    data[roleName] = data["roleName"];
+    let response = await removeRole(data);
+    if (response.data === "SUCCESSFUL") {
+
+      getRoles()
+      setOpenToast(true);
+      onToast("گروه با موفقیت حذف شد", "success");
+    } else {
+
+      getRoles()
+      setOpenToast(true);
+      onToast("گروه حذف نشد", "error");
+    }
+  }
 
   const editRole = (item) => {
     setOpenEditRole(true);
@@ -180,7 +165,6 @@ export default function Roles() {
   };
 
   const searchWithNameRole = async () => {
-    setLosdingShow(true);
     let data = {
       ROLE_NAME: nameSearch
     };
@@ -192,7 +176,6 @@ export default function Roles() {
       setOpenToast(true)
     }
 
-    setLosdingShow(false)
   }
 
   return (
@@ -200,7 +183,7 @@ export default function Roles() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <div className="btnAdd">
-            <div className="searchInput">
+            <div className={`searchInput ${showSearch ? "show" : "hidden"}`}>
 
               <Tooltip
                 id="tooltip-top-start"
@@ -214,10 +197,10 @@ export default function Roles() {
                   onClick={() => {
                     if (!nameSearch && showSearch) {
                       setShowSearch(!showSearch);
-                      getRoles()
+                      trackPromise(getRoles())
                     }
                     else if (nameSearch && showSearch) {
-                      searchWithNameRole()
+                      trackPromise(searchWithNameRole())
                     } else setShowSearch(!showSearch);
                   }}
                 >
@@ -228,20 +211,20 @@ export default function Roles() {
                 </IconButton>
               </Tooltip>
 
-              {showSearch &&
-                <CustomInput
-                  rtlActive
-                  labelText="اسم نقش"
-                  value={nameSearch}
-                  onChange={(e) => {
-                    setNameSearch(e);
-                  }}
-                  formControlProps={{
-                    fullWidth: true,
-                  }}
-                  
-                />
-              }
+
+              <CustomInput
+                rtlActive
+                labelText="اسم نقش"
+                value={nameSearch}
+                onChange={(e) => {
+                  setNameSearch(e);
+                }}
+                formControlProps={{
+                  fullWidth: true,
+                }}
+                className={showSearch ? "showLabel" : "hiddenLabel"}
+              />
+
             </div>
             <RegularButton
               color="success"
@@ -253,7 +236,7 @@ export default function Roles() {
               افزودن نقش
             </RegularButton>
 
-            
+
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
@@ -274,7 +257,9 @@ export default function Roles() {
                   tableData={allRoles}
                   currentPage={currentPage_MainbarMyRoles}
                   removeRole={(row) => {
-                    removeRoles(row);
+                    onConfirmSetter("مطمئن به حذف نقش هستید؟",
+                      () => { trackPromise(removeRoles(row)) })
+                    setConfirmPopupOpen(true);
                   }}
                   editRole={editRole}
                   handleChangePage={handleChangePage}
@@ -316,7 +301,7 @@ export default function Roles() {
           EditSuccess={() => {
             setOpenToast(true);
             onToast("گروه بروزرسانی شد", "success");
-            getRoles();
+            trackPromise(getRoles());
             setOpenEditRole(false);
           }}
         />
@@ -328,7 +313,7 @@ export default function Roles() {
           InsertSuccess={() => {
             setOpenToast(true);
             onToast("گروه اضافه شد", "success");
-            getRoles();
+            trackPromise(getRoles());
             setOpenInsertRole(false);
           }}
           closePopUp={() => {
@@ -340,13 +325,13 @@ export default function Roles() {
       {openRole && dataRoleTo &&
         <ListOfRole
           openListRolePopUp={openRole}
-          closePopUpList={() => { setOpenRole(false) }}
+          closePopUpList={() => { setOpenRole(false); }}
           dataRoleTo={dataRoleTo}
           InsertSuccess={() => {
             setOpenToast(true);
             onToast("گروه بروزرسانی شد", "success");
-            getRoles()
-            setOpenRole(false)
+            trackPromise(getRoles());
+            setOpenRole(false);
           }}
         />
       }

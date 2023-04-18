@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
+
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
@@ -60,8 +62,7 @@ export default function UsersList() {
     setConfirmPopupOpen,
     onConfirmSetter,
     setOpenToast,
-    onToast,
-    setLosdingShow
+    onToast
   } = useContext(GeneralContext);
 
   const [allUsers, setAllUsers] = useState({});
@@ -87,11 +88,10 @@ export default function UsersList() {
 
 
   useEffect(() => {
-    getUsers()
+    trackPromise(getUsers());
   }, []);
 
   const getUsers = async (currentPage) => {
-    setLosdingShow(true)
 
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyUsers.toString(),
@@ -105,12 +105,10 @@ export default function UsersList() {
       onToast("کاربری دیگر وجود ندارد", "warning")
       setOpenToast(true)
     }
-    setLosdingShow(false);
 
   };
 
   const removeSelectUser = async (row) => {
-    setLosdingShow(true)
 
     const userName = row.USER_USERNAME
     const data = Object.create(
@@ -132,7 +130,6 @@ export default function UsersList() {
       setOpenToast(true);
       onToast("کاربر حذف نشد", "error");
     }
-    setLosdingShow(false);
   };
 
   const EditUsers = (data) => {
@@ -163,7 +160,6 @@ export default function UsersList() {
   }
 
   const searchWithNameUser = async () => {
-    setLosdingShow(true);
     let data = {
       USER_USERNAME: nameSearch
     };
@@ -175,7 +171,6 @@ export default function UsersList() {
       setOpenToast(true)
     }
 
-    setLosdingShow(false)
   }
 
   return (
@@ -183,7 +178,7 @@ export default function UsersList() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <div className="btnAdd">
-            <div className="searchInput">
+            <div className={`searchInput ${showSearch ? "show" : "hidden"}`}>
 
               <Tooltip
                 id="tooltip-top-start"
@@ -200,7 +195,7 @@ export default function UsersList() {
                       getUsers()
                     }
                     else if (nameSearch && showSearch) {
-                      searchWithNameUser()
+                      trackPromise(searchWithNameUser())
                     } else setShowSearch(!showSearch);
                   }}
                 >
@@ -211,7 +206,6 @@ export default function UsersList() {
                 </IconButton>
               </Tooltip>
 
-              {showSearch &&
                 <CustomInput
                   rtlActive
                   labelText="اسم کاربری"
@@ -222,8 +216,9 @@ export default function UsersList() {
                   formControlProps={{
                     fullWidth: true,
                   }}
+                  className={showSearch ? "showLabel" : "hiddenLabel"}
                 />
-              }
+
             </div>
             <RegularButton
               color="success"
@@ -260,7 +255,7 @@ export default function UsersList() {
                   currentPage={currentPage_MainbarMyUsers}
                   removeUser={(row) => {
                     onConfirmSetter("آیا برای حذف کاربر مطمئن هستید؟", () => {
-                      (removeSelectUser(row));
+                      trackPromise(removeSelectUser(row));
                     });
                     setConfirmPopupOpen(true);
                   }}

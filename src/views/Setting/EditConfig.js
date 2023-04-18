@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { trackPromise } from "react-promise-tracker";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -53,7 +54,7 @@ const useStyles = makeStyles(styles);
 
 export default function EditConfig(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         openEditConfigPopUp,
@@ -70,7 +71,6 @@ export default function EditConfig(props) {
     }, [dataConfig]);
 
     const updateDataConfig = async () => {
-        setLosdingShow(true)
 
         const configType = condition
         const data = Object.create(
@@ -84,19 +84,15 @@ export default function EditConfig(props) {
 
         let response = await editConfig(data);
         if (response.data === "SUCCESSFUL") {
-            setLosdingShow(false)
             EditSuccess();
         }
 
         else {
-            setLosdingShow(false)
 
             setOpenToast(true)
             onToast("تنظیمات بروزرسانی نشد", "error")
             closePopUpEdit();
         }
-
-
     }
 
     return (
@@ -169,7 +165,7 @@ export default function EditConfig(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateDataConfig() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(updateDataConfig()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

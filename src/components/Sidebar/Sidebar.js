@@ -87,15 +87,15 @@ export default function Sidebar(props) {
           var listItemClasses;
 
           listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.layout + prop.path),
+            [" " + classes[color]]: activeRoute(prop.path),
           });
 
           const whiteFontClasses = classNames({
-            [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path),
+            [" " + classes.whiteFont]: activeRoute(prop.path),
           });
           return (
             <NavLink
-              to={prop.layout + prop.path}
+              to={prop.path}
               className={activePro + classes.item}
               activeClassName="active"
               key={key}
@@ -213,7 +213,7 @@ export default function Sidebar(props) {
           onMouseLeave={() => {
             setDrawerLogo(true);
           }}
-          // style={{ width: drawerWidth }}
+        // style={{ width: drawerWidth }}
         >
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>
@@ -223,18 +223,18 @@ export default function Sidebar(props) {
             style={
               !drawerlogo
                 ? {
-                    textAlign: "center",
-                    padding: "17px 20px",
-                    color: "#4D4D4D",
-                    fontSize: "14px",
-                    zIndex: "999",
-                    position: "absolute",
-                    bottom: "0px",
-                    width: 200,
-                  }
+                  textAlign: "center",
+                  padding: "17px 20px",
+                  color: "#4D4D4D",
+                  fontSize: "14px",
+                  zIndex: "999",
+                  position: "absolute",
+                  bottom: "0px",
+                  width: 200,
+                }
                 : {
-                    display: "none",
-                  }
+                  display: "none",
+                }
             }
           >
             توسعه توسط تیم نرم‌افزاری ویونا

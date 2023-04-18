@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
+
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -18,7 +20,7 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 // @material-ui/icons
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
-// import { loginEmployee } from "api/Core/Login_Register";
+
 import { setItem } from "api/storage/storage";
 import { GeneralContext } from "providers/GeneralContext";
 
@@ -27,24 +29,24 @@ import captchaPic from "./../../assets/img/captcha.png";
 import { loginUser } from "api/Core/Login";
 
 const useStyles = makeStyles(styles);
+
 export default function LoginPage() {
+
   const classes = useStyles();
   const [check, setCheck] = useState(false);
   const [userName, setUserName] = useState();
   const [pass, setPass] = useState();
   const [captcha, setCaptcha] = useState();
+
   const {
     setOpenToast,
-    onToast,
-    setLosdingShow
-  } = useContext(GeneralContext);
+    onToast } = useContext(GeneralContext);
 
   const handleToggle = (value) => {
     setCheck(value.target.checked);
   };
 
   const login = async (e) => {
-    setLosdingShow(true)
     e.preventDefault();
     const userN = userName;
     const data = Object.create(
@@ -58,14 +60,13 @@ export default function LoginPage() {
     data[userN] = data["userN"];
     let response = await loginUser(data);
     if (response.data) {
-      setLosdingShow(false)
       switch (response.data) {
         case 0:
           setOpenToast(true);
           onToast("ورود موفقیت آمیز نبود", "error")
           break;
         case 1:
-          window.location = "/admin/dashboard";
+          window.location = "/dashboard";
           setItem("role", "admin");
 
           break;
@@ -85,7 +86,7 @@ export default function LoginPage() {
           break;
 
         default:
-          window.location = "/admin/dashboard";
+          window.location = "/dashboard";
           break;
       }
     }
@@ -95,7 +96,9 @@ export default function LoginPage() {
     <div className={classes.container}>
       <GridContainer justify="center">
         <GridItem xs={12} sm={6} md={4}>
-          <form onSubmit={login}>
+          <form onSubmit={(e) => {
+            trackPromise(login(e))
+          }}>
             <Card className={classes.login}>
               <CardHeader
                 className={`${classes.cardHeader} ${classes.textCenter}`}

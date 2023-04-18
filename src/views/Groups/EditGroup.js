@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { trackPromise } from "react-promise-tracker";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -64,7 +66,7 @@ const useStyles = makeStyles(styles);
 
 export default function EditTeacher(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         openEditTeacherPopUp,
@@ -81,7 +83,6 @@ export default function EditTeacher(props) {
     }, [dataGroup]);
 
     const updateDataGroup = async () => {
-        setLosdingShow(true)
 
         const groupName = dataGroup.GROUP_NAME
         const data = Object.create(
@@ -96,14 +97,10 @@ export default function EditTeacher(props) {
 
         let response = await editeGroup(data);
         if (response.data === "SUCCESSFUL") {
-            setLosdingShow(false)
-
             EditSuccess();
         }
 
         else {
-            setLosdingShow(false)
-
             setOpenToast(true)
             onToast("گروه بروزرسانی نشد", "error")
             closePopUpEdit();
@@ -181,7 +178,7 @@ export default function EditTeacher(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateDataGroup() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(updateDataGroup()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

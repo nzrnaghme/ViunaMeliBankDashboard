@@ -33,7 +33,8 @@ export default function CustomInput(props) {
     multiline,
     rows,
     disabled,
-    textLeft
+    textLeft,
+    className
   } = props;
 
   const labelClasses = classNames({
@@ -61,7 +62,7 @@ export default function CustomInput(props) {
   return (
     <FormControl
       {...formControlProps}
-      className={formControlProps.className + " " + classes.formControl}
+      className={`${formControlProps.className} ${classes.formControl} ${className}`}
     >
       {labelText !== undefined ? (
         <InputLabel
@@ -121,5 +122,6 @@ CustomInput.propTypes = {
   multiline: PropTypes.bool,
   rows: PropTypes.number,
   disabled: PropTypes.bool,
-  textLeft: PropTypes.bool
+  textLeft: PropTypes.bool,
+  className:PropTypes.string
 };

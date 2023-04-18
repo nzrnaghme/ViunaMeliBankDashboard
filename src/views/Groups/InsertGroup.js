@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
+
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import GridItem from "components/Grid/GridItem.js";
@@ -69,7 +71,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function InsertGroup(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         InsertSuccess,
@@ -82,8 +84,6 @@ export default function InsertGroup(props) {
     const [description, setDescription] = useState(null);
 
     const InsertGroup = async () => {
-        setLosdingShow(true)
-
         if (nameNew) {
             const groupName = nameNew
             const data = Object.create(
@@ -97,20 +97,14 @@ export default function InsertGroup(props) {
             data[groupName] = data["groupName"];
             let response = await addGroup(data);
             if (response.data === "SUCCESSFUL") {
-                setLosdingShow(false)
-
                 InsertSuccess();
             }
             else {
-                setLosdingShow(false)
-
                 setOpenToast(true)
                 onToast("گروه اضافه نشد", "error")
                 closePopUp()
             }
         } else {
-            setLosdingShow(false)
-
             setOpenToast(true)
             onToast("گروه اضافه نشد", "error")
 
@@ -196,7 +190,7 @@ export default function InsertGroup(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { InsertGroup() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(InsertGroup()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

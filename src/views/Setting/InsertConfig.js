@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -14,9 +15,9 @@ import RegularButton from "components/CustomButtons/Button";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 // @material-ui/icons
 import { GeneralContext } from "providers/GeneralContext";
+import { addConfig } from "api/Core/Config";
 
 import "../Groups/group.css"
-import { addConfig } from "api/Core/Config";
 
 export const User_Status = [
     {
@@ -68,7 +69,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function InsertConfig(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         InsertSuccess,
@@ -82,7 +83,6 @@ export default function InsertConfig(props) {
     const [nameConfig, setNameConfig] = useState()
 
     const InsertConfig = async () => {
-        setLosdingShow(true)
 
         if (typeConfig && description) {
             const configName = typeConfig
@@ -99,7 +99,6 @@ export default function InsertConfig(props) {
             data[configName] = data["configName"];
             let response = await addConfig(data);
             if (response.data === "SUCCESSFUL") {
-                setLosdingShow(false)
                 InsertSuccess();
             }
             else {
@@ -110,8 +109,6 @@ export default function InsertConfig(props) {
             setOpenToast(true)
             onToast("اطلاعات ناقص است", "error")
         }
-        setLosdingShow(false)
-
 
     }
 
@@ -203,7 +200,7 @@ export default function InsertConfig(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { InsertConfig() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(InsertConfig()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

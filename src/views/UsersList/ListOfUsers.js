@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { trackPromise } from "react-promise-tracker";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -60,7 +61,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function ListOfGroup(props) {
-    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
     const classes = useStyles();
 
     const [currentPage_MainbarCurrentGroup, setCurrentPage_MainbarCurrentGroup] = useState(0);
@@ -85,12 +86,11 @@ export default function ListOfGroup(props) {
         dataUserToGroup } = props
 
     useEffect(() => {
-        getGroups(dataUserToGroup.USER_USERNAME)
-        getRoles(dataUserToGroup.USER_USERNAME)
+        trackPromise(getGroups(dataUserToGroup.USER_USERNAME))
+        trackPromise(getRoles(dataUserToGroup.USER_USERNAME))
     }, [])
 
     const getGroups = async (userName) => {
-        setLosdingShow(true)
         const data = {
             first: "0",
             max: "1000"
@@ -131,13 +131,10 @@ export default function ListOfGroup(props) {
 
             setAllGroups(newData)
         }
-        setLosdingShow(false)
-
 
     };
 
     const getRoles = async (userName) => {
-        setLosdingShow(true)
 
         const data = {
             first: "0",
@@ -179,8 +176,6 @@ export default function ListOfGroup(props) {
             setAllRoles(AllRoles)
         } else setAllRoles(newData)
 
-        setLosdingShow(false)
-
     };
 
 
@@ -204,7 +199,6 @@ export default function ListOfGroup(props) {
 
 
     const addUserToGroup = async (row) => {
-        setLosdingShow(true)
 
         const groupName = row.GROUP_NAME
         const data = Object.create(
@@ -219,13 +213,11 @@ export default function ListOfGroup(props) {
 
         let response = await addGroupMember(data);
         if (response.data === "SUCCESSFUL") {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("گروه با موفقیت به کاربر اضافه شد", "success");
-            getGroups(dataUserToGroup.USER_USERNAME)
+            trackPromise(getGroups(dataUserToGroup.USER_USERNAME))
         } else {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("گروه قبلا به کاربر اضافه شده است", "error");
@@ -234,7 +226,6 @@ export default function ListOfGroup(props) {
 
 
     const addUserToRoles = async (row) => {
-        setLosdingShow(true)
 
         const roleName = row.ROLE_NAME
         const data = Object.create(
@@ -249,13 +240,11 @@ export default function ListOfGroup(props) {
 
         let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("نقش با موفقیت به کاربر اضافه شد", "success");
-            getRoles(dataUserToGroup.USER_USERNAME)
+            trackPromise(getRoles(dataUserToGroup.USER_USERNAME))
         } else {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("نقش قبلا به کاربر اضافه شده است", "error");
@@ -267,7 +256,6 @@ export default function ListOfGroup(props) {
     };
 
     const removeGroup = async (row) => {
-        setLosdingShow(true)
 
         const groupName = row.GROUP_NAME
         const data = Object.create(
@@ -282,13 +270,11 @@ export default function ListOfGroup(props) {
 
         let response = await removeUserFromGroup(data);
         if (response.data === "SUCCESSFUL") {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("گروه با موفقیت از کاربر حذف شد", "success");
-            getGroups(dataUserToGroup.USER_USERNAME);
+            trackPromise(getGroups(dataUserToGroup.USER_USERNAME));
         } else {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("گروه از کاربر حذف نشد", "error");
@@ -296,7 +282,6 @@ export default function ListOfGroup(props) {
     }
 
     const removeUserToRole = async (row) => {
-        setLosdingShow(true)
 
         const roleName = row.ROLE_NAME
         const data = Object.create(
@@ -311,13 +296,11 @@ export default function ListOfGroup(props) {
 
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("نقش با موفقیت از کاربر حذف شد", "success");
-            getRoles(dataUserToGroup.USER_USERNAME);
+            trackPromise(getRoles(dataUserToGroup.USER_USERNAME));
         } else {
-            setLosdingShow(false)
 
             setOpenToast(true);
             onToast("نقش از کاربر حذف نشد", "error");
@@ -325,7 +308,6 @@ export default function ListOfGroup(props) {
     }
 
     const searchWithNameUser = async () => {
-        setLosdingShow(true);
         if (itemTabs === 0) {
             let data = {
                 GROUP_NAME: nameSearch
@@ -355,8 +337,6 @@ export default function ListOfGroup(props) {
             }
 
         }
-
-        setLosdingShow(false)
     }
 
     return (
@@ -370,7 +350,7 @@ export default function ListOfGroup(props) {
                         <CardHeader color="warning" className="CardTitle">
                             <h4 className={classes.cardTitleWhite}>اضافه کردن کاربر {dataUserToGroup.USER_USERNAME} </h4>
 
-                            <div className="searchInputInto">
+                            <div className={`searchInputInto ${showSearch ? "show" : "hidden"}`}>
 
                                 <Tooltip
                                     id="tooltip-top-start"
@@ -384,11 +364,11 @@ export default function ListOfGroup(props) {
                                         onClick={() => {
                                             if (!nameSearch && showSearch) {
                                                 setShowSearch(!showSearch);
-                                                if (itemTabs === 0) getGroups(dataUserToGroup.USER_USERNAME)
-                                                else getRoles(dataUserToGroup.USER_USERNAME)
+                                                if (itemTabs === 0) trackPromise(getGroups(dataUserToGroup.USER_USERNAME))
+                                                else trackPromise(getRoles(dataUserToGroup.USER_USERNAME))
                                             }
                                             else if (nameSearch && showSearch) {
-                                                searchWithNameUser()
+                                                trackPromise(searchWithNameUser())
                                             } else setShowSearch(!showSearch);
                                         }}
                                     >
@@ -399,19 +379,20 @@ export default function ListOfGroup(props) {
                                     </IconButton>
                                 </Tooltip>
 
-                                {showSearch &&
-                                    <CustomInput
-                                        rtlActive
-                                        labelText={`اسم ${itemTabs === 0 ? "گروه" : "نقش"}`}
-                                        value={nameSearch}
-                                        onChange={(e) => {
-                                            setNameSearch(e);
-                                        }}
-                                        formControlProps={{
-                                            fullWidth: true,
-                                        }}
-                                    />
-                                }
+
+                                <CustomInput
+                                    rtlActive
+                                    labelText={`اسم ${itemTabs === 0 ? "گروه" : "نقش"}`}
+                                    value={nameSearch}
+                                    onChange={(e) => {
+                                        setNameSearch(e);
+                                    }}
+                                    formControlProps={{
+                                        fullWidth: true,
+                                    }}
+                                    className={showSearch ? "showLabel" : "hiddenLabel"}
+                                />
+
                             </div>
 
                         </CardHeader>
@@ -440,14 +421,14 @@ export default function ListOfGroup(props) {
                                     handleChangeRowsPerPage={handleChangeRowsPerPageGroup}
                                     addToUser={(row) => {
                                         onConfirmSetter('آیا برای اضافه کردن گروه به کاربر مطمئن هستید؟', () => {
-                                            (addUserToGroup(row))
+                                            trackPromise(addUserToGroup(row))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}
                                     currentGroupToUser={currentGroupToUser}
                                     removeGroupToUser={(row) => {
                                         onConfirmSetter('آیا برای حذف کردن گروه از کاربر مطمئن هستید؟', () => {
-                                            (removeGroup(row))
+                                            trackPromise(removeGroup(row))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}
@@ -464,7 +445,7 @@ export default function ListOfGroup(props) {
                                         handleChangeRowsPerPage={handleChangeRowsPerPageRole}
                                         addToUser={(row) => {
                                             onConfirmSetter('آیا برای اضافه کردن نقش به کاربر مطمئن هستید؟', () => {
-                                                (addUserToRoles(row))
+                                                trackPromise(addUserToRoles(row))
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
@@ -473,7 +454,7 @@ export default function ListOfGroup(props) {
                                         currentRoleToUser={currentRoleToUser}
                                         removeRoleToUser={(row) => {
                                             onConfirmSetter('آیا برای حذف کردن نقش از کاربر مطمئن هستید؟', () => {
-                                                (removeUserToRole(row))
+                                                trackPromise(removeUserToRole(row))
                                             })
                                             setConfirmPopupOpen(true)
                                         }}

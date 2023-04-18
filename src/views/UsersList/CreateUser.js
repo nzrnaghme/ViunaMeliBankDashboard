@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { trackPromise } from "react-promise-tracker";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -67,7 +68,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function CreateUser(props) {
-    const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const classes = useStyles();
     const {
@@ -94,7 +95,6 @@ export default function CreateUser(props) {
         if (name && pass) {
 
             if (pass.length > 8 && pass.match(passw)) {
-                setLosdingShow(true);
 
                 const userName = name;
                 const data = Object.create(
@@ -110,11 +110,9 @@ export default function CreateUser(props) {
 
                 let response = await insertUser(data);
                 if (response.data === "SUCCESSFUL") {
-                    setLosdingShow(false);
                     CreateSuccess();
 
                 } else {
-                    setLosdingShow(false);
                     setOpenToast(true);
                     onToast("کاربر با اضافه نشد", "error");
                 }
@@ -124,7 +122,6 @@ export default function CreateUser(props) {
         } else {
             setErrorName(true);
             setErrorPass(true)
-            setLosdingShow(false);
             setOpenToast(true);
             onToast("اطلاعات کافی نیست", "error");
         }
@@ -228,7 +225,7 @@ export default function CreateUser(props) {
                                         color="info"
                                         size="sm"
                                         onClick={() => {
-                                            (createNewCourse());
+                                            trackPromise(createNewCourse());
                                         }}
                                     >
                                         ثبت تغییرات

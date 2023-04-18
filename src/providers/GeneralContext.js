@@ -14,6 +14,4 @@ export const GeneralContext = createContext({
     setOpenToast: () => { },
     varient: "success",
     onToast: (msgToast, varient) => { console.log(msgToast); console.log(varient); },
-    loadingShow: false,
-    setLosdingShow: () => { }
 });

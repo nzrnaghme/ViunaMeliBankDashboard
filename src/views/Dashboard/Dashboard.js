@@ -1,8 +1,9 @@
 /*eslint-disable*/
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
 // @material-ui/icons
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
 import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
@@ -14,7 +15,6 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardFooter from "components/Card/CardFooter.js";
-import { GeneralContext } from "providers/GeneralContext";
 
 import styles from "assets/jss/material-dashboard-react/views/rtlStyle.js";
 
@@ -31,41 +31,32 @@ export default function RTLPage() {
   const [countTeachers, setCountTeachers] = useState(0);
   const [countCourses, setCountCourses] = useState(0);
 
-  const {
-    setLosdingShow
-  } = useContext(GeneralContext);
 
   useEffect(() => {
-    getAllUser();
-    getGroups();
-    getRoles();
+    trackPromise(getAllUser());
+    trackPromise(getGroups());
+    trackPromise(getRoles());
   }, [])
 
   const getAllUser = async () => {
-    setLosdingShow(true)
     let response = await countOfUser();
     if (response.data) {
       setCountStudents(Object.values(response.data)[0]);
     }
-    setLosdingShow(false)
   }
 
   const getGroups = async () => {
-    setLosdingShow(true)
     let response = await countOfGroup();
     if (response.data) {
       setCountTeachers(Object.values(response.data)[0]);
     }
-    setLosdingShow(false)
   }
 
   const getRoles = async () => {
-    setLosdingShow(true)
     let response = await countOfRole();
     if (response.data) {
       setCountCourses(Object.values(response.data)[0]);
     }
-    setLosdingShow(false)
   }
 
   return (

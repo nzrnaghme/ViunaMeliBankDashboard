@@ -503,7 +503,7 @@ export default function ListOfRole(props) {
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning" className="CardTitle">
                             <h4 className={classes.cardTitleWhite}>اضافه کردن به نقش {dataRoleTo.ROLE_NAME}</h4>
-                            <div className="searchInputInto">
+                            <div className={`searchInputInto ${showSearch ? "show" : "hidden"}`}>
 
                                 <Tooltip
                                     id="tooltip-top-start"
@@ -533,19 +533,20 @@ export default function ListOfRole(props) {
                                     </IconButton>
                                 </Tooltip>
 
-                                {showSearch &&
-                                    <CustomInput
-                                        rtlActive
-                                        labelText={`اسم ${itemTabs === 0 ? "گروه" : itemTabs === 1 ? "نقش" : "کاربر"}`}
-                                        value={nameSearch}
-                                        onChange={(e) => {
-                                            setNameSearch(e);
-                                        }}
-                                        formControlProps={{
-                                            fullWidth: true,
-                                        }}
-                                    />
-                                }
+
+                                <CustomInput
+                                    rtlActive
+                                    labelText={`اسم ${itemTabs === 0 ? "گروه" : itemTabs === 1 ? "نقش" : "کاربر"}`}
+                                    value={nameSearch}
+                                    onChange={(e) => {
+                                        setNameSearch(e);
+                                    }}
+                                    formControlProps={{
+                                        fullWidth: true,
+                                    }}
+                                    className={showSearch ? "showLabel" : "hiddenLabel"}
+                                />
+
                             </div>
 
                         </CardHeader>

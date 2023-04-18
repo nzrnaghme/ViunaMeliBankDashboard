@@ -15,28 +15,24 @@ const dashboardRoutes = [
     name: "داشبورد",
     icon: Dashboard,
     component: DashboardPage,
-    layout: "/admin",
   },
   {
     path: "/userList",
     name: "کاربران",
     icon: "content_paste",
     component: UsersList,
-    layout: "/admin",
   },
   {
     path: "/groups",
     name: "گروه‌ها",
     icon: LocalLibraryIcon,
     component: Groups,
-    layout: "/admin",
   },
   {
     path: "/roles",
     name: "نقش‌ها",
     icon: PeopleIcon,
     component: Roles,
-    layout: "/admin",
   },
 
   {
@@ -44,7 +40,6 @@ const dashboardRoutes = [
     name: "تنظیمات",
     icon: SettingsIcon,
     component: Setting,
-    layout: "/admin",
   },
 
 ];
