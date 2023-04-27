@@ -3,14 +3,18 @@ import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
 
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from '@material-ui/icons/Add';
+
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
+// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import Table from "components/Table/Table.js";
-import RegularButton from "components/CustomButtons/Button";
+// import RegularButton from "components/CustomButtons/Button";
 import EditGroup from "./EditConfig"
 import InsertConfig from "./InsertConfig"
 // api
@@ -140,22 +144,34 @@ export default function Setting() {
         <>
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                    <div className="btnAdd">
-                        <RegularButton
-                            color="success"
-                            onClick={() => {
-                                setOpenInsertConfig(true)
-                            }}
+                    <div className="btnAdd2">
+                        <Tooltip
+                            id="tooltip-top-start"
+                            title="افزودن تنظیمات"
+                            placement="top"
+                            classes={{ tooltip: classes.tooltip }}
+                            color={"#00adef"}
                         >
-                            افزودن تنظیمات
-                        </RegularButton>
+                            <IconButton
+                                aria-label="Key"
+                                className={classes.tableActionButton}
+                                onClick={() => {
+                                    setOpenInsertConfig(true);
+                                }}
+                            >
+                                <AddIcon
+                                    className={
+                                        classes.tableActionButtonIcon}
+                                    style={{ color: "white", fontSize: "2rem" }}
+                                />
+                            </IconButton>
+                        </Tooltip>
+
                     </div>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
-                        <CardHeader color="warning">
-                            <h4 className={classes.cardTitleWhite}>تنظیمات</h4>
-                        </CardHeader>
+
                         <CardBody>
                             {allConfig && Object.keys(allConfig).length > 0 ? (
                                 <Table
@@ -195,7 +211,7 @@ export default function Setting() {
                                     }}
                                 >
                                     {" "}
-                                    دوره وجود ندارد
+                                    تنظیماتی وجود ندارد
                                 </div>
                             )}
 

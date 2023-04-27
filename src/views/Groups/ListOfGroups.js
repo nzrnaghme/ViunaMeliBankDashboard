@@ -217,7 +217,9 @@ export default function ListOfGroups(props) {
         if (response.data === "SUCCESSFUL") {
             setOpenToast(true);
             onToast("گروه با موفقیت اضافه شد", "success");
-            trackPromise(getGroups(dataGroupToGroup.GROUP_NAME))
+            trackPromise(getGroups(dataGroupToGroup.GROUP_NAME));
+            setRowsPerPageGroup(10);
+            setCurrentPage_MainbarCurrentGroup(0);
         } else {
             setOpenToast(true);
             onToast("گروه قبلا اضافه شده است", "error");
@@ -262,12 +264,14 @@ export default function ListOfGroups(props) {
         let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
             setOpenToast(true);
-            onToast("نقش با موفقیت به کاربر اضافه شد", "success");
+            onToast("گروه با موفقیت به نقش اضافه شد", "success");
             trackPromise(getRoles(dataGroupToGroup.GROUP_NAME));
+            setRowsPerPageRole(10);
+            setCurrentPage_MainbarCurrentRole(0);
 
         } else {
             setOpenToast(true);
-            onToast("نقش قبلا به کاربر اضافه شده است", "error");
+            onToast("گروه قبلا به نقش اضافه شده است", "error");
         }
     }
 
@@ -286,11 +290,11 @@ export default function ListOfGroups(props) {
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
             setOpenToast(true);
-            onToast("نقش با موفقیت از کاربر حذف شد", "success");
+            onToast("نقش با موفقیت از گروه حذف شد", "success");
             trackPromise(getRoles(dataGroupToGroup.GROUP_NAME));
         } else {
             setOpenToast(true);
-            onToast("نقش از کاربر حذف نشد", "error");
+            onToast("نقش از گروه حذف نشد", "error");
         }
     }
 
@@ -323,7 +327,7 @@ export default function ListOfGroups(props) {
                 setRowsPerPageRole(10)
                 setCurrentPage_MainbarCurrentRole(0);
             } else {
-                onToast("نقشی با این اسم وجود ندارد", "warning")
+                onToast("گروهی با این اسم وجود ندارد", "warning")
                 setOpenToast(true)
             }
         }

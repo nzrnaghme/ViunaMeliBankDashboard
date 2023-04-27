@@ -2,6 +2,7 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import PeopleIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
 // core components/views for Admin layout
 import UsersList from "views/UsersList/UsersList.js";
 import Groups from "views/Groups/Groups.js";
@@ -19,7 +20,7 @@ const dashboardRoutes = [
   {
     path: "/userList",
     name: "کاربران",
-    icon: "content_paste",
+    icon: PeopleIcon,
     component: UsersList,
   },
   {
@@ -31,7 +32,7 @@ const dashboardRoutes = [
   {
     path: "/roles",
     name: "نقش‌ها",
-    icon: PeopleIcon,
+    icon: AssignmentRoundedIcon,
     component: Roles,
   },
 
@@ -41,6 +42,7 @@ const dashboardRoutes = [
     icon: SettingsIcon,
     component: Setting,
   },
+  
 
 ];
 

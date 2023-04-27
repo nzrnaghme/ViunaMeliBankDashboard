@@ -5,16 +5,16 @@ import { trackPromise } from "react-promise-tracker";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from '@material-ui/icons/Search';
+import AddIcon from '@material-ui/icons/Add';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
+// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import RegularButton from "components/CustomButtons/Button";
-import CustomInput from "components/CustomInput/CustomInput";
+// import RegularButton from "components/CustomButtons/Button";
+// import CustomInput from "components/CustomInput/CustomInput";
 
 import InsertRole from "./InsertRole";
 import EditRole from "./EditRole";
@@ -22,7 +22,7 @@ import ListOfRole from "./listOfRole";
 
 import "./role.css";
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllRoles, removeRole, findRole } from "api/Core/Role";
+import { getAllRoles, removeRole } from "api/Core/Role";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -83,8 +83,8 @@ export default function Roles() {
   const [openRole, setOpenRole] = useState(false)
   const [dataRoleTo, setDataRoleTo] = useState()
 
-  const [showSearch, setShowSearch] = useState(false)
-  const [nameSearch, setNameSearch] = useState(null)
+  // const [showSearch, setShowSearch] = useState(false)
+  // const [nameSearch, setNameSearch] = useState(null)
 
   useEffect(() => {
     trackPromise(getRoles());
@@ -164,86 +164,51 @@ export default function Roles() {
     getRoles(currPage)
   };
 
-  const searchWithNameRole = async () => {
-    let data = {
-      ROLE_NAME: nameSearch
-    };
-    const response = await findRole(data);
-    if (Object.values(response.data).length > 0) {
-      setAllRoles(Object.values(response.data))
-    } else {
-      onToast("کاربری با این اسم وجود ندارد", "warning")
-      setOpenToast(true)
-    }
+  // const searchWithNameRole = async () => {
+  //   let data = {
+  //     ROLE_NAME: nameSearch
+  //   };
+  //   const response = await findRole(data);
+  //   if (Object.values(response.data).length > 0) {
+  //     setAllRoles(Object.values(response.data))
+  //   } else {
+  //     onToast("کاربری با این اسم وجود ندارد", "warning")
+  //     setOpenToast(true)
+  //   }
 
-  }
+  // }
 
   return (
     <>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <div className="btnAdd">
-            <div className={`searchInput ${showSearch ? "show" : "hidden"}`}>
-
-              <Tooltip
-                id="tooltip-top-start"
-                title="جستجو با اسم نقش"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}
-              >
-                <IconButton
-                  aria-label="Key"
-                  className={classes.tableActionButton}
-                  onClick={() => {
-                    if (!nameSearch && showSearch) {
-                      setShowSearch(!showSearch);
-                      trackPromise(getRoles())
-                    }
-                    else if (nameSearch && showSearch) {
-                      trackPromise(searchWithNameRole())
-                    } else setShowSearch(!showSearch);
-                  }}
-                >
-                  <SearchIcon
-                    className={
-                      classes.tableActionButtonIcon}
-                  />
-                </IconButton>
-              </Tooltip>
-
-
-              <CustomInput
-                rtlActive
-                labelText="اسم نقش"
-                value={nameSearch}
-                onChange={(e) => {
-                  setNameSearch(e);
-                }}
-                formControlProps={{
-                  fullWidth: true,
-                }}
-                className={showSearch ? "showLabel" : "hiddenLabel"}
-              />
-
-            </div>
-            <RegularButton
-              color="success"
-              onClick={() => {
-                setOpenInsertRole(true);
-              }}
-              style={{ marginRight: 15 }}
+          <div className="btnAdd2">
+            <Tooltip
+              id="tooltip-top-start"
+              title="افزودن نقش"
+              placement="top"
+              classes={{ tooltip: classes.tooltip }}
+              color={"#00adef"}
             >
-              افزودن نقش
-            </RegularButton>
-
+              <IconButton
+                aria-label="Key"
+                className={classes.tableActionButton}
+                onClick={() => {
+                  setOpenInsertRole(true);
+                }}
+              >
+                <AddIcon
+                  className={
+                    classes.tableActionButtonIcon}
+                  style={{ color: "white", fontSize: "2rem" }}
+                />
+              </IconButton>
+            </Tooltip>
 
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>تمام نقش‌ها</h4>
-            </CardHeader>
             <CardBody>
               {allRoles && Object.keys(allRoles).length > 0 ? (
                 <Table
@@ -300,7 +265,7 @@ export default function Roles() {
           }}
           EditSuccess={() => {
             setOpenToast(true);
-            onToast("گروه بروزرسانی شد", "success");
+            onToast("نقش بروزرسانی شد", "success");
             trackPromise(getRoles());
             setOpenEditRole(false);
           }}
@@ -312,7 +277,7 @@ export default function Roles() {
           openPopUpInsertRole={openInsertRole}
           InsertSuccess={() => {
             setOpenToast(true);
-            onToast("گروه اضافه شد", "success");
+            onToast("نقش اضافه شد", "success");
             trackPromise(getRoles());
             setOpenInsertRole(false);
           }}

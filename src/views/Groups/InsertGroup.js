@@ -123,10 +123,10 @@ export default function InsertGroup(props) {
                         <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>افزودن گروه</h4>
                         </CardHeader>
-                        <CardBody className="bodyEditGroup" style={{ marginTop: "-17px" }}>
+                        <CardBody className="bodyEditGroup">
                             <div>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}>
+                                    <GridItem xs={12} sm={12} md={6}>
 
                                         <CustomInput
                                             rtlActive
@@ -146,8 +146,6 @@ export default function InsertGroup(props) {
                                             }}
                                         />
                                     </GridItem>
-                                </GridContainer>
-                                <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
                                         {User_Status && User_Status.length > 0 &&
                                             <CustomSelectInput
@@ -159,7 +157,10 @@ export default function InsertGroup(props) {
                                                 }} />
                                         }
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                </GridContainer>
+                                <GridContainer>
+
+                                    <GridItem xs={12} sm={12} md={12}>
 
                                         <CustomInput
                                             rtlActive

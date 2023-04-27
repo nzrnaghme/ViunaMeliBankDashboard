@@ -122,7 +122,7 @@ export default function EditCourse(props) {
         <GridItem xs={12} sm={12} md={12}>
           <Card className="CardEditCourse" style={{ boxShadow: "none" }}>
             <CardHeader color="warning" className="CardTitle">
-              <h4 className={classes.cardTitleWhite}>آپدیت کاربر</h4>
+              <h4 className={classes.cardTitleWhite}>بروزرسانی کاربر</h4>
             </CardHeader>
             <CardBody className="bodyEditCourse bodyStyleCard">
 
@@ -155,7 +155,7 @@ export default function EditCourse(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
-                      labelText="توضیخات"
+                      labelText="توضیحات"
                       value={description}
                       onChange={(e) => {
                         setDescription(e);

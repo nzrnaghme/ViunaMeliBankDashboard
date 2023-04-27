@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
+import { trackPromise } from "react-promise-tracker";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -66,15 +67,13 @@ const useStyles = makeStyles(styles);
 export default function InsertRole(props) {
   const classes = useStyles();
   const { InsertSuccess, openPopUpInsertRole, closePopUp } = props;
-  const { setOpenToast, onToast, setLosdingShow } = useContext(GeneralContext);
+  const { setOpenToast, onToast } = useContext(GeneralContext);
 
   const [title, setTitle] = useState();
   const [status, setStatus] = useState(0);
   const [description, setDescription] = useState(null);
 
   const insertRole = async () => {
-    setLosdingShow(true)
-
     if (title) {
       const roleName = title
       const data = Object.create(
@@ -89,20 +88,14 @@ export default function InsertRole(props) {
 
       let response = await addRole(data);
       if (response.data === "SUCCESSFUL") {
-        setLosdingShow(false)
-
         InsertSuccess();
       }
       else {
-        setLosdingShow(false)
-
         setOpenToast(true)
         onToast("نقش اضافه نشد", "error")
         closePopUp()
       }
     } else {
-      setLosdingShow(false)
-
       setOpenToast(true)
       onToast("اسم نقش وارد نشده", "error")
     }
@@ -114,7 +107,7 @@ export default function InsertRole(props) {
       handleClose={() => {
         closePopUp();
       }}
-      className="popUpCreateStudent"
+      className="popUpEditStudent"
     >
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
@@ -122,7 +115,7 @@ export default function InsertRole(props) {
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>افزودن نقش</h4>
             </CardHeader>
-            <CardBody className="bodyCreateStudent" style={{ marginTop: "-17px" }}>
+            <CardBody className="bodyCreateStudent">
               <div>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
@@ -167,6 +160,8 @@ export default function InsertRole(props) {
                       inputProps={{
                         required: true
                       }}
+                      multiline
+                      rows={3}
                     />
                   </GridItem>
                 </GridContainer>
@@ -185,7 +180,7 @@ export default function InsertRole(props) {
                     color="info"
                     size="sm"
                     onClick={() => {
-                      insertRole();
+                      trackPromise(insertRole());
                     }}
                   >
                     ثبت تغییرات

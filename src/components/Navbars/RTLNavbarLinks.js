@@ -28,19 +28,6 @@ export default function RTLNavbarLinks() {
   const classes = useStyles();
   const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
-  // const [open, setOpen] = React.useState(null);
-  // const handleToggle = (event) => {
-  //   if (open && open.contains(event.target)) {
-  //     setOpen(null);
-  //   } else {
-  //     setOpen(event.currentTarget);
-  //   }
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(null);
-  // };
-
   return (
     <div>
       <Button
@@ -51,9 +38,7 @@ export default function RTLNavbarLinks() {
         className={classes.buttonLink}
         onClick={() => {
           onConfirmSetter('از حساب خود خارج میشوید؟', () => {
-            removeItem('id')
             removeItem('role')
-            removeItem('token')
           })
           setConfirmPopupOpen(true)
         }}

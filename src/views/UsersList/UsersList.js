@@ -5,23 +5,23 @@ import { trackPromise } from "react-promise-tracker";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from '@material-ui/icons/Search';
+import AddIcon from '@material-ui/icons/Add';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
+// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import RegularButton from "components/CustomButtons/Button";
-import CustomInput from "components/CustomInput/CustomInput";
+// import RegularButton from "components/CustomButtons/Button";
+// import CustomInput from "components/CustomInput/CustomInput";
 
 import EditUser from "./EditUser";
 import EditPass from "./EditPass";
 import CreateUser from "./CreateUser";
 import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
-import { removeUser, findUser, getListUser } from "api/Core/User";
+import { removeUser, getListUser } from "api/Core/User";
 
 const styles = {
   cardCategoryWhite: {
@@ -83,8 +83,8 @@ export default function UsersList() {
   const [openChangePass, setOpenChangePass] = useState(false)
   const [dataUser, setDataUser] = useState();
 
-  const [showSearch, setShowSearch] = useState(false)
-  const [nameSearch, setNameSearch] = useState(null)
+  // const [showSearch, setShowSearch] = useState(false)
+  // const [nameSearch, setNameSearch] = useState(null)
 
 
   useEffect(() => {
@@ -159,25 +159,52 @@ export default function UsersList() {
     setDataUser(row)
   }
 
-  const searchWithNameUser = async () => {
-    let data = {
-      USER_USERNAME: nameSearch
-    };
-    const response = await findUser(data);
-    if (Object.values(response.data).length > 0) {
-      setAllUsers(Object.values(response.data))
-    } else {
-      onToast("کاربری با این اسم وجود ندارد", "warning")
-      setOpenToast(true)
-    }
+  // const searchWithNameUser = async () => {
+  //   let data = {
+  //     USER_USERNAME: nameSearch
+  //   };
+  //   const response = await findUser(data);
+  //   if (Object.values(response.data).length > 0) {
+  //     setAllUsers(Object.values(response.data))
+  //   } else {
+  //     onToast("کاربری با این اسم وجود ندارد", "warning")
+  //     setOpenToast(true)
+  //   }
 
-  }
+  // }
 
   return (
     <>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <div className="btnAdd">
+        <div className="btnAdd2">
+          <Tooltip
+            id="tooltip-top-start"
+            title="افزودن کاربر"
+            placement="top"
+            classes={{ tooltip: classes.tooltip }}
+            color={"#00adef"}
+          >
+            <IconButton
+              aria-label="Key"
+              className={classes.tableActionButton}
+              onClick={() => {
+                createUser();
+              }}
+            >
+              <AddIcon
+                className={
+                  classes.tableActionButtonIcon}
+                style={{ color: "white", fontSize: "2rem" }}
+              />
+            </IconButton>
+          </Tooltip>
+
+
+
+        </div>
+
+        {/* <GridItem xs={12} sm={12} md={12}>
+         <div className="btnAdd">
             <div className={`searchInput ${showSearch ? "show" : "hidden"}`}>
 
               <Tooltip
@@ -233,13 +260,13 @@ export default function UsersList() {
 
 
 
-          </div>
-        </GridItem>
+          </div> 
+        </GridItem> */}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="warning">
+            {/* <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>تمام کاربران</h4>
-            </CardHeader>
+            </CardHeader> */}
             <CardBody className="bodyStyleCard">
 
               {allUsers && Object.keys(allUsers).length > 0 ? (

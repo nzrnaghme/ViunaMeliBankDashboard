@@ -216,7 +216,9 @@ export default function ListOfGroup(props) {
 
             setOpenToast(true);
             onToast("گروه با موفقیت به کاربر اضافه شد", "success");
-            trackPromise(getGroups(dataUserToGroup.USER_USERNAME))
+            trackPromise(getGroups(dataUserToGroup.USER_USERNAME));
+            setRowsPerPageGroup(10)
+            setCurrentPage_MainbarCurrentGroup(0);
         } else {
 
             setOpenToast(true);
@@ -243,7 +245,9 @@ export default function ListOfGroup(props) {
 
             setOpenToast(true);
             onToast("نقش با موفقیت به کاربر اضافه شد", "success");
-            trackPromise(getRoles(dataUserToGroup.USER_USERNAME))
+            trackPromise(getRoles(dataUserToGroup.USER_USERNAME));
+            setRowsPerPageRole(10)
+            setCurrentPage_MainbarCurrentRole(0);
         } else {
 
             setOpenToast(true);

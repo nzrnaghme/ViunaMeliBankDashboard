@@ -60,6 +60,10 @@ export default function LoginPage() {
     data[userN] = data["userN"];
     let response = await loginUser(data);
     if (response.data) {
+
+
+
+      
       switch (response.data) {
         case 0:
           setOpenToast(true);
@@ -67,7 +71,7 @@ export default function LoginPage() {
           break;
         case 1:
           window.location = "/dashboard";
-          setItem("role", "admin");
+          setItem("user", userName);
 
           break;
         case 2:

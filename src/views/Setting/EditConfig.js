@@ -104,7 +104,7 @@ export default function EditConfig(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardEditCourse" style={{ boxShadow: "none" }}>
                         <CardHeader color="warning">
-                            <h4 className={classes.cardTitleWhite}>بروزرسانی گروه</h4>
+                            <h4 className={classes.cardTitleWhite}>بروزرسانی تنظیمات</h4>
                         </CardHeader>
                         <CardBody className="bodyEditGroup" style={{ marginTop: "-15px" }}>
                             <div>

@@ -7,7 +7,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import "assets/css/material-dashboard-react.css?v=1.10.0";
 import "assets/fonts/fonts.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "layouts/Main.js";
 
 import Auth from "layouts/Authentication.js"
@@ -27,7 +27,7 @@ const cacheRtl = createCache({
 });
 
 export default function App() {
-    const roleUser = getItem('role')
+    const User = getItem('user')
     const [confirm, setConfirm] = React.useState({});
     const [open, setOpen] = React.useState(false);
     const [openToast, setOpenToast] = React.useState(false);
@@ -63,10 +63,14 @@ export default function App() {
                         <Toast />
                         <Loading />
                         <Switch>
-                            {roleUser === 'admin' ?
+                            {User ?
                                 <Route path="/" component={Main} /> :
                                 <Route path="/auth" component={Auth} />
                             }
+
+                            {User ?
+                                <Redirect from="/" to="/dashboard" /> :
+                                <Redirect from="/" to="/auth/login-page" />}
                         </Switch>
                     </BrowserRouter>
                 </ThemeProvider>

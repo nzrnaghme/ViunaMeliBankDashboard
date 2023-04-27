@@ -13,6 +13,7 @@ import {
 
 const headerStyle = (theme) => ({
   appBar: {
+    backgroundImage: "linear-gradient(#474747, #e1dfdf)",
     backgroundColor: "transparent",
     // boxShadow: "none",
     borderBottom: "0",
@@ -44,7 +45,7 @@ const headerStyle = (theme) => ({
     // boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
   },
   appBar2: {
-    background: "rgba(255, 255, 255, 0.88)",
+    backgroundImage: "linear-gradient(#474747, #e1dfdf)",
     boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
 
   },
@@ -73,6 +74,7 @@ const headerStyle = (theme) => ({
   titleApp: {
     ...defaultFont,
     lineHeight: "1px",
+    color: "white"
   },
   appResponsive: {
     top: "8px",

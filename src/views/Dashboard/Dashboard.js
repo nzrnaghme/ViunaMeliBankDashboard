@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
 // @material-ui/icons
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
-import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
+import PeopleIcon from '@material-ui/icons/People';
 import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
 // core components
 import GridItem from "components/Grid/GridItem.js";
@@ -60,13 +60,13 @@ export default function RTLPage() {
   }
 
   return (
-    <div>
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
+    <div style={{ marginTop: 26 }}>
+      <GridContainer >
+        <GridItem xs={12} sm={6} md={4} >
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
-                <PeopleOutlineRoundedIcon />
+                <PeopleIcon />
               </CardIcon>
               <p className={classes.cardCategory}>تعداد کاربران</p>
               <h3 className={classes.cardTitle}>

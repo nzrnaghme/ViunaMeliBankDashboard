@@ -1,4 +1,3 @@
-export const API = 'https://api.noorgon.sepehracademy.ir/api/';
 export const API_V = 'http://5.201.178.229:9502/Utopia/rest/';
 
 //user  
@@ -50,8 +49,4 @@ export const LIST_CONFIG = `${API_V}config/lstconfigs?api_key=X-API-Key&API_KEY_
 export const REMOVE_CONFIG = `${API_V}config/removeconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
 export const ADD_CONFIG = `${API_V}config/addconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
 export const EDIT_CONFIG = `${API_V}config/editconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
-
-//register employee
-export const REGISTER_EMPLOYEE = `${API}auth/employee/register`
-export const LOGIN_EMPLOYEE = `${API}auth/employee/login`
 

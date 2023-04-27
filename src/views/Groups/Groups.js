@@ -5,22 +5,22 @@ import { trackPromise } from "react-promise-tracker";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from '@material-ui/icons/Search';
+import AddIcon from '@material-ui/icons/Add';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
+// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import RegularButton from "components/CustomButtons/Button";
-import CustomInput from "components/CustomInput/CustomInput";
+// import RegularButton from "components/CustomButtons/Button";
+// import CustomInput from "components/CustomInput/CustomInput";
 
 import InsertGroup from "./InsertGroup";
 import EditGroup from "./EditGroup";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllGroups, removeGroup, findGroup } from "api/Core/Group";
+import { getAllGroups, removeGroup } from "api/Core/Group";
 import ListOfUGroups from "./ListOfGroups";
 
 const styles = {
@@ -69,8 +69,8 @@ export default function Groups() {
   const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
   const [dataGroupToGroup, setDataGroupToGroup] = useState()
 
-  const [showSearch, setShowSearch] = useState(false)
-  const [nameSearch, setNameSearch] = useState(null)
+  // const [showSearch, setShowSearch] = useState(false)
+  // const [nameSearch, setNameSearch] = useState(null)
 
   useEffect(() => {
     trackPromise(getGroups());
@@ -143,81 +143,51 @@ export default function Groups() {
   };
 
 
-  const searchWithNameGroup = async () => {
-    let data = {
-      GROUP_NAME: nameSearch
-    };
-    const response = await findGroup(data);
-    if (Object.values(response.data).length > 0) {
-      setAllGroups(Object.values(response.data))
-    } else {
-      onToast("کاربری با این اسم وجود ندارد", "warning")
-      setOpenToast(true)
-    }
-  }
+  // const searchWithNameGroup = async () => {
+  //   let data = {
+  //     GROUP_NAME: nameSearch
+  //   };
+  //   const response = await findGroup(data);
+  //   if (Object.values(response.data).length > 0) {
+  //     setAllGroups(Object.values(response.data))
+  //   } else {
+  //     onToast("کاربری با این اسم وجود ندارد", "warning")
+  //     setOpenToast(true)
+  //   }
+  // }
 
 
   return (
     <>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12} >
-          <div className="btnAdd">
-            <div className={`searchInput ${showSearch ? "show" : "hidden"}`}>
-
-              <Tooltip
-                id="tooltip-top-start"
-                title="جستجو با اسم گروه"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}
+          <div className="btnAdd2">
+            <Tooltip
+              id="tooltip-top-start"
+              title="افزودن گروه"
+              placement="top"
+              classes={{ tooltip: classes.tooltip }}
+              color={"#00adef"}
+            >
+              <IconButton
+                aria-label="Key"
+                className={classes.tableActionButton}
+                onClick={() => {
+                  setOpenInsertGroup(true)
+                }}
               >
-                <IconButton
-                  aria-label="Key"
-                  className={classes.tableActionButton}
-                  onClick={() => {
-                    if (!nameSearch && showSearch) {
-                      setShowSearch(!showSearch);
-                      trackPromise(getGroups())
-                    }
-                    else if (nameSearch && showSearch) {
-                      trackPromise(searchWithNameGroup())
-                    } else setShowSearch(!showSearch);
-                  }}
-                >
-                  <SearchIcon
-                    className={
-                      classes.tableActionButtonIcon}
-                  />
-                </IconButton>
-              </Tooltip>
-
-              <CustomInput
-                rtlActive
-                labelText="اسم گروه"
-                value={nameSearch}
-                onChange={(e) => {
-                  setNameSearch(e);
-                }}
-                formControlProps={{
-                  fullWidth: true,
-                }}
-                className={showSearch ? "showLabel" : "hiddenLabel"}
-              />
-
-            </div>
-            <RegularButton
-              color="success"
-              onClick={() => {
-                setOpenInsertGroup(true)
-              }}
-              style={{ marginRight: 15 }}>افزودن گروه</RegularButton>
+                <AddIcon
+                  className={
+                    classes.tableActionButtonIcon}
+                  style={{ color: "white", fontSize: "2rem" }}
+                />
+              </IconButton>
+            </Tooltip>
 
           </div>
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>تمام گروه ها</h4>
-            </CardHeader>
             <CardBody>
               {allGroups && Object.keys(allGroups).length > 0 ?
                 <Table

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import { trackPromise } from "react-promise-tracker";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -73,7 +74,7 @@ export default function EditRole(props) {
     EditSuccess,
     closePopUpEdit,
     dataRole } = props;
-  const { setOpenToast, onToast,setLosdingShow } = useContext(GeneralContext);
+  const { setOpenToast, onToast } = useContext(GeneralContext);
 
   const [description, setDescription] = useState();
   const [status, setStatus] = useState();
@@ -85,7 +86,6 @@ export default function EditRole(props) {
 
 
   const updateRole = async () => {
-    setLosdingShow(true)
 
     const roleName = dataRole.ROLE_NAME
     const data = Object.create(
@@ -98,15 +98,10 @@ export default function EditRole(props) {
     );
     data[roleName] = data["roleName"];
     let response = await editRole(data);
-    if (response.data === "SUCCESSFUL")
-     {
-      setLosdingShow(false)
-
+    if (response.data === "SUCCESSFUL") {
       EditSuccess();
-}
+    }
     else {
-      setLosdingShow(false)
-
       setOpenToast(true)
       onToast("نفش بروزرسانی نشد", "error")
       closePopUpEdit();
@@ -166,6 +161,8 @@ export default function EditRole(props) {
                       onChange={(e) => {
                         setDescription(e);
                       }}
+                      multiline
+                      rows={3}
                     />
                   </GridItem>
                 </GridContainer>
@@ -183,7 +180,7 @@ export default function EditRole(props) {
                   color="info"
                   size="sm"
                   onClick={() => {
-                    updateRole();
+                    trackPromise(updateRole());
                   }}
                 >
                   ثبت تغییرات

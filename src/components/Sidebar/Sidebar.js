@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
@@ -11,6 +11,10 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
+
 // core components
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
 import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
@@ -20,14 +24,16 @@ import { getItem } from "api/storage/storage";
 
 import PerfectScrollbar from "perfect-scrollbar";
 let ps;
+import { GeneralContext } from "providers/GeneralContext";
 
 const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
   const token = getItem("token");
-  const role = getItem("role");
+  const usersName = getItem("user");
   const id = getItem("id");
   const classes = useStyles();
+  const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
   const [drawerlogo, setDrawerLogo] = useState(true);
   const [scroll, setScroll] = React.useState(false);
@@ -134,7 +140,7 @@ export default function Sidebar(props) {
   var brand = (
     <div className={classes.logo}>
       <a
-        href={`http://localhost:3000/adminSite/${id}/${token}/${role}`}
+        href={`http://localhost:3000/adminSite/${id}/${token}/${usersName}`}
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive,
         })}
@@ -143,6 +149,7 @@ export default function Sidebar(props) {
         <div className={drawerlogo ? classes.logoImage : classes.logoImageText}>
           <img src={logo} alt="logo" className={classes.img} />
         </div>
+
         <p
           style={{
             color: "#E30612",
@@ -154,6 +161,7 @@ export default function Sidebar(props) {
         >
           {drawerlogo ? "" : logoText}
         </p>
+
       </a>
     </div>
   );
@@ -183,6 +191,8 @@ export default function Sidebar(props) {
           }}
         >
           {brand}
+
+
           <div className={classes.sidebarWrapper}>
             {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
             {links}
