@@ -80,10 +80,6 @@ export default function UsersList() {
   const [openChangePass, setOpenChangePass] = useState(false)
   const [dataUser, setDataUser] = useState();
 
-  // const [showSearch, setShowSearch] = useState(false)
-  // const [nameSearch, setNameSearch] = useState(null)
-
-
   useEffect(() => {
     trackPromise(getUsers());
   }, []);
@@ -205,6 +201,7 @@ export default function UsersList() {
                   tableHeaderColor="info"
                   tableHead={[
                     "اسم کاربری",
+                    "عنوان",
                     "توضیحات",
                     "وضعیت کاربر",
                     "عملیات",

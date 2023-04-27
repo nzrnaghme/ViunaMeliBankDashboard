@@ -208,6 +208,7 @@ export default function Roles() {
                   tableHeaderColor="info"
                   tableHead={[
                     "اسم نقش",
+                    "عنوان",
                     "توضیحات",
                     "وضعیت نقش",
                     "عملیات",

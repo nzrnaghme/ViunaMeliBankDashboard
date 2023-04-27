@@ -186,7 +186,12 @@ export default function Groups() {
               {allGroups && Object.keys(allGroups).length > 0 ?
                 <Table
                   tableHeaderColor="info"
-                  tableHead={["اسم گروه", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
+                  tableHead={[
+                    "اسم گروه",
+                    "عنوان",
+                    "توضیحات",
+                    "وضعیت گروه",
+                    "عملیات"]}
                   tableData={allGroups}
                   currentPage={currentPage_MainbarMyGroup}
                   handleChangePage={handleChangePage}

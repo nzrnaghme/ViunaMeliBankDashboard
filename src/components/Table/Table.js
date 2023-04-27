@@ -250,6 +250,9 @@ export default function CustomTable(props) {
                     {row.USER_USERNAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
+                    {row.USER_DISPLAYNAME ? row.USER_DISPLAYNAME : "..."}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
                     {row.USER_DESCRIPTION ? row.USER_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
@@ -428,6 +431,9 @@ export default function CustomTable(props) {
 
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.GROUP_DISPLAYNAME ? row.GROUP_DISPLAYNAME : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
@@ -799,6 +805,9 @@ export default function CustomTable(props) {
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_NAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_DISPLAYNAME ? row.ROLE_DISPLAYNAME : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
