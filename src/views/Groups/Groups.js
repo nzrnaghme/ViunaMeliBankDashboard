@@ -11,16 +11,13 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
-// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-// import RegularButton from "components/CustomButtons/Button";
-// import CustomInput from "components/CustomInput/CustomInput";
 
 import InsertGroup from "./InsertGroup";
 import EditGroup from "./EditGroup";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllGroups, removeGroup } from "api/Core/Group";
+import { getAllGroups, removeGroup, findGroup } from "api/Core/Group";
 import ListOfUGroups from "./ListOfGroups";
 
 const styles = {
@@ -68,9 +65,6 @@ export default function Groups() {
 
   const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
   const [dataGroupToGroup, setDataGroupToGroup] = useState()
-
-  // const [showSearch, setShowSearch] = useState(false)
-  // const [nameSearch, setNameSearch] = useState(null)
 
   useEffect(() => {
     trackPromise(getGroups());
@@ -143,18 +137,18 @@ export default function Groups() {
   };
 
 
-  // const searchWithNameGroup = async () => {
-  //   let data = {
-  //     GROUP_NAME: nameSearch
-  //   };
-  //   const response = await findGroup(data);
-  //   if (Object.values(response.data).length > 0) {
-  //     setAllGroups(Object.values(response.data))
-  //   } else {
-  //     onToast("کاربری با این اسم وجود ندارد", "warning")
-  //     setOpenToast(true)
-  //   }
-  // }
+  const searchWithNameGroup = async (nameSearch) => {
+    let data = {
+      GROUP_NAME: nameSearch
+    };
+    const response = await findGroup(data);
+    if (Object.values(response.data).length > 0) {
+      setAllGroups(Object.values(response.data))
+    } else {
+      onToast("گروهی با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
 
 
   return (
@@ -209,6 +203,14 @@ export default function Groups() {
                     setOpenGroupToGroup(true);
                   }}
                   group
+
+                  AllDatas={() => {
+                    trackPromise(getGroups())
+                  }}
+
+                  SelectDatas={(nameSearch) => {
+                    trackPromise(searchWithNameGroup(nameSearch))
+                  }}
                 /> :
                 <div style={{
                   textAlign: 'center',

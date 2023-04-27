@@ -4,7 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Icon from "@material-ui/core/Icon";
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import IconButton from '@material-ui/core/IconButton';
+
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
@@ -17,9 +20,6 @@ import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-dashboard-react/views/registerPageStyle.js";
 import CardBody from "components/Card/CardBody";
 import CustomInput from "components/CustomInput/CustomInput.js";
-// @material-ui/icons
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import HowToRegIcon from "@material-ui/icons/HowToReg";
 
 import { setItem } from "api/storage/storage";
 import { GeneralContext } from "providers/GeneralContext";
@@ -37,6 +37,9 @@ export default function LoginPage() {
   const [userName, setUserName] = useState();
   const [pass, setPass] = useState();
   const [captcha, setCaptcha] = useState();
+
+  const [showPass, setShowPass] = useState(false);
+
 
   const {
     setOpenToast,
@@ -59,11 +62,11 @@ export default function LoginPage() {
     );
     data[userN] = data["userN"];
     let response = await loginUser(data);
-    if (response.data) {
-
-
-
-      
+    console.log(response);
+    if (response.status != "200") {
+      setOpenToast(true);
+      onToast("کاربر وجود ندارد", "error")
+    } else {
       switch (response.data) {
         case 0:
           setOpenToast(true);
@@ -94,6 +97,8 @@ export default function LoginPage() {
           break;
       }
     }
+
+
   };
 
   return (
@@ -101,7 +106,7 @@ export default function LoginPage() {
       <GridContainer justify="center">
         <GridItem xs={12} sm={6} md={4}>
           <form onSubmit={(e) => {
-            trackPromise(login(e))
+            trackPromise(login(e));
           }}>
             <Card className={classes.login}>
               <CardHeader
@@ -111,7 +116,6 @@ export default function LoginPage() {
                 <h4 className={classes.cardTitle}>
                   سامانه مدیریت بانک ملی ایران
                 </h4>
-
               </CardHeader>
               <CardBody>
                 <CustomInput
@@ -129,13 +133,6 @@ export default function LoginPage() {
                   inputProps={{
                     required: true,
                     name: "name",
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <MailOutlineIcon
-                          className={classes.inputAdornmentIcon}
-                        />
-                      </InputAdornment>
-                    ),
                   }}
                 />
                 <CustomInput
@@ -150,15 +147,21 @@ export default function LoginPage() {
                   onChange={(e) => {
                     setPass(e);
                   }}
+                  type={showPass ? 'text' : 'password'}
                   inputProps={{
                     required: true,
                     name: "password",
-                    type: "password",
                     endAdornment: (
                       <InputAdornment position="end">
-                        <Icon className={classes.inputAdornmentIcon}>
-                          lock_outline
-                        </Icon>
+                        <IconButton
+
+                          onClick={() => {
+                            setShowPass(!showPass)
+                          }}
+
+                        >
+                          {showPass ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
                       </InputAdornment>
                     ),
                   }}
@@ -178,11 +181,6 @@ export default function LoginPage() {
                   inputProps={{
                     required: true,
                     name: "name",
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <HowToRegIcon className={classes.inputAdornmentIcon} />
-                      </InputAdornment>
-                    ),
                   }}
                 />
                 <div

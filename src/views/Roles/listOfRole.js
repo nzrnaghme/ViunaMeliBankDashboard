@@ -6,9 +6,6 @@ import { trackPromise } from "react-promise-tracker";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from '@material-ui/icons/Search';
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -18,7 +15,6 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import CustomInput from "components/CustomInput/CustomInput";
 
 import { GeneralContext } from "providers/GeneralContext";
 import { getAllGroups, findGroup } from "api/Core/Group";
@@ -82,9 +78,6 @@ export default function ListOfRole(props) {
     const [rowsPerPageUser, setRowsPerPageUser] = useState(10);
     const [currentRoleToUser, setCurrentRoleToUser] = useState([]);
     const [allMember, setAllMember] = useState();
-
-    const [showSearch, setShowSearch] = useState(false)
-    const [nameSearch, setNameSearch] = useState(null)
 
     const {
         openListRolePopUp,
@@ -423,7 +416,7 @@ export default function ListOfRole(props) {
         setItemTabs(newValue);
     };
 
-    const searchWithNameUser = async () => {
+    const searchWithNameUser = async (nameSearch) => {
         if (itemTabs === 0) {
             let data = {
                 GROUP_NAME: nameSearch
@@ -477,54 +470,8 @@ export default function ListOfRole(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
-                        <CardHeader color="warning" className="CardTitle">
+                        <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>اضافه کردن به نقش {dataRoleTo.ROLE_NAME}</h4>
-                            <div className={`searchInputInto ${showSearch ? "show" : "hidden"}`}>
-
-                                <Tooltip
-                                    id="tooltip-top-start"
-                                    title={`جستجو با اسم${itemTabs === 0 ? "گروه" : "نقش"}`}
-                                    placement="top"
-                                    classes={{ tooltip: classes.tooltip }}
-                                >
-                                    <IconButton
-                                        aria-label="Key"
-                                        className={classes.tableActionButton}
-                                        onClick={() => {
-                                            if (!nameSearch && showSearch) {
-                                                setShowSearch(!showSearch);
-                                                if (itemTabs === 0) trackPromise(getGroups(dataRoleTo.ROLE_NAME))
-                                                else if (itemTabs === 1) trackPromise(getRoles(dataRoleTo.ROLE_NAME))
-                                                else trackPromise(getMember(dataRoleTo.ROLE_NAME));
-                                            }
-                                            else if (nameSearch && showSearch) {
-                                                trackPromise(searchWithNameUser())
-                                            } else setShowSearch(!showSearch);
-                                        }}
-                                    >
-                                        <SearchIcon
-                                            className={
-                                                classes.tableActionButtonIcon}
-                                        />
-                                    </IconButton>
-                                </Tooltip>
-
-
-                                <CustomInput
-                                    rtlActive
-                                    labelText={`اسم ${itemTabs === 0 ? "گروه" : itemTabs === 1 ? "نقش" : "کاربر"}`}
-                                    value={nameSearch}
-                                    onChange={(e) => {
-                                        setNameSearch(e);
-                                    }}
-                                    formControlProps={{
-                                        fullWidth: true,
-                                    }}
-                                    className={showSearch ? "showLabel" : "hiddenLabel"}
-                                />
-
-                            </div>
-
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
 
@@ -569,6 +516,13 @@ export default function ListOfRole(props) {
                                         setConfirmPopupOpen(true)
                                     }}
                                     groupToGroup
+                                    AllDatas={() => {
+                                        trackPromise(getGroups(dataRoleTo.ROLE_NAME))
+                                    }}
+
+                                    SelectDatas={(nameSearch) => {
+                                        trackPromise(searchWithNameUser(nameSearch))
+                                    }}
                                 /> :
                                 itemTabs === 1 && currentRoleToGroup != undefined &&
                                     allRoles != undefined && allRoles.length > 0 ?
@@ -594,6 +548,14 @@ export default function ListOfRole(props) {
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
+
+                                        AllDatas={() => {
+                                            trackPromise(getRoles(dataRoleTo.ROLE_NAME))
+                                        }}
+
+                                        SelectDatas={(nameSearch) => {
+                                            trackPromise(searchWithNameUser(nameSearch))
+                                        }}
                                     /> :
                                     itemTabs === 2 && currentRoleToUser != undefined &&
                                         allMember != undefined && allMember.length > 0 ?
@@ -618,6 +580,14 @@ export default function ListOfRole(props) {
                                                     trackPromise(removeRoleToUser(row))
                                                 })
                                                 setConfirmPopupOpen(true)
+                                            }}
+
+                                            AllDatas={() => {
+                                                trackPromise(getMember(dataRoleTo.ROLE_NAME));
+                                            }}
+
+                                            SelectDatas={(nameSearch) => {
+                                                trackPromise(searchWithNameUser(nameSearch))
                                             }}
                                         /> :
                                         <div style={{

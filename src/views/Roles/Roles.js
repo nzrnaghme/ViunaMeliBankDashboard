@@ -11,10 +11,7 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
-// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-// import RegularButton from "components/CustomButtons/Button";
-// import CustomInput from "components/CustomInput/CustomInput";
 
 import InsertRole from "./InsertRole";
 import EditRole from "./EditRole";
@@ -22,7 +19,7 @@ import ListOfRole from "./listOfRole";
 
 import "./role.css";
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllRoles, removeRole } from "api/Core/Role";
+import { getAllRoles, removeRole, findRole } from "api/Core/Role";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -83,9 +80,6 @@ export default function Roles() {
   const [openRole, setOpenRole] = useState(false)
   const [dataRoleTo, setDataRoleTo] = useState()
 
-  // const [showSearch, setShowSearch] = useState(false)
-  // const [nameSearch, setNameSearch] = useState(null)
-
   useEffect(() => {
     trackPromise(getRoles());
   }, []);
@@ -131,12 +125,12 @@ export default function Roles() {
 
       getRoles()
       setOpenToast(true);
-      onToast("گروه با موفقیت حذف شد", "success");
+      onToast("نقش با موفقیت حذف شد", "success");
     } else {
 
       getRoles()
       setOpenToast(true);
-      onToast("گروه حذف نشد", "error");
+      onToast("نقش حذف نشد", "error");
     }
   }
 
@@ -164,19 +158,18 @@ export default function Roles() {
     getRoles(currPage)
   };
 
-  // const searchWithNameRole = async () => {
-  //   let data = {
-  //     ROLE_NAME: nameSearch
-  //   };
-  //   const response = await findRole(data);
-  //   if (Object.values(response.data).length > 0) {
-  //     setAllRoles(Object.values(response.data))
-  //   } else {
-  //     onToast("کاربری با این اسم وجود ندارد", "warning")
-  //     setOpenToast(true)
-  //   }
-
-  // }
+  const searchWithNameRole = async (nameSearch) => {
+    let data = {
+      ROLE_NAME: nameSearch
+    };
+    const response = await findRole(data);
+    if (Object.values(response.data).length > 0) {
+      setAllRoles(Object.values(response.data))
+    } else {
+      onToast("نقشی با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
 
   return (
     <>
@@ -233,6 +226,14 @@ export default function Roles() {
                   addRole={(row) => {
                     setDataRoleTo(row)
                     setOpenRole(true);
+                  }}
+
+                  AllDatas={() => {
+                    trackPromise(getRoles())
+                  }}
+
+                  SelectDatas={(nameSearch) => {
+                    trackPromise(searchWithNameRole(nameSearch))
                   }}
                 />
               ) : (

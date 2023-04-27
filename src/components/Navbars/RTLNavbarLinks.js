@@ -38,7 +38,7 @@ export default function RTLNavbarLinks() {
         className={classes.buttonLink}
         onClick={() => {
           onConfirmSetter('از حساب خود خارج میشوید؟', () => {
-            removeItem('role')
+            removeItem('user')
           })
           setConfirmPopupOpen(true)
         }}

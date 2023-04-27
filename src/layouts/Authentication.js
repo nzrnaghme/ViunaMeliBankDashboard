@@ -20,10 +20,10 @@ export default function Authentication() {
         <div>
             <div className={classes.wrapper}>
                 <div
-
                     style={{
                         backgroundImage: "url(" + getBgImage() + ")",
-                        backgroundSize: "cover"
+                        backgroundSize: "cover",
+                        height: "100vh"
                     }}
                 >
                     <Switch>

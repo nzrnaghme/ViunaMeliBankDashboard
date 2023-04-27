@@ -110,7 +110,7 @@ export default function EditCourse(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardEditCourse" style={{ boxShadow: "none" }}>
-                        <CardHeader color="warning" className="CardTitle">
+                        <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>تغییر رمز عبور کاربر {dataUser.USER_USERNAME} </h4>
                         </CardHeader>
                         <CardBody className="bodyEditCourse bodyStyleCard">

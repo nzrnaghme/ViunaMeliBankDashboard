@@ -11,17 +11,14 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
-// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-// import RegularButton from "components/CustomButtons/Button";
-// import CustomInput from "components/CustomInput/CustomInput";
 
 import EditUser from "./EditUser";
 import EditPass from "./EditPass";
 import CreateUser from "./CreateUser";
 import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
-import { removeUser, getListUser } from "api/Core/User";
+import { removeUser, getListUser, findUser } from "api/Core/User";
 
 const styles = {
   cardCategoryWhite: {
@@ -159,19 +156,18 @@ export default function UsersList() {
     setDataUser(row)
   }
 
-  // const searchWithNameUser = async () => {
-  //   let data = {
-  //     USER_USERNAME: nameSearch
-  //   };
-  //   const response = await findUser(data);
-  //   if (Object.values(response.data).length > 0) {
-  //     setAllUsers(Object.values(response.data))
-  //   } else {
-  //     onToast("کاربری با این اسم وجود ندارد", "warning")
-  //     setOpenToast(true)
-  //   }
-
-  // }
+  const searchWithNameUser = async (nameSearch) => {
+    let data = {
+      USER_USERNAME: nameSearch
+    };
+    const response = await findUser(data);
+    if (Object.values(response.data).length > 0) {
+      setAllUsers(Object.values(response.data))
+    } else {
+      onToast("کاربری با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
 
   return (
     <>
@@ -199,76 +195,11 @@ export default function UsersList() {
             </IconButton>
           </Tooltip>
 
-
-
         </div>
 
-        {/* <GridItem xs={12} sm={12} md={12}>
-         <div className="btnAdd">
-            <div className={`searchInput ${showSearch ? "show" : "hidden"}`}>
-
-              <Tooltip
-                id="tooltip-top-start"
-                title="جستجو با اسم کاربر"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}
-              >
-                <IconButton
-                  aria-label="Key"
-                  className={classes.tableActionButton}
-                  onClick={() => {
-                    if (!nameSearch && showSearch) {
-                      setShowSearch(!showSearch);
-                      getUsers()
-                    }
-                    else if (nameSearch && showSearch) {
-                      trackPromise(searchWithNameUser())
-                    } else setShowSearch(!showSearch);
-                  }}
-                >
-                  <SearchIcon
-                    className={
-                      classes.tableActionButtonIcon}
-                  />
-                </IconButton>
-              </Tooltip>
-
-                <CustomInput
-                  rtlActive
-                  labelText="اسم کاربری"
-                  value={nameSearch}
-                  onChange={(e) => {
-                    setNameSearch(e);
-                  }}
-                  formControlProps={{
-                    fullWidth: true,
-                  }}
-                  className={showSearch ? "showLabel" : "hiddenLabel"}
-                />
-
-            </div>
-            <RegularButton
-              color="success"
-              onClick={() => {
-                createUser();
-              }}
-
-              style={{ marginRight: 15 }}
-            >
-              افزودن کاربر
-            </RegularButton>
-
-
-
-          </div> 
-        </GridItem> */}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            {/* <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>تمام کاربران</h4>
-            </CardHeader> */}
             <CardBody className="bodyStyleCard">
-
               {allUsers && Object.keys(allUsers).length > 0 ? (
                 <Table
                   tableHeaderColor="info"
@@ -295,6 +226,14 @@ export default function UsersList() {
                     setOpenGroupToGroup(true);
                   }}
                   editPass={editPass}
+
+                  AllDatas={() => {
+                    getUsers();
+                  }}
+
+                  SelectDatas={(nameSearch) => {
+                    trackPromise(searchWithNameUser(nameSearch))
+                  }}
                 />
               ) : (
                 <div

@@ -625,6 +625,7 @@ footer ul li a:hover {
   display: block;
   opacity: 1;
   transition: 1s !important;
+  margin: 0px !important;
 }
 
 .hiddenLabel {

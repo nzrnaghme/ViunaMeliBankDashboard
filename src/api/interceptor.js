@@ -48,7 +48,7 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
-        console.log(error);
+        console.log(error,"error");
         // check if error is expected from backend
         try {
 

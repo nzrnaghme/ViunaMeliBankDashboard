@@ -19,8 +19,8 @@ const headerStyle = (theme) => ({
     borderBottom: "0",
     marginBottom: "0",
     // position: "absolute",
-    width: "91.5%",
-    // paddingTop: "10px",
+    // right: "3.8%",
+    width: "92.6%",
     zIndex: 200,
     // color: grayColor[5],
     color: 'rgb(52, 71, 103)',
@@ -36,11 +36,11 @@ const headerStyle = (theme) => ({
     // position: 'absolute',
     opacity: 1,
     // background: "rgba(255, 255, 255, 0.8)",
-    right: "4.2%",
-    margin: "10px 25px",
+    margin: "10px 5.3%",
     boxShadow: 'none',
     [theme.breakpoints.down("md")]: {
-      right: "-0.82%"
+      // right: "1%",
+      width: "88.5%",
     },
     // boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
   },

@@ -7,9 +7,6 @@ import { trackPromise } from "react-promise-tracker";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from '@material-ui/icons/Search';
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -19,7 +16,6 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import CustomInput from "components/CustomInput/CustomInput";
 
 import { GeneralContext } from "providers/GeneralContext";
 import { getAllGroups, addGroupToGroup, listGroupToGroup, removeGroupToGroup, listRoleOfGroup, findGroup } from "api/Core/Group";
@@ -77,9 +73,6 @@ export default function ListOfGroups(props) {
     const [currentPage_MainbarCurrentRole, setCurrentPage_MainbarCurrentRole] = useState(0);
     const [rowsPerPageRole, setRowsPerPageRole] = useState(10);
     const [currentRoleToGroup, setCurrentRoleToGroup] = useState([]);
-
-    const [showSearch, setShowSearch] = useState(false)
-    const [nameSearch, setNameSearch] = useState(null)
 
     const {
         openListGrouptPopUp,
@@ -302,7 +295,7 @@ export default function ListOfGroups(props) {
         setItemTabs(newValue);
     };
 
-    const searchWithNameUser = async () => {
+    const searchWithNameUser = async (nameSearch) => {
         if (itemTabs === 0) {
             let data = {
                 GROUP_NAME: nameSearch
@@ -341,54 +334,8 @@ export default function ListOfGroups(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
-                        <CardHeader color="warning" className="CardTitle">
+                        <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>اضافه کردن به گروه {dataGroupToGroup.GROUP_NAME}</h4>
-
-                            <div className={`searchInputInto ${showSearch ? "show" : "hidden"}`}>
-
-                                <Tooltip
-                                    id="tooltip-top-start"
-                                    title={`جستجو با اسم${itemTabs === 0 ? "گروه" : "نقش"}`}
-                                    placement="top"
-                                    classes={{ tooltip: classes.tooltip }}
-                                >
-                                    <IconButton
-                                        aria-label="Key"
-                                        className={classes.tableActionButton}
-                                        onClick={() => {
-                                            if (!nameSearch && showSearch) {
-                                                setShowSearch(!showSearch);
-                                                if (itemTabs === 0) trackPromise(getGroups(dataGroupToGroup.GROUP_NAME))
-                                                else trackPromise(getRoles(dataGroupToGroup.GROUP_NAME))
-                                            }
-                                            else if (nameSearch && showSearch) {
-                                                trackPromise(searchWithNameUser())
-                                            } else setShowSearch(!showSearch);
-                                        }}
-                                    >
-                                        <SearchIcon
-                                            className={
-                                                classes.tableActionButtonIcon}
-                                        />
-                                    </IconButton>
-                                </Tooltip>
-
-
-                                <CustomInput
-                                    rtlActive
-                                    labelText={`اسم ${itemTabs === 0 ? "گروه" : "نقش"}`}
-                                    value={nameSearch}
-                                    onChange={(e) => {
-                                        setNameSearch(e);
-                                    }}
-                                    formControlProps={{
-                                        fullWidth: true,
-                                    }}
-                                    className={showSearch ? "showLabel" : "hiddenLabel"}
-                                />
-
-                            </div>
-
                         </CardHeader>
                         <CardBody className="bodyStyleCard">
 
@@ -431,6 +378,13 @@ export default function ListOfGroups(props) {
                                         setConfirmPopupOpen(true)
                                     }}
                                     groupToGroup
+                                    AllDatas={() => {
+                                        trackPromise(getGroups(dataGroupToGroup.GROUP_NAME))
+                                    }}
+
+                                    SelectDatas={(nameSearch) => {
+                                        trackPromise(searchWithNameUser(nameSearch))
+                                    }}
                                 /> :
                                 itemTabs === 1 && currentRoleToGroup != undefined &&
                                     allRoles != undefined && allRoles.length > 0 ?
@@ -455,6 +409,14 @@ export default function ListOfGroups(props) {
                                                 trackPromise(removeGroupToRole(row))
                                             })
                                             setConfirmPopupOpen(true)
+                                        }}
+
+                                        AllDatas={() => {
+                                            trackPromise(getRoles(dataGroupToGroup.GROUP_NAME))
+                                        }}
+    
+                                        SelectDatas={(nameSearch) => {
+                                            trackPromise(searchWithNameUser(nameSearch))
                                         }}
                                     /> :
                                     <div style={{
