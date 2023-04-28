@@ -168,7 +168,7 @@ export default function CustomTable(props) {
                               :
                               prop
                       }
-                      {(prop != "عملیات" && !config) &&
+                      {(prop != "عملیات" && !config && key === 0) &&
                         <Tooltip
                           id="tooltip-top-start"
                           title={`جستجو با ${prop}`}
