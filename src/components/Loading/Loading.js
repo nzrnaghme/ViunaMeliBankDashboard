@@ -7,11 +7,12 @@ export default function Loading() {
 
     return (
         <>
-            {promiseInProgress  &&
+            {promiseInProgress &&
 
                 <div id="allLoading">
                     <div id="container">
                     </div>
+                    <p style={{ textAlign: "center", color: "black", position: "relative", bottom: '27%' }}>لطفا صبر کنید</p>
                 </div>
             }
 

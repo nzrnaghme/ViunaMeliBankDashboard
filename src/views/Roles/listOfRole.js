@@ -183,7 +183,7 @@ export default function ListOfRole(props) {
 
         const data = {
             first: "0",
-            max: "1000"
+            max: "1500000"
         }
         let response = await getListUser(data);
         let data2 = {
