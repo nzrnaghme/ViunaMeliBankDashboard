@@ -40,8 +40,16 @@ const headerStyle = (theme) => ({
     boxShadow: 'none',
     [theme.breakpoints.down("md")]: {
       // right: "1%",
-      width: "88.5%",
+      width: "91.3%",
+      margin: "10px 6.3%",
     },
+    [theme.breakpoints.down("sm")]: {
+      // right: "1%",
+      width: "93%",
+      margin: "10px 3.3%",
+    },
+
+
     // boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
   },
   appBar2: {

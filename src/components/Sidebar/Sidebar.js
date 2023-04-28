@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
@@ -11,20 +11,12 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
-
-// core components
-import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
-import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
 
 import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
 import { getItem } from "api/storage/storage";
 
 import PerfectScrollbar from "perfect-scrollbar";
 let ps;
-import { GeneralContext } from "providers/GeneralContext";
 
 const useStyles = makeStyles(styles);
 
@@ -33,7 +25,6 @@ export default function Sidebar(props) {
   const usersName = getItem("user");
   const id = getItem("id");
   const classes = useStyles();
-  const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
   const [drawerlogo, setDrawerLogo] = useState(true);
   const [scroll, setScroll] = React.useState(false);
@@ -45,10 +36,6 @@ export default function Sidebar(props) {
     if (window.innerWidth >= 960) {
       setMobileOpen(false);
     }
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
   };
 
   React.useEffect(() => {
@@ -70,7 +57,6 @@ export default function Sidebar(props) {
   }, [sidebarScrol]);
 
   const handleScroll = (event) => {
-    console.log(event.currentTarget.scrollTop, "event");
     if (event.currentTarget.scrollTop > 0) setScroll(true);
     else setScroll(false);
   };
@@ -81,6 +67,7 @@ export default function Sidebar(props) {
   }
 
   const { color, logo, image, logoText, routes } = props;
+
   var links = (
     <div
       ref={sidebarScrol}
@@ -170,7 +157,7 @@ export default function Sidebar(props) {
       <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
-          anchor={props.rtlActive ? "left" : "right"}
+          anchor={"right"}
           open={props.open}
           classes={{
             paper: classNames(classes.drawerPaper, {
@@ -191,10 +178,7 @@ export default function Sidebar(props) {
           }}
         >
           {brand}
-
-
           <div className={classes.sidebarWrapper}>
-            {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
             {links}
           </div>
           {image !== undefined ? (
@@ -223,7 +207,6 @@ export default function Sidebar(props) {
           onMouseLeave={() => {
             setDrawerLogo(true);
           }}
-        // style={{ width: drawerWidth }}
         >
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>

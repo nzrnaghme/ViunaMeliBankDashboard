@@ -473,7 +473,7 @@ export default function ListOfRole(props) {
                         <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>اضافه کردن به نقش {dataRoleTo.ROLE_NAME}</h4>
                         </CardHeader>
-                        <CardBody className="bodyStyleCard">
+                        <CardBody>
 
                             <Tabs
                                 value={itemTabs}

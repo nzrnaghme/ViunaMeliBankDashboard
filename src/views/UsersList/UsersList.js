@@ -195,7 +195,7 @@ export default function UsersList() {
 
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardBody className="bodyStyleCard">
+            <CardBody>
               {allUsers && Object.keys(allUsers).length > 0 ? (
                 <Table
                   tableHeaderColor="info"

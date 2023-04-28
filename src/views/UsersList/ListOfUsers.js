@@ -347,7 +347,7 @@ export default function ListOfGroup(props) {
                         <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>اضافه کردن کاربر {dataUserToGroup.USER_USERNAME} </h4>
                         </CardHeader>
-                        <CardBody className="bodyStyleCard">
+                        <CardBody>
 
                             <Tabs
                                 value={itemTabs}

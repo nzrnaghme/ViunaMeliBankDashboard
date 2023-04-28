@@ -337,7 +337,7 @@ export default function ListOfGroups(props) {
                         <CardHeader color="warning">
                             <h4 className={classes.cardTitleWhite}>اضافه کردن به گروه {dataGroupToGroup.GROUP_NAME}</h4>
                         </CardHeader>
-                        <CardBody className="bodyStyleCard">
+                        <CardBody>
 
                             <Tabs
                                 value={itemTabs}
