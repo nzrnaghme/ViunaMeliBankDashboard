@@ -3,12 +3,14 @@ import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import PeopleIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
+import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 // core components/views for Admin layout
 import UsersList from "views/UsersList/UsersList.js";
 import Groups from "views/Groups/Groups.js";
 import Roles from "views/Roles/Roles.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import Setting from "views/Setting/Setting";
+import Catalog from "views/Catalog/Catalog";
 
 const dashboardRoutes = [
   {
@@ -41,6 +43,12 @@ const dashboardRoutes = [
     name: "تنظیمات",
     icon: SettingsIcon,
     component: Setting,
+  },
+  {
+    path: "/catalog",
+    name: "کاتالوک",
+    icon: ImportContactsIcon,
+    component: Catalog,
   },
   
 
