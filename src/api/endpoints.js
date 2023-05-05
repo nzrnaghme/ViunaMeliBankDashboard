@@ -11,6 +11,8 @@ export const LIST_ROLE_USER = `${API_V}user/lstrolesofuser?api_key=X-API-Key&API
 export const COUNT_USER = `${API_V}user/userscount?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const CHANGE_PASS = `${API_V}user/changeuserspassword?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FIND_USER = `${API_V}user/finduser?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FILTER_STATUS = `${API_V}user/filterbyuserstatus?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FILTER_DESCRIPTION = `${API_V}user/filterbyuserdesc?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
 
 //Group

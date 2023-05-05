@@ -502,7 +502,7 @@ export default function ListOfRole(props) {
                                     handleChangePage={handleChangePageGroup}
                                     handleChangeRowsPerPage={handleChangeRowsPerPageGroup}
                                     addToGroup={(row) => {
-                                        onConfirmSetter('آیا برای اضافه کردن گروه مطمئن هستید؟', () => {
+                                        onConfirmSetter('آیا برای اضافه کردن گروه به نفش مطمئن هستید؟', () => {
                                             trackPromise(addRoleToGroups(row))
                                         })
                                         setConfirmPopupOpen(true)
@@ -510,12 +510,12 @@ export default function ListOfRole(props) {
                                     }}
                                     currentGroupToUser={currentGroupToGroup}
                                     removeGroupToGroup={(row) => {
-                                        onConfirmSetter('آیا برای حذف کردن گروه از گروه مطمئن هستید؟', () => {
+                                        onConfirmSetter('آیا برای حذف کردن گروه از نقش مطمئن هستید؟', () => {
                                             trackPromise(removeGroupToRole(row))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}
-                                    groupToGroup
+                                    RoleToGroup
                                     AllDatas={() => {
                                         trackPromise(getGroups(dataRoleTo.ROLE_NAME))
                                     }}
@@ -535,15 +535,15 @@ export default function ListOfRole(props) {
                                         handleChangePage={handleChangePageRole}
                                         handleChangeRowsPerPage={handleChangeRowsPerPageRole}
                                         addRoleToGroup={(row) => {
-                                            onConfirmSetter('آیا برای اضافه کردن نقش به گروه مطمئن هستید؟', () => {
+                                            onConfirmSetter('آیا برای اضافه کردن نقش به نقش مطمئن هستید؟', () => {
                                                 trackPromise(addRoleToRoles(row))
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
-                                        groupToRole
+                                        RoleToRole
                                         currentRoleToGroup={currentRoleToGroup}
                                         removeRoleToGroup={(row) => {
-                                            onConfirmSetter('آیا برای حذف کردن نقش از گروه مطمئن هستید؟', () => {
+                                            onConfirmSetter('آیا برای حذف کردن نقش از نقش مطمئن هستید؟', () => {
                                                 trackPromise(removeRoleToRole(row))
                                             })
                                             setConfirmPopupOpen(true)

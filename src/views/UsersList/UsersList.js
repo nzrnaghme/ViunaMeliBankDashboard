@@ -19,6 +19,8 @@ import CreateUser from "./CreateUser";
 import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeUser, getListUser, findUser } from "api/Core/User";
+import { filterByStatus } from "api/Core/User";
+import { filterByDescription } from "api/Core/User";
 
 const styles = {
   cardCategoryWhite: {
@@ -165,6 +167,32 @@ export default function UsersList() {
     }
   }
 
+  const searchWithStatus = async (nameSearch) => {
+    let data = {
+      USER_STATUS: nameSearch
+    };
+    const response = await filterByStatus(data);
+    if (Object.values(response.data).length > 0) {
+      setAllUsers(Object.values(response.data))
+    } else {
+      onToast("کاربری با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
+
+  const searchWithDescription = async (nameSearch) => {
+    let data = {
+      USER_DESCRIPTION: nameSearch
+    };
+    const response = await filterByDescription(data);
+    if (Object.values(response.data).length > 0) {
+      setAllUsers(Object.values(response.data))
+    } else {
+      onToast("کاربری با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
+
   return (
     <>
       <GridContainer>
@@ -228,8 +256,23 @@ export default function UsersList() {
                     getUsers();
                   }}
 
-                  SelectDatas={(nameSearch) => {
-                    trackPromise(searchWithNameUser(nameSearch))
+                  SelectDatas={(nameSearch, key) => {
+
+                    switch (key) {
+                      case 0:
+                        trackPromise(searchWithNameUser(nameSearch))
+                        break;
+                      case 2:
+                        trackPromise(searchWithDescription(nameSearch))
+                        break;
+                      case 3:
+                        trackPromise(searchWithStatus(nameSearch))
+                        break;
+                      default:
+                        trackPromise(searchWithNameUser(nameSearch))
+                        break;
+                    }
+
                   }}
                 />
               ) : (

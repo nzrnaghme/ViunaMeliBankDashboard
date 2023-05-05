@@ -69,9 +69,11 @@ export default function InsertRole(props) {
   const { InsertSuccess, openPopUpInsertRole, closePopUp } = props;
   const { setOpenToast, onToast } = useContext(GeneralContext);
 
-  const [title, setTitle] = useState();
-  const [status, setStatus] = useState(0);
+  const [title, setTitle] = useState(null);
+  const [displayName, setDisplayName] = useState(null);
+  const [status, setStatus] = useState(1);
   const [description, setDescription] = useState(null);
+  const [errorName, setErrorName] = useState(false);
 
   const insertRole = async () => {
     if (title) {
@@ -81,6 +83,7 @@ export default function InsertRole(props) {
           roleName: {
             ROLE_STATUS: status.toString(),
             ROLE_DESCRIPTION: description,
+            ROLE_DISPLAYNAME: displayName
           },
         },
       );
@@ -96,8 +99,7 @@ export default function InsertRole(props) {
         closePopUp()
       }
     } else {
-      setOpenToast(true)
-      onToast("اسم نقش وارد نشده", "error")
+      setErrorName(true)
     }
   }
 
@@ -123,14 +125,14 @@ export default function InsertRole(props) {
                       rtlActive
                       labelText="اسم نقش"
                       value={title}
+                      error={errorName}
+
                       onChange={(e) => {
+                        setErrorName(false);
                         setTitle(e);
                       }}
                       formControlProps={{
                         fullWidth: true,
-                      }}
-                      inputProps={{
-                        required: true
                       }}
                     />
                   </GridItem>
@@ -146,7 +148,7 @@ export default function InsertRole(props) {
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
                       labelText="توضیحات"
@@ -157,11 +159,19 @@ export default function InsertRole(props) {
                       onChange={(e) => {
                         setDescription(e);
                       }}
-                      inputProps={{
-                        required: true
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      rtlActive
+                      labelText="عنوان"
+                      value={displayName}
+                      onChange={(e) => {
+                        setDisplayName(e);
                       }}
-                      multiline
-                      rows={3}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
                     />
                   </GridItem>
                 </GridContainer>

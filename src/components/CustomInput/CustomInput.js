@@ -35,7 +35,8 @@ export default function CustomInput(props) {
     disabled,
     textLeft,
     className,
-    type
+    type,
+    errorText
   } = props;
 
   const labelClasses = classNames({
@@ -102,7 +103,7 @@ export default function CustomInput(props) {
       ) : null}
 
       {error &&
-        (<p className="errorInput" style={{ color: "red", fontSize: 10 }}>{` ${labelText} به درستی وارد نشده `}</p>)
+        (<p className="errorInput" style={{ color: "red", fontSize: 10 }}>{errorText ? errorText : ` ${labelText} به درستی وارد نشده `}</p>)
       }
     </FormControl>
   );
@@ -126,5 +127,6 @@ CustomInput.propTypes = {
   disabled: PropTypes.bool,
   textLeft: PropTypes.bool,
   className: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
+  errorText: PropTypes.string
 };

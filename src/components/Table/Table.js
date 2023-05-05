@@ -74,7 +74,9 @@ export default function CustomTable(props) {
     removeConfig,
     roleToUser,
     AllDatas,
-    SelectDatas
+    SelectDatas,
+    RoleToGroup,
+    RoleToRole
   } = props;
 
 
@@ -168,7 +170,7 @@ export default function CustomTable(props) {
                               :
                               prop
                       }
-                      {(prop != "عملیات" && !config && key === 0) &&
+                      {(prop != "عملیات" && !config && key != 1) &&
                         <Tooltip
                           id="tooltip-top-start"
                           title={`جستجو با ${prop}`}
@@ -179,7 +181,6 @@ export default function CustomTable(props) {
                             aria-label="Key"
                             className={classes.tableActionButton}
                             onClick={() => {
-                              console.log(key);
 
                               switch (key) {
                                 case 0:
@@ -187,7 +188,7 @@ export default function CustomTable(props) {
                                     setShowText0(!showText0)
                                     AllDatas()
                                   } else if (nameSearch && showText0) {
-                                    SelectDatas(nameSearch);
+                                    SelectDatas(nameSearch, key);
                                   } else setShowText0(!showText0)
                                   break;
                                 case 1:
@@ -195,7 +196,7 @@ export default function CustomTable(props) {
                                     setShowText1(!showText1)
                                     AllDatas()
                                   } else if (nameSearch && showText1) {
-                                    SelectDatas(nameSearch)
+                                    SelectDatas(nameSearch, key)
                                   } else setShowText1(!showText1)
                                   break;
                                 case 2:
@@ -203,7 +204,7 @@ export default function CustomTable(props) {
                                     setShowText2(!showText2)
                                     AllDatas()
                                   } else if (nameSearch && showText2) {
-                                    SelectDatas(nameSearch)
+                                    SelectDatas(nameSearch, key)
                                   } else setShowText2(!showText2)
                                   break;
                                 case 3:
@@ -211,7 +212,7 @@ export default function CustomTable(props) {
                                     setShowText3(!showText3)
                                     AllDatas()
                                   } else if (nameSearch && showText3) {
-                                    SelectDatas(nameSearch)
+                                    SelectDatas(nameSearch, key)
                                   } else setShowText3(!showText3)
                                   break;
 
@@ -220,7 +221,7 @@ export default function CustomTable(props) {
                                     setShowText0(!showText0)
                                     AllDatas()
                                   } else if (nameSearch && showText0) {
-                                    SelectDatas(nameSearch)
+                                    SelectDatas(nameSearch, key)
                                   } else setShowText0(!showText0)
                                   break;
                               }
@@ -728,6 +729,80 @@ export default function CustomTable(props) {
             : ""}
 
 
+          {RoleToGroup && tableData
+            ? tableData
+              .slice(
+                currentPage * rowsCount,
+                currentPage * rowsCount + rowsCount
+              )
+              .map((row, index) => (
+                <TableRow key={index} className={classes.tableBodyRow}>
+                  <TableCell className={classes.tableCell}>
+                    {row.GROUP_NAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.GROUP_STATUS === 1 ? (
+                      <p style={{ color: "green" }}>فعال</p>
+                    ) : (
+                      <p style={{ color: "red" }}>غیر فعال</p>
+                    )}
+                  </TableCell>
+                  {currentGroupToUser.includes(row.GROUP_NAME) ?
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف کردن گروه از نقش مورد نظر"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeGroupToGroup(row);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.Add
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                    :
+                    <TableCell className={classes.tableCell}>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="اضافه کردن گروه به نقش مورد نظر"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            addToGroup(row);
+                          }}
+                        >
+                          <AddCircleOutlineIcon
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.Add
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  }
+
+                </TableRow>
+              ))
+            : ""}
+
+
           {groupToRole && tableData
             ? tableData
               .slice(
@@ -774,6 +849,76 @@ export default function CustomTable(props) {
                       <Tooltip
                         id="tooltip-top-start"
                         title="اضافه کردن نقش به گروه"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            addRoleToGroup(row);
+                          }}
+                        >
+                          <AddCircleOutlineIcon
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.Add
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    }
+
+                  </TableCell>
+                </TableRow>
+              ))
+            : ""}
+
+          {RoleToRole && tableData
+            ? tableData
+              .slice(
+                currentPage * rowsCount,
+                currentPage * rowsCount + rowsCount
+              )
+              .map((row, index) => (
+                <TableRow key={index} className={classes.tableBodyRow}>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_NAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_STATUS === 1 ? (
+                      <p style={{ color: "green" }}>فعال</p>
+                    ) : (
+                      <p style={{ color: "red" }}>غیر فعال</p>
+                    )}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {currentRoleToGroup.includes(row.ROLE_NAME) ?
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف کردن نقش از نقش"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}
+                          onClick={() => {
+                            removeRoleToGroup(row);
+                          }}
+                        >
+                          <Close
+                            className={
+                              classes.tableActionButtonIcon + " " + classes.Add
+                            }
+                          />
+                        </IconButton>
+                      </Tooltip> :
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="اضافه کردن نقش به نقش"
                         placement="top"
                         classes={{ tooltip: classes.tooltip }}
                       >
@@ -912,7 +1057,7 @@ export default function CustomTable(props) {
                     <TableCell className={classes.tableCell}>
                       <Tooltip
                         id="tooltip-top-start"
-                        title="حذف کردن گروه از کاربر مورد نظر"
+                        title="حذف کردن کاربر از نقش مورد نظر"
                         placement="top"
                         classes={{ tooltip: classes.tooltip }}
                       >
@@ -935,7 +1080,7 @@ export default function CustomTable(props) {
                     <TableCell className={classes.tableCell}>
                       <Tooltip
                         id="tooltip-top-start"
-                        title="اضافه کردن گروه به کاربر مورد نظر"
+                        title="اضافه کردن کاربر به نقش مورد نظر"
                         placement="top"
                         classes={{ tooltip: classes.tooltip }}
                       >
@@ -1082,6 +1227,8 @@ CustomTable.propTypes = {
   roleToUser: PropTypes.bool,
 
   AllDatas: PropTypes.func,
-  SelectDatas: PropTypes.func
+  SelectDatas: PropTypes.func,
 
+  RoleToGroup: PropTypes.bool,
+  RoleToRole: PropTypes.bool
 };
