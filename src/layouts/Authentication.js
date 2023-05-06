@@ -24,7 +24,7 @@ export default function Authentication() {
                 <div
                     style={{
                         backgroundImage: "url(" + getBgImage() + ")",
-                        backgroundSize: "cover",
+                        backgroundSize: "contain",
                         height: "100vh"
                     }}
                 >
