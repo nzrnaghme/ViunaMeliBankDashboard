@@ -169,7 +169,7 @@ export default function UsersList() {
 
   const searchWithStatus = async (nameSearch) => {
     let data = {
-      USER_STATUS: nameSearch
+      USER_STATUS: nameSearch.toString()
     };
     const response = await filterByStatus(data);
     if (Object.values(response.data).length > 0) {

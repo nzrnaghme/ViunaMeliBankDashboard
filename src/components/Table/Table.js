@@ -22,8 +22,20 @@ import RegularButton from "../CustomButtons/Button";
 
 import "./index.css";
 import CustomInput from "components/CustomInput/CustomInput";
+import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 
 const useStyles = makeStyles(styles);
+
+export const User_Status = [
+  {
+    _id: 0,
+    fullName: "غیر فعال"
+  },
+  {
+    _id: 1,
+    fullName: "فعال"
+  }
+];
 
 export default function CustomTable(props) {
   const classes = useStyles();
@@ -33,6 +45,7 @@ export default function CustomTable(props) {
   const [showText3, setShowText3] = useState(false);
 
   const [nameSearch, setNameSearch] = useState(null);
+  const [status, setStatus] = useState();
 
   const {
     tableHead,
@@ -123,6 +136,9 @@ export default function CustomTable(props) {
                             fullWidth: false,
                           }}
                           className={"showLabel"}
+                          EnterAction={() => {
+                            SelectDatas(nameSearch, key)
+                          }}
                         />
                         :
                         (showText1 && prop != "عملیات" && key === 1) ?
@@ -138,6 +154,9 @@ export default function CustomTable(props) {
                             }}
                             className={"showLabel"}
                             style={{ width: 50 }}
+                            EnterAction={() => {
+                              SelectDatas(nameSearch, key)
+                            }}
                           />
                           :
                           (showText2 && prop != "عملیات" && key === 2) ?
@@ -152,20 +171,22 @@ export default function CustomTable(props) {
                                 fullWidth: false,
                               }}
                               className={"showLabel"}
+                              EnterAction={() => {
+                                SelectDatas(nameSearch, key)
+                              }}
                             />
                             :
                             (showText3 && prop != "عملیات" && key === 3) ?
-                              <CustomInput
-                                rtlActive
+
+                              <CustomSelectInput
                                 labelText={prop}
-                                value={nameSearch}
-                                onChange={(e) => {
-                                  setNameSearch(e);
+                                value={status}
+                                options={User_Status}
+                                handleChange={(e) => {
+                                  setStatus(e.target.value);
+                                  SelectDatas(e.target.value, 3)
                                 }}
-                                formControlProps={{
-                                  fullWidth: false,
-                                }}
-                                className={"showLabel"}
+
                               />
                               :
                               prop
@@ -208,12 +229,7 @@ export default function CustomTable(props) {
                                   } else setShowText2(!showText2)
                                   break;
                                 case 3:
-                                  if (!nameSearch && showText3) {
-                                    setShowText3(!showText3)
-                                    AllDatas()
-                                  } else if (nameSearch && showText3) {
-                                    SelectDatas(nameSearch, key)
-                                  } else setShowText3(!showText3)
+                                  setShowText3(!showText3)
                                   break;
 
                                 default:
@@ -362,7 +378,7 @@ export default function CustomTable(props) {
                   </TableCell>
 
                   <TableCell className={classes.tableCell}>
-                    {row.CNF_STATE === 1 ? (
+                    {row.CNF_STATE === 0 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
@@ -525,6 +541,9 @@ export default function CustomTable(props) {
                     {row.GROUP_NAME}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
+                    {row.GROUP_DISPLAYNAME ? row.GROUP_DISPLAYNAME : "..."}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
@@ -595,6 +614,9 @@ export default function CustomTable(props) {
                 <TableRow key={index} className={classes.tableBodyRow}>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_NAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.ROLE_DISPLAYNAME ? row.ROLE_DISPLAYNAME : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}

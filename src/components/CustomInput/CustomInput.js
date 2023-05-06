@@ -36,7 +36,8 @@ export default function CustomInput(props) {
     textLeft,
     className,
     type,
-    errorText
+    errorText,
+    EnterAction
   } = props;
 
   const labelClasses = classNames({
@@ -94,6 +95,11 @@ export default function CustomInput(props) {
             onChange(unmaskValue(e.target.value, mask))
           } else onChange(e.target.value)
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode == 13) {
+            EnterAction()
+          }
+        }}
 
       />
       {error ? (
@@ -128,5 +134,6 @@ CustomInput.propTypes = {
   textLeft: PropTypes.bool,
   className: PropTypes.string,
   type: PropTypes.string,
-  errorText: PropTypes.string
+  errorText: PropTypes.string,
+  EnterAction: PropTypes.func
 };

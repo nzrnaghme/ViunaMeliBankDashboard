@@ -20,7 +20,7 @@ const headerStyle = (theme) => ({
     marginBottom: "0",
     // position: "absolute",
     // right: "3.8%",
-    width: "92.6%",
+    width: "94.3%",
     zIndex: 200,
     // color: grayColor[5],
     color: 'rgb(52, 71, 103)',
@@ -36,7 +36,7 @@ const headerStyle = (theme) => ({
     // position: 'absolute',
     opacity: 1,
     // background: "rgba(255, 255, 255, 0.8)",
-    margin: "10px 5.3%",
+    margin: "10px 4%",
     boxShadow: 'none',
     [theme.breakpoints.down("md")]: {
       // right: "1%",
