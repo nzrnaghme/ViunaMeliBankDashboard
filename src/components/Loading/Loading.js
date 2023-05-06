@@ -12,7 +12,7 @@ export default function Loading() {
                 <div id="allLoading">
                     <div id="container">
                     </div>
-                    <p style={{ textAlign: "center", color: "black", position: "relative", bottom: '27%' }}>لطفا صبر کنید</p>
+                    <p style={{ textAlign: "center", color: "black", position: "relative", bottom: '15%' }}>لطفا صبر کنید</p>
                 </div>
             }
 

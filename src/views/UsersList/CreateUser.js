@@ -82,17 +82,19 @@ export default function CreateUser(props) {
 
     const [name, setName] = useState();
     const [pass, setPass] = useState();
-    const [status, setStatus] = useState(0);
+    const [displayName, setDisplayName] = useState(null);
+    const [status, setStatus] = useState(1);
     const [description, setDescription] = useState(null);
     const [errorName, setErrorName] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
     const [textLeft, setTextLeft] = useState(false);
+    const [errorDisplayName, setErrorDisplayName] = useState(false);
 
 
     const createNewCourse = async () => {
         var passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
-        if (name && pass) {
+        if (name && pass && displayName) {
 
             if (pass.length > 8 && pass.match(passw)) {
 
@@ -103,6 +105,7 @@ export default function CreateUser(props) {
                             USER_PASSWORD: pass,
                             USER_STATUS: status.toString(),
                             USER_DESCRIPTION: description,
+                            USER_DISPLAYNAME: displayName
                         },
                     },
                 );
@@ -121,7 +124,8 @@ export default function CreateUser(props) {
 
         } else {
             setErrorName(true);
-            setErrorPass(true)
+            setErrorPass(true);
+            setErrorDisplayName(true)
             setOpenToast(true);
             onToast("اطلاعات کافی نیست", "error");
         }
@@ -163,6 +167,7 @@ export default function CreateUser(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
+                                            errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی باشد و ۸ کاراکتر باشد"}
                                             textLeft={textLeft}
                                             labelText="رمز عبور"
                                             value={pass}
@@ -202,6 +207,24 @@ export default function CreateUser(props) {
                                             value={description}
                                             onChange={(e) => {
                                                 setDescription(e);
+                                            }}
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                        />
+                                    </GridItem>
+                                </GridContainer>
+                                <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                        <CustomInput
+                                            rtlActive
+                                            labelText="عنوان"
+                                            value={displayName}
+                                            error={errorDisplayName}
+
+                                            onChange={(e) => {
+                                                setErrorDisplayName(false)
+                                                setDisplayName(e);
                                             }}
                                             formControlProps={{
                                                 fullWidth: true,

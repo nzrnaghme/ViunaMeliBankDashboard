@@ -20,11 +20,11 @@ import { editUser } from "api/Core/User";
 
 export const User_Status = [
   {
-    _id: 0,
+    _id: 1,
     fullName: "غیر فعال"
   },
   {
-    _id: 1,
+    _id: 0,
     fullName: "فعال"
   }
 ];

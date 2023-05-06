@@ -19,6 +19,8 @@ import EditGroup from "./EditGroup";
 import { GeneralContext } from "providers/GeneralContext";
 import { getAllGroups, removeGroup, findGroup } from "api/Core/Group";
 import ListOfUGroups from "./ListOfGroups";
+import { filterByStatusGroup } from "api/Core/Group";
+import { filterByDescriptionGroup } from "api/Core/Group";
 
 const styles = {
   cardCategoryWhite: {
@@ -84,8 +86,8 @@ export default function Groups() {
         GROUP_STATUS: item.GROUP_STATUS,
         GROUP_ID: item.GROUP_ID,
         GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
+        GROUP_DISPLAYNAME: item.GROUP_DISPLAYNAME,
       }));
-
       setAllGroups(newData);
     } else {
       setCurrentPage_MainbarMyGroup(currentPage_MainbarMyGroup - 10);
@@ -142,6 +144,32 @@ export default function Groups() {
       GROUP_NAME: nameSearch
     };
     const response = await findGroup(data);
+    if (Object.values(response.data).length > 0) {
+      setAllGroups(Object.values(response.data))
+    } else {
+      onToast("گروهی با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
+
+  const searchWithStatusGroup = async (nameSearch) => {
+    let data = {
+      GROUP_STATUS: nameSearch.toString()
+    };
+    const response = await filterByStatusGroup(data);
+    if (Object.values(response.data).length > 0) {
+      setAllGroups(Object.values(response.data))
+    } else {
+      onToast("گروهی با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
+
+  const searchWithDescriptionGroup = async (nameSearch) => {
+    let data = {
+      GROUP_DESCRIPTION: nameSearch
+    };
+    const response = await filterByDescriptionGroup(data);
     if (Object.values(response.data).length > 0) {
       setAllGroups(Object.values(response.data))
     } else {
@@ -213,8 +241,23 @@ export default function Groups() {
                     trackPromise(getGroups())
                   }}
 
-                  SelectDatas={(nameSearch) => {
-                    trackPromise(searchWithNameGroup(nameSearch))
+                  SelectDatas={(nameSearch, key) => {
+
+                    switch (key) {
+                      case 0:
+                        trackPromise(searchWithNameGroup(nameSearch))
+                        break;
+                      case 2:
+                        trackPromise(searchWithDescriptionGroup(nameSearch))
+                        break;
+                      case 3:
+                        trackPromise(searchWithStatusGroup(nameSearch))
+                        break;
+
+                      default:
+                        trackPromise(searchWithNameGroup(nameSearch))
+                        break;
+                    }
                   }}
                 /> :
                 <div style={{

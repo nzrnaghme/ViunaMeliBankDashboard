@@ -20,6 +20,8 @@ import ListOfRole from "./listOfRole";
 import "./role.css";
 import { GeneralContext } from "providers/GeneralContext";
 import { getAllRoles, removeRole, findRole } from "api/Core/Role";
+import { filterByDescriptionRole } from "api/Core/Role";
+import { filterByStatusRole } from "api/Core/Role";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -171,6 +173,32 @@ export default function Roles() {
     }
   }
 
+  const searchWithStatusRole = async (nameSearch) => {
+    let data = {
+      ROLE_STATUS: nameSearch.toString()
+    };
+    const response = await filterByStatusRole(data);
+    if (Object.values(response.data).length > 0) {
+      setAllRoles(Object.values(response.data))
+    } else {
+      onToast("نقشی با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
+
+  const searchWithDescriptionRole = async (nameSearch) => {
+    let data = {
+      ROLE_DESCRIPTION: nameSearch
+    };
+    const response = await filterByDescriptionRole(data);
+    if (Object.values(response.data).length > 0) {
+      setAllRoles(Object.values(response.data))
+    } else {
+      onToast("نقشی با این مشخصات وجود ندارد", "warning")
+      setOpenToast(true)
+    }
+  }
+
   return (
     <>
       <GridContainer>
@@ -233,8 +261,21 @@ export default function Roles() {
                     trackPromise(getRoles())
                   }}
 
-                  SelectDatas={(nameSearch) => {
-                    trackPromise(searchWithNameRole(nameSearch))
+                  SelectDatas={(nameSearch, key) => {
+                    switch (key) {
+                      case 0:
+                        trackPromise(searchWithNameRole(nameSearch))
+                        break;
+                      case 2:
+                        trackPromise(searchWithDescriptionRole(nameSearch))
+                        break;
+                      case 3:
+                        trackPromise(searchWithStatusRole(nameSearch))
+                        break;
+
+                      default:
+                        break;
+                    }
                   }}
                 />
               ) : (

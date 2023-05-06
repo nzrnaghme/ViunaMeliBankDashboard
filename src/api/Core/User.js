@@ -8,7 +8,9 @@ import {
     LIST_ROLE_USER,
     COUNT_USER,
     CHANGE_PASS,
-    FIND_USER
+    FIND_USER,
+    FILTER_STATUS,
+    FILTER_DESCRIPTION
 } from "../endpoints";
 import api from "../interceptor";
 
@@ -33,3 +35,7 @@ export const countOfUser = (payload) => api.post(COUNT_USER, payload)
 export const changePassword = (payload) => api.post(CHANGE_PASS, payload)
 
 export const findUser = (payload) => api.post(FIND_USER, payload)
+
+export const filterByStatus = (payload) => api.post(FILTER_STATUS, payload)
+
+export const filterByDescription = (payload) => api.post(FILTER_DESCRIPTION, payload)

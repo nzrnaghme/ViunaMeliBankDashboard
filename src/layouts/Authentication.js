@@ -18,11 +18,13 @@ export default function Authentication() {
 
     return (
         <div>
-            <div className={classes.wrapper}>
+            <div className={classes.wrapper} style={{
+                max_height: "100vh"
+            }}>
                 <div
                     style={{
                         backgroundImage: "url(" + getBgImage() + ")",
-                        backgroundSize: "cover",
+                        backgroundSize: "contain",
                         height: "100vh"
                     }}
                 >

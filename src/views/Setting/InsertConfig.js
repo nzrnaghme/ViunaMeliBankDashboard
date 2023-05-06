@@ -78,7 +78,7 @@ export default function InsertConfig(props) {
     } = props;
 
     const [typeConfig, setTypeConfig] = useState(null)
-    const [condition, setCondition] = useState(0);
+    const [condition, setCondition] = useState(1);
     const [description, setDescription] = useState(null);
     const [nameConfig, setNameConfig] = useState()
 

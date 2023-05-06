@@ -35,7 +35,9 @@ export default function CustomInput(props) {
     disabled,
     textLeft,
     className,
-    type
+    type,
+    errorText,
+    EnterAction
   } = props;
 
   const labelClasses = classNames({
@@ -93,6 +95,11 @@ export default function CustomInput(props) {
             onChange(unmaskValue(e.target.value, mask))
           } else onChange(e.target.value)
         }}
+        onKeyDown={(e) => {
+          if (e.keyCode == 13) {
+            EnterAction()
+          }
+        }}
 
       />
       {error ? (
@@ -102,7 +109,7 @@ export default function CustomInput(props) {
       ) : null}
 
       {error &&
-        (<p className="errorInput" style={{ color: "red", fontSize: 10 }}>{` ${labelText} به درستی وارد نشده `}</p>)
+        (<p className="errorInput" style={{ color: "red", fontSize: 10 }}>{errorText ? errorText : ` ${labelText} به درستی وارد نشده `}</p>)
       }
     </FormControl>
   );
@@ -126,5 +133,7 @@ CustomInput.propTypes = {
   disabled: PropTypes.bool,
   textLeft: PropTypes.bool,
   className: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
+  errorText: PropTypes.string,
+  EnterAction: PropTypes.func
 };
