@@ -17,9 +17,27 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllGroups, findGroup } from "api/Core/Group";
-import { listMemberToRole, getAllRoles, addMemberToRole, removeMemberToRole, findRole } from "api/Core/Role";
-import { getListUser, findUser } from "api/Core/User";
+import {
+    getAllGroups,
+    findGroup,
+    filterByStatusGroup,
+    filterByDescriptionGroup
+} from "api/Core/Group";
+import {
+    listMemberToRole,
+    getAllRoles,
+    addMemberToRole,
+    removeMemberToRole,
+    findRole,
+    filterByDescriptionRole,
+    filterByStatusRole
+} from "api/Core/Role";
+import {
+    getListUser,
+    findUser,
+    filterByStatus,
+    filterByDescription
+} from "api/Core/User";
 
 
 const styles = (theme) => ({
@@ -115,6 +133,7 @@ export default function ListOfRole(props) {
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
+                GROUP_DISPLAYNAME: item.GROUP_DISPLAYNAME,
             }));
         }
         if (currentGroup.length > 0) {
@@ -159,6 +178,7 @@ export default function ListOfRole(props) {
                 ROLE_STATUS: item.ROLE_STATUS,
                 ROLE_ID: item.ROLE_ID,
                 ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
+                ROLE_DISPLAYNAME: item.ROLE_DISPLAYNAME,
             }));
 
         }
@@ -202,6 +222,7 @@ export default function ListOfRole(props) {
                 USER_USERNAME: item.USER_USERNAME,
                 USER_DESCRIPTION: item.USER_DESCRIPTION,
                 USER_STATUS: item.USER_STATUS,
+                USER_DISPLAYNAME: item.USER_DISPLAYNAME,
             }));
         }
         if (currentUser.length > 0) {
@@ -416,51 +437,145 @@ export default function ListOfRole(props) {
         setItemTabs(newValue);
     };
 
-    const searchWithNameUser = async (nameSearch) => {
-        if (itemTabs === 0) {
-            let data = {
-                GROUP_NAME: nameSearch
-            };
-            const response = await findGroup(data);
-            if (Object.values(response.data).length > 0) {
-                setAllGroups(Object.values(response.data))
-                setRowsPerPageGroup(10)
-                setCurrentPage_MainbarCurrentGroup(0);
-            } else {
-                onToast("گروهی با این اسم وجود ندارد", "warning")
-                setOpenToast(true)
-            }
-
-        } else if (itemTabs === 1) {
-            let data = {
-                ROLE_NAME: nameSearch
-            };
-            const response = await findRole(data);
-            if (Object.values(response.data).length > 0) {
-                setAllRoles(Object.values(response.data))
-                setRowsPerPageRole(10)
-                setCurrentPage_MainbarCurrentRole(0);
-            } else {
-                onToast("نقشی با این اسم وجود ندارد", "warning")
-                setOpenToast(true)
-            }
-
+    const searchWithNameGroup = async (nameSearch) => {
+        let data = {
+            GROUP_NAME: nameSearch
+        };
+        const response = await findGroup(data);
+        if (Object.values(response.data).length > 0) {
+            setAllGroups(Object.values(response.data));
+            setCurrentPage_MainbarCurrentGroup(0);
+            setRowsPerPageGroup(10);
         } else {
-            let data = {
-                USER_USERNAME: nameSearch
-            };
-            const response = await findUser(data);
-            if (Object.values(response.data).length > 0) {
-                setAllMember(Object.values(response.data))
-                setRowsPerPageUser(10)
-                setCurrentPage_MainbarCurrentUser(0);
-            } else {
-                onToast("کاربری با این اسم وجود ندارد", "warning")
-                setOpenToast(true)
-            }
+            onToast("گروهی با این اسم وجود ندارد", "warning")
+            setOpenToast(true)
         }
-
     }
+
+    const searchWithDescriptionGroup = async (nameSearch) => {
+        let data = {
+            GROUP_DESCRIPTION: nameSearch
+        };
+        const response = await filterByDescriptionGroup(data);
+        if (Object.values(response.data).length > 0) {
+            setAllGroups(Object.values(response.data));
+            setCurrentPage_MainbarCurrentGroup(0);
+            setRowsPerPageGroup(10);
+        } else {
+            onToast("گروهی با این مشخصات وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+    const searchWithStatusGroup = async (nameSearch) => {
+        let data = {
+            GROUP_STATUS: nameSearch.toString()
+        };
+        const response = await filterByStatusGroup(data);
+        if (Object.values(response.data).length > 0) {
+            setAllGroups(Object.values(response.data));
+            setCurrentPage_MainbarCurrentGroup(0);
+            setRowsPerPageGroup(10);
+        } else {
+            onToast("گروهی با این مشخصات وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+    const searchWithNameRole = async (nameSearch) => {
+        let data = {
+            ROLE_NAME: nameSearch
+        };
+        const response = await findRole(data);
+        if (Object.values(response.data).length > 0) {
+            setAllRoles(Object.values(response.data));
+            setRowsPerPageRole(10);
+            setCurrentPage_MainbarCurrentRole(0);
+        } else {
+            onToast("نقشی با این اسم وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+
+    const searchWithDescriptionRole = async (nameSearch) => {
+        let data = {
+            ROLE_DESCRIPTION: nameSearch
+        };
+        const response = await filterByDescriptionRole(data);
+        if (Object.values(response.data).length > 0) {
+            setAllRoles(Object.values(response.data));
+            setRowsPerPageRole(10);
+            setCurrentPage_MainbarCurrentRole(0);
+        } else {
+            onToast("نقشی با این مشخصات وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+    const searchWithStatusRole = async (nameSearch) => {
+        let data = {
+            ROLE_STATUS: nameSearch.toString()
+        };
+        const response = await filterByStatusRole(data);
+        if (Object.values(response.data).length > 0) {
+            setAllRoles(Object.values(response.data));
+            setRowsPerPageRole(10);
+            setCurrentPage_MainbarCurrentRole(0);
+        } else {
+            onToast("نقشی با این مشخصات وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+    const searchWithNameUser = async (nameSearch) => {
+        let data = {
+            USER_USERNAME: nameSearch
+        };
+        const response = await findUser(data);
+        if (Object.values(response.data).length > 0) {
+            setAllMember(Object.values(response.data))
+            setRowsPerPageUser(10)
+            setCurrentPage_MainbarCurrentUser(0);
+        } else {
+            onToast("کاربری با این مشخصات وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+    const searchWithStatus = async (nameSearch) => {
+        let data = {
+            USER_STATUS: nameSearch.toString()
+        };
+        const response = await filterByStatus(data);
+        if (Object.values(response.data).length > 0) {
+            setAllMember(Object.values(response.data))
+            setRowsPerPageUser(10)
+            setCurrentPage_MainbarCurrentUser(0);
+        } else {
+            onToast("کاربری با این مشخصات وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+    const searchWithDescription = async (nameSearch) => {
+        let data = {
+            USER_DESCRIPTION: nameSearch
+        };
+        const response = await filterByDescription(data);
+        if (Object.values(response.data).length > 0) {
+            setAllMember(Object.values(response.data))
+            setRowsPerPageUser(10)
+            setCurrentPage_MainbarCurrentUser(0);
+        } else {
+            onToast("کاربری با این مشخصات وجود ندارد", "warning")
+            setOpenToast(true)
+        }
+    }
+
+
+
+
 
     return (
         <PopUpCustome
@@ -495,7 +610,7 @@ export default function ListOfRole(props) {
                                 allGroup.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["اسم گروه", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
+                                    tableHead={["اسم گروه","عنوان", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
                                     rowsCount={rowsPerPageGroup}
                                     tableData={allGroup}
                                     currentPage={currentPage_MainbarCurrentGroup}
@@ -520,15 +635,28 @@ export default function ListOfRole(props) {
                                         trackPromise(getGroups(dataRoleTo.ROLE_NAME))
                                     }}
 
-                                    SelectDatas={(nameSearch) => {
-                                        trackPromise(searchWithNameUser(nameSearch))
+                                    SelectDatas={(nameSearch, key) => {
+                                        switch (key) {
+                                            case 0:
+                                                trackPromise(searchWithNameGroup(nameSearch))
+                                                break;
+                                            case 2:
+                                                trackPromise(searchWithDescriptionGroup(nameSearch))
+                                                break;
+                                            case 3:
+                                                trackPromise(searchWithStatusGroup(nameSearch))
+                                                break;
+                                            default:
+                                                trackPromise(searchWithNameGroup(nameSearch))
+                                                break;
+                                        }
                                     }}
                                 /> :
                                 itemTabs === 1 && currentRoleToGroup != undefined &&
                                     allRoles != undefined && allRoles.length > 0 ?
                                     <Table
                                         tableHeaderColor="info"
-                                        tableHead={["اسم نقش", "توضیحات نقش", "وضعیت", "عملیات"]}
+                                        tableHead={["اسم نقش","عنوان", "توضیحات نقش", "وضعیت", "عملیات"]}
                                         tableData={allRoles}
                                         rowsCount={rowsPerPageRole}
                                         currentPage={currentPage_MainbarCurrentRole}
@@ -553,15 +681,28 @@ export default function ListOfRole(props) {
                                             trackPromise(getRoles(dataRoleTo.ROLE_NAME))
                                         }}
 
-                                        SelectDatas={(nameSearch) => {
-                                            trackPromise(searchWithNameUser(nameSearch))
+                                        SelectDatas={(nameSearch, key) => {
+                                            switch (key) {
+                                                case 0:
+                                                    trackPromise(searchWithNameRole(nameSearch))
+                                                    break;
+                                                case 2:
+                                                    trackPromise(searchWithDescriptionRole(nameSearch))
+                                                    break;
+                                                case 3:
+                                                    trackPromise(searchWithStatusRole(nameSearch))
+                                                    break;
+                                                default:
+                                                    trackPromise(searchWithNameRole(nameSearch))
+                                                    break;
+                                            }
                                         }}
                                     /> :
                                     itemTabs === 2 && currentRoleToUser != undefined &&
                                         allMember != undefined && allMember.length > 0 ?
                                         <Table
                                             tableHeaderColor="info"
-                                            tableHead={["اسم کاربر", "توضیحات کاربر", "وضعیت", "عملیات"]}
+                                            tableHead={["اسم کاربر","عنوان", "توضیحات کاربر", "وضعیت", "عملیات"]}
                                             tableData={allMember}
                                             rowsCount={rowsPerPageUser}
                                             currentPage={currentPage_MainbarCurrentUser}
@@ -586,8 +727,22 @@ export default function ListOfRole(props) {
                                                 trackPromise(getMember(dataRoleTo.ROLE_NAME));
                                             }}
 
-                                            SelectDatas={(nameSearch) => {
-                                                trackPromise(searchWithNameUser(nameSearch))
+                                            SelectDatas={(nameSearch, key) => {
+                                                switch (key) {
+                                                    case 0:
+                                                        trackPromise(searchWithNameUser(nameSearch))
+                                                        break;
+                                                    case 2:
+                                                        trackPromise(searchWithDescription(nameSearch))
+                                                        break;
+                                                    case 3:
+                                                        trackPromise(searchWithStatus(nameSearch))
+                                                        break;
+                                                    default:
+                                                        trackPromise(searchWithNameUser(nameSearch))
+                                                        break;
+                                                }
+
                                             }}
                                         /> :
                                         <div style={{

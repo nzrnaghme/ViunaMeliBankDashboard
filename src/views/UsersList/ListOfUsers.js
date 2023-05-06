@@ -17,13 +17,22 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { GeneralContext } from "providers/GeneralContext";
 
-import { getAllRoles, removeMemberToRole, addMemberToRole, findRole } from "api/Core/Role";
+import {
+    getAllRoles,
+    removeMemberToRole,
+    addMemberToRole,
+    findRole,
+    filterByDescriptionRole,
+    filterByStatusRole
+} from "api/Core/Role";
 import { removeUserFromGroup, listRoleOfUser, listGroupOfUser } from "api/Core/User";
-import { addGroupMember, findGroup, getAllGroups } from "api/Core/Group";
-import { filterByDescriptionRole } from "api/Core/Role";
-import { filterByStatusRole } from "api/Core/Role";
-import { filterByStatusGroup } from "api/Core/Group";
-import { filterByDescriptionGroup } from "api/Core/Group";
+import {
+    addGroupMember,
+    findGroup,
+    getAllGroups,
+    filterByStatusGroup,
+    filterByDescriptionGroup
+} from "api/Core/Group";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -109,6 +118,7 @@ export default function ListOfGroup(props) {
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
+                GROUP_DISPLAYNAME: item.GROUP_DISPLAYNAME,
             }));
         }
         if (currentGroup.length > 0) {
@@ -155,6 +165,7 @@ export default function ListOfGroup(props) {
                 ROLE_STATUS: item.ROLE_STATUS,
                 ROLE_ID: item.ROLE_ID,
                 ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
+                ROLE_DISPLAYNAME: item.ROLE_DISPLAYNAME,
             }));
         }
 
