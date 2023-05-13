@@ -3,7 +3,7 @@ import dropdownStyle from "assets/jss/material-dashboard-react/dropdownStyle.js"
 const headerLinksStyle = (theme) => ({
   ...dropdownStyle(theme),
   icons: {
-    color: "white !important",
+    color: "Black !important",
     backgroundColor: "transparent",
   },
   buttonLink: {

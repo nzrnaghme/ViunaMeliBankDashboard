@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
 
-import InputAdornment from "@material-ui/core/InputAdornment";
-
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
@@ -16,7 +14,6 @@ import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 // @material-ui/icons
-import PersonIcon from '@material-ui/icons/Person';
 import { GeneralContext } from "providers/GeneralContext";
 
 import "./group.css"
@@ -79,9 +76,11 @@ export default function InsertGroup(props) {
         closePopUp
     } = props;
 
-    const [nameNew, setNameNew] = useState()
-    const [condition, setCondition] = useState(0);
+    const [nameNew, setNameNew] = useState();
+    const [displayName, setDisplayName] = useState(null);
+    const [condition, setCondition] = useState(1);
     const [description, setDescription] = useState(null);
+    const [errorName, setErrorName] = useState(false);
 
     const InsertGroup = async () => {
         if (nameNew) {
@@ -91,6 +90,7 @@ export default function InsertGroup(props) {
                     groupName: {
                         GROUP_STATUS: condition.toString(),
                         GROUP_DESCRIPTION: description,
+                        GROUP_DISPLAYNAME: displayName
                     },
                 },
             );
@@ -105,9 +105,7 @@ export default function InsertGroup(props) {
                 closePopUp()
             }
         } else {
-            setOpenToast(true)
-            onToast("گروه اضافه نشد", "error")
-
+            setErrorName(true)
         }
 
     }
@@ -129,20 +127,19 @@ export default function InsertGroup(props) {
                                     <GridItem xs={12} sm={12} md={6}>
 
                                         <CustomInput
+                                            error={errorName}
                                             rtlActive
                                             labelText="اسم گروه"
                                             value={nameNew}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
-                                            onChange={(e) => { setNameNew(e) }}
+                                            onChange={(e) => {
+                                                setErrorName(false);
+                                                setNameNew(e);
+                                            }}
                                             inputProps={{
                                                 required: true,
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <PersonIcon className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
                                             }}
                                         />
                                     </GridItem>
@@ -160,7 +157,7 @@ export default function InsertGroup(props) {
                                 </GridContainer>
                                 <GridContainer>
 
-                                    <GridItem xs={12} sm={12} md={12}>
+                                    <GridItem xs={12} sm={12} md={6}>
 
                                         <CustomInput
                                             rtlActive
@@ -172,13 +169,27 @@ export default function InsertGroup(props) {
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
-                                            multiline
-                                            rows={3}
+
                                             inputProps={{
                                                 required: true
                                             }}
                                         />
                                     </GridItem>
+                                    <GridItem xs={12} sm={12} md={6}>
+                                        <CustomInput
+                                            rtlActive
+                                            labelText="عنوان"
+                                            value={displayName}
+
+                                            onChange={(e) => {
+                                                setDisplayName(e);
+                                            }}
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                        />
+                                    </GridItem>
+
                                 </GridContainer>
                             </div>
                             <div className="btnEditGroup">

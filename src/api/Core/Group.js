@@ -9,7 +9,9 @@ import {
     REMOVE_GROUP,
     REMOVE_GROUP_GROUP,
     LIST_ROLE_GROUP,
-    FIND_GROUP
+    FIND_GROUP,
+    FILTER_STATUS_GROUP,
+    FILTER_DESCRIPTION_GROUP
 } from "../endpoints";
 import api from "../interceptor";
 
@@ -34,3 +36,7 @@ export const removeGroupToGroup = (payload) => api.post(REMOVE_GROUP_GROUP, payl
 export const countOfGroup = (payload) => api.post(COUNT_GROUP, payload);
 
 export const findGroup = (payload) => api.post(FIND_GROUP, payload);
+
+export const filterByStatusGroup = (payload) => api.post(FILTER_STATUS_GROUP, payload);
+
+export const filterByDescriptionGroup = (payload) => api.post(FILTER_DESCRIPTION_GROUP, payload);

@@ -13,14 +13,14 @@ import {
 
 const headerStyle = (theme) => ({
   appBar: {
-    backgroundImage: "linear-gradient(#474747, #e1dfdf)",
+    backgroundImage: "linear-gradient(#FF9800, #ffffff)",
     backgroundColor: "transparent",
     // boxShadow: "none",
     borderBottom: "0",
     marginBottom: "0",
     // position: "absolute",
     // right: "3.8%",
-    width: "92.6%",
+    width: "94.3%",
     zIndex: 200,
     // color: grayColor[5],
     color: 'rgb(52, 71, 103)',
@@ -36,7 +36,7 @@ const headerStyle = (theme) => ({
     // position: 'absolute',
     opacity: 1,
     // background: "rgba(255, 255, 255, 0.8)",
-    margin: "10px 5.3%",
+    margin: "10px 4%",
     boxShadow: 'none',
     [theme.breakpoints.down("md")]: {
       // right: "1%",
@@ -53,7 +53,7 @@ const headerStyle = (theme) => ({
     // boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
   },
   appBar2: {
-    backgroundImage: "linear-gradient(#474747, #e1dfdf)",
+    backgroundImage: "linear-gradient(#FF9800, #ffffff)",
     boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
 
   },
@@ -82,7 +82,7 @@ const headerStyle = (theme) => ({
   titleApp: {
     ...defaultFont,
     lineHeight: "1px",
-    color: "white"
+    color: "Black"
   },
   appResponsive: {
     top: "8px",
