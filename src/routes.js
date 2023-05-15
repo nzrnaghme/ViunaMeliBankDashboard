@@ -46,7 +46,7 @@ const dashboardRoutes = [
   },
   {
     path: "/catalog",
-    name: "کاتالوک",
+    name: "فایل",
     icon: ImportContactsIcon,
     component: Catalog,
   },

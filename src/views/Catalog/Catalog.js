@@ -5,16 +5,24 @@ import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from '@material-ui/icons/Add';
+import Close from "@material-ui/icons/Close";
+
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import CreateCatalog from "./CreateCatalog"
 import "./Catalog.css"
 // api
 import { trackPromise } from "react-promise-tracker";
 import { GeneralContext } from "providers/GeneralContext";
 import { getListCatalog } from "api/Core/Catalog";
+import { removeCatalog } from "api/Core/Catalog";
 
 const useStyles = makeStyles({
     root: {
@@ -27,7 +35,12 @@ const useStyles = makeStyles({
 export default function Setting() {
     const classes = useStyles();
 
-    const [Catalog, setCatalog] = useState({})
+    const [Catalog, setCatalog] = useState({});
+    const [oldNode, setOldNode] = useState("");
+
+    //new catalog
+    const [openPopUpCreateCatalog, setOpenPopUpCreateCatalog] = useState(false);
+
 
 
     const {
@@ -36,7 +49,7 @@ export default function Setting() {
     } = useContext(GeneralContext);
 
     useEffect(() => {
-        trackPromise(getCatalog())
+        trackPromise(getCatalog());
     }, [])
 
     const getCatalog = async () => {
@@ -57,12 +70,13 @@ export default function Setting() {
             setCatalog(newData);
 
         } else {
-            onToast("کاتالوگی وجود ندارد", "warning")
-            setOpenToast(true)
+            onToast("فایلی وجود ندارد", "warning");
+            setOpenToast(true);
         }
     }
 
     const getChildren = async (catalogName) => {
+        setOldNode(catalogName);
         const data = {
             PATH: `${catalogName}`,
             Mask: "*",
@@ -78,28 +92,40 @@ export default function Setting() {
                 path: item.path
             }));
 
-            var c = Catalog.map((data) => {
-                if (data.path === catalogName) {
-                    return {
-                        name: data.name,
-                        id: data.id,
-                        children: newData,
-                        path: data.path
-                    }
-                } else {
-                    return data;
-                }
-            })
-            setCatalog(c)
+            addChildToUser(Catalog, catalogName, newData);
 
-            console.log(Catalog, "44444");
         } else {
-            onToast("کاتالوگی وجود ندارد", "warning")
-            setOpenToast(true)
+            onToast("فایل داخلی وجود ندارد", "warning");
+            setOpenToast(true);
         }
     }
 
-    console.log(Catalog, "Catalog");
+
+    const addChildToUser = (userData, parentId, childrenData) => {
+        userData.forEach(user => {
+            if (user.path === parentId) {
+                user.children.push(...childrenData);
+                setCatalog([...Catalog]); // Update state with new data reference
+            } else if (user.children && user.children.length > 0) {
+                addChildToUser(user.children, parentId, childrenData);
+            }
+        });
+    }
+
+    // const removeNode = (userData, nodeId) => {
+    //     console.log(nodeId, "node");
+    //     userData.forEach(user => {
+    //         const index = user.children.findIndex(child => child.path === nodeId);
+    //         console.log(index, "iiiii");
+    //         if (index !== -1) {
+    //             user.children.splice(index, 1);
+    //             setCatalog([...Catalog]); // Update state with new data reference
+    //         } else if (user.children && user.children.length > 0) {
+    //             removeNode(user.children, nodeId);
+    //         }
+    //     });
+    // };
+
 
     const renderTree = (nodes) => (
 
@@ -108,16 +134,87 @@ export default function Setting() {
             nodeId={nodes.id}
             label={nodes.name}
             onClick={() => {
-                getChildren(nodes.path)
+                if (oldNode != nodes.path)
+                    getChildren(nodes.path);
             }}>
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
+
         </TreeItem>
     );
 
     return (
         <>
             <GridContainer>
+                <div className="btnAdd2">
+                    <Tooltip
+                        id="tooltip-top-start"
+                        title="افزودن فایل"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                        color={"#00adef"}
+                    >
+                        <IconButton
+                            aria-label="Key"
+                            className={classes.tableActionButton}
+                            onClick={() => {
+                                setOpenPopUpCreateCatalog(true);
+                            }}
+                        >
+                            <AddIcon
+                                className={
+                                    classes.tableActionButtonIcon}
+                                style={{ color: "white", fontSize: "2rem" }}
+                            />
+                        </IconButton>
+                    </Tooltip>
 
+                </div>
+
+                <div className="btnremove2">
+                    <Tooltip
+                        id="tooltip-top-start"
+                        title="حذف فایل"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                        color={"#00adef"}
+                    >
+                        <IconButton
+                            aria-label="Key"
+                            className={classes.tableActionButton}
+
+
+                            onClick={async () => {
+                                if (oldNode) {
+                                    const data = {
+                                        PATH: oldNode,
+                                        RECURSIVE: "true"
+                                    }
+                                    const response = await removeCatalog(data);
+                                    if (response.data === "RemoveFolder_Done") {
+                                        setOpenToast(true);
+                                        onToast("فایل حذف شد", "success");
+                                        trackPromise(getCatalog());
+                                    } else {
+                                        setOpenToast(true);
+                                        onToast("فایل حذف نشد", "error");
+                                    }
+                                } else {
+                                    setOpenToast(true);
+                                    onToast("لطفا فایل انتخاب کنید", "error");
+                                }
+
+
+                            }}
+                        >
+                            <Close
+                                className={
+                                    classes.tableActionButtonIcon}
+                                style={{ color: "white", fontSize: "2rem" }}
+                            />
+                        </IconButton>
+                    </Tooltip>
+
+                </div>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
 
@@ -132,13 +229,29 @@ export default function Setting() {
                                     {
                                         Catalog.map((node) => (renderTree(node)))
                                     }
+
                                 </TreeView>
                             }
                         </CardBody>
                     </Card>
                 </GridItem>
             </GridContainer>
+            {openPopUpCreateCatalog && (
+                <CreateCatalog
+                    openCreateUserPopUp={openPopUpCreateCatalog}
+                    CreateSuccess={() => {
+                        setOpenPopUpCreateCatalog(false);
 
+                        setOpenToast(true);
+                        onToast("فایل اضافه شد", "success");
+                        trackPromise(getCatalog());
+                    }}
+                    closePopUpCreate={() => {
+                        setOpenPopUpCreateCatalog(false);
+                    }}
+                    parentPath={oldNode}
+                />
+            )}
         </>
     );
 }
