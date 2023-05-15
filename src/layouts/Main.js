@@ -16,6 +16,8 @@ import Dashboard from "views/Dashboard/Dashboard";
 import UsersList from "views/UsersList/UsersList";
 import Groups from "views/Groups/Groups";
 import Roles from "views/Roles/Roles";
+import Catalog from "views/Catalog/Catalog";
+
 let ps;
 
 //bg import
@@ -106,7 +108,7 @@ export default function Main({ ...rest }) {
               <Route path={"/Groups"} component={Groups} />
               <Route path={"/roles"} component={Roles} />
               <Route path={"/setting"} component={Setting} />
-            
+              <Route path={"/catalog"} component={Catalog} />
 
               <Redirect to="/dashboard" from="/" />
             </Switch>

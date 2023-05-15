@@ -65,20 +65,33 @@ export default function EditCourse(props) {
     } = props;
 
     const [newPass, setNewPass] = useState();
+    const [oldPass, setOldPass] = useState();
+    const [newAgainPass, setNewAgainPass] = useState();
+
     const [errorPass, setErrorPass] = useState(false);
+    const [errorOldPass, setErrorOldPass] = useState(false);
+    const [errorAgainPass, setErrorAgainPass] = useState(false);
+
+    const [errorPassTxt, setErrorPassTxt] = useState('');
+    const [errorOldPassTxt, setErrorOldPassTxt] = useState('');
+    const [errorAgainPassTxt, setErrorAgainPassTxt] = useState('');
+
+    const [textLeftNew, setTextLeftNew] = useState(false);
+    const [textLeftOld, setTextLeftOld] = useState(false);
     const [textLeft, setTextLeft] = useState(false);
 
 
     const updatePass = async () => {
         var passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
-
-        if (newPass && newPass.length > 8 && newPass.match(passw)) {
+        console.log(newPass, oldPass, newAgainPass);
+        if (newPass && newPass.length > 8 && newPass.match(passw) && newPass === newAgainPass && oldPass) {
 
             const userName = dataUser.USER_USERNAME;
             const data = Object.create(
                 {
                     userName: {
-                        USER_PASSWORD: newPass
+                        USER_PASSWORD: newPass,
+                        OLD_USER_PASSWORD: oldPass
                     },
                 },
             );
@@ -90,11 +103,52 @@ export default function EditCourse(props) {
             } else {
 
                 setOpenToast(true);
-                onToast("کاربر بروزرسانی نشد", "error");
+                onToast("رمز کاربر بروزرسانی نشد", "error");
                 closePopUpEdit();
             }
-        } else {
-            setErrorPass(true)
+        } else if (newPass && oldPass && newAgainPass && newPass != newAgainPass) {
+            setErrorAgainPass(true);
+            setErrorAgainPassTxt("نکرار رمز جدید باهم منطبق نیست");
+        } else if (!newPass && oldPass && !newAgainPass) {
+            setErrorAgainPass(true);
+            setErrorPass(true);
+            setErrorAgainPassTxt("رمز جدید وارد نشده است");
+            setErrorPassTxt("رمز جدید وارد نشده است");
+        } else if (newPass && !oldPass && !newAgainPass) {
+            setErrorAgainPass(true);
+            setErrorOldPass(true);
+            setErrorAgainPassTxt("رمز جدید وارد نشده است");
+            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+        }
+        else if (!newPass && !oldPass && newAgainPass) {
+            setErrorPass(true);
+            setErrorOldPass(true);
+            setErrorPassTxt("رمز جدید وارد نشده است");
+            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+        }
+        else if (newPass && !oldPass && newAgainPass) {
+            setErrorOldPass(true);
+            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+        }
+        else if (!newPass && oldPass && newAgainPass) {
+            setErrorPass(true);
+            setErrorPassTxt("رمز جدید وارد نشده است");
+        }
+        else if (newPass && oldPass && !newAgainPass) {
+            setErrorAgainPass(true);
+            setErrorAgainPassTxt("تکرار جدید وارد نشده است");
+        } else if(!newPass && !oldPass && !newAgainPass) {
+            setErrorPass(true);
+            setErrorOldPass(true);
+            setErrorAgainPass(true);
+            setErrorPassTxt("رمز جدید وارد نشده است");
+            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+            setErrorAgainPassTxt("رمز جدید وارد نشده است");
+        }else{
+            setErrorPass(true);
+            setErrorAgainPass(true);
+            setErrorPassTxt("رمز جدید باید ۸ کاراکتر و شامل حروف بزرگ و کوچیک و علامت باشد");
+            setErrorAgainPassTxt("رمز جدید باید ۸ کاراکتر و شامل حروف بزرگ و کوچیک و علامت باشد");
         }
 
     };
@@ -120,6 +174,31 @@ export default function EditCourse(props) {
                                     <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             rtlActive
+                                            labelText="رمز عبور قدیمی"
+                                            value={oldPass}
+                                            onChange={(e) => {
+                                                setTextLeftOld(true)
+                                                setErrorOldPass(false)
+                                                setOldPass(e)
+                                            }}
+                                            textLeft={textLeftOld}
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                            inputProps={{
+                                                required: true,
+                                                minLength: 8,
+                                                dir: "ltr"
+                                            }}
+                                            error={errorOldPass}
+                                            errorText={errorOldPassTxt}
+                                        />
+                                    </GridItem>
+                                </GridContainer>
+                                <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                        <CustomInput
+                                            rtlActive
                                             labelText="رمز عبور جدید"
                                             value={newPass}
                                             onChange={(e) => {
@@ -137,6 +216,32 @@ export default function EditCourse(props) {
                                                 dir: "ltr"
                                             }}
                                             error={errorPass}
+                                            errorText={errorPassTxt}
+                                        />
+                                    </GridItem>
+                                </GridContainer>
+                                <GridContainer>
+                                    <GridItem xs={12} sm={12} md={12}>
+                                        <CustomInput
+                                            rtlActive
+                                            labelText="نکرار رمز عبور جدید"
+                                            value={newAgainPass}
+                                            onChange={(e) => {
+                                                setTextLeftNew(true)
+                                                setErrorAgainPass(false)
+                                                setNewAgainPass(e)
+                                            }}
+                                            textLeft={textLeftNew}
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                            inputProps={{
+                                                required: true,
+                                                minLength: 8,
+                                                dir: "ltr"
+                                            }}
+                                            error={errorAgainPass}
+                                            errorText={errorAgainPassTxt}
                                         />
                                     </GridItem>
                                 </GridContainer>

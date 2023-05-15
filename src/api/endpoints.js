@@ -54,3 +54,9 @@ export const REMOVE_CONFIG = `${API_V}config/removeconfigs?api_key=X-API-Key&API
 export const ADD_CONFIG = `${API_V}config/addconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
 export const EDIT_CONFIG = `${API_V}config/editconfigs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
 
+
+//catalog
+export const LIST_CATALOG = `${API_V}catalog/lstcatalogs?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const CREATE_CATALOG = `${API_V}catalog/createfolder?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const REMOVE_CATALOG = `${API_V}catalog/removefolder?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+
