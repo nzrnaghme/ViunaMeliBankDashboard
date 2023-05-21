@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -12,24 +13,23 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
-import { GeneralContext } from "providers/GeneralContext";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 
 import "./User.css";
 import { insertUser } from "api/Core/User";
 
 // new
 
-export const User_Status = [
-    {
-        _id: 0,
-        fullName: "غیر فعال"
-    },
-    {
-        _id: 1,
-        fullName: "فعال"
-    }
-];
+// export const User_Status = [
+//     {
+//         _id: 0,
+//         fullName: "غیر فعال"
+//     },
+//     {
+//         _id: 1,
+//         fullName: "فعال"
+//     }
+// ];
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -68,7 +68,6 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function CreateUser(props) {
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const classes = useStyles();
     const {
@@ -83,27 +82,30 @@ export default function CreateUser(props) {
     const [name, setName] = useState();
     const [pass, setPass] = useState();
     const [displayName, setDisplayName] = useState(null);
-    const [status, setStatus] = useState(1);
+    // const [status, setStatus] = useState(1);
     const [description, setDescription] = useState(null);
     const [errorName, setErrorName] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
     const [textLeft, setTextLeft] = useState(false);
     const [errorDisplayName, setErrorDisplayName] = useState(false);
 
+    function validatePassword(password) {
+        const regex = /^(?=.*[0-7])(?=.*[!@#$%^&*])[a-zA-Z0-7!@#$%^&*]{8,}$/;
+        return regex.test(password);
+    }
 
     const createNewCourse = async () => {
-        var passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
         if (name && pass && displayName) {
 
-            if (pass.length > 8 && pass.match(passw)) {
+            if (pass.length > 7 && validatePassword(pass)) {
 
                 const userName = name;
                 const data = Object.create(
                     {
                         userName: {
                             USER_PASSWORD: pass,
-                            USER_STATUS: status.toString(),
+                            USER_STATUS: "1",//status.toString()
                             USER_DESCRIPTION: description,
                             USER_DISPLAYNAME: displayName
                         },
@@ -116,18 +118,33 @@ export default function CreateUser(props) {
                     CreateSuccess();
 
                 } else {
-                    setOpenToast(true);
-                    onToast("کاربر با اضافه نشد", "error");
+                    toast.error("کاربر با اضافه نشد");
                 }
             } else setErrorPass(true)
 
 
-        } else {
-            setErrorName(true);
+        } else if (name && !pass && !displayName) {
+            // setErrorName(true);
             setErrorPass(true);
             setErrorDisplayName(true)
-            setOpenToast(true);
-            onToast("اطلاعات کافی نیست", "error");
+            // toast.error("اطلاعات کافی نیست");
+        } else if (!name && !pass && displayName) {
+            setErrorName(true);
+            setErrorPass(true);
+        } else if (!name && pass && !displayName) {
+            setErrorName(true);
+            setErrorDisplayName(true);
+        } else if (name && pass && !displayName) {
+            setErrorDisplayName(true);
+        } else if (!name && pass && displayName) {
+            setErrorName(true);
+        } else if (name && !pass && displayName) {
+            setErrorPass(true);
+        } else {
+            setErrorPass(true);
+            setErrorName(true);
+            setErrorDisplayName(true);
+            toast.error("اطلاعات کافی نیست");
         }
     };
 
@@ -190,7 +207,7 @@ export default function CreateUser(props) {
                                 </GridContainer>
 
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    {/* <GridItem xs={12} sm={12} md={6}>
                                         <CustomSelectInput
                                             labelText="وضعیت کاربر"
                                             value={status}
@@ -199,8 +216,8 @@ export default function CreateUser(props) {
                                                 setStatus(e.target.value);
                                             }}
                                         />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    </GridItem> */}
+                                    <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             rtlActive
                                             labelText="توضیحات"
@@ -251,7 +268,7 @@ export default function CreateUser(props) {
                                             trackPromise(createNewCourse());
                                         }}
                                     >
-                                        ثبت تغییرات
+                                        ایجاد کاربر
                                     </RegularButton>
                                     <RegularButton
                                         color="danger"

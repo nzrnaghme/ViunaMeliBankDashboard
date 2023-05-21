@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -12,7 +13,6 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { GeneralContext } from "providers/GeneralContext";
 
 import "./User.css";
 import { changePassword } from "api/Core/User";
@@ -55,7 +55,6 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function EditCourse(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         openEditUserPopUp,
@@ -80,12 +79,13 @@ export default function EditCourse(props) {
     const [textLeftOld, setTextLeftOld] = useState(false);
     const [textLeft, setTextLeft] = useState(false);
 
+    function validatePassword(password) {
+        const regex = /^(?=.*[0-7])(?=.*[!@#$%^&*])[a-zA-Z0-7!@#$%^&*]{8,}$/;
+        return regex.test(password);
+    }
 
     const updatePass = async () => {
-        var passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
-        console.log(newPass, oldPass, newAgainPass);
-        if (newPass && newPass.length > 8 && newPass.match(passw) && newPass === newAgainPass && oldPass) {
-
+        if (newPass && newPass.length > 7 && validatePassword(newPass) && newPass === newAgainPass && oldPass) {
             const userName = dataUser.USER_USERNAME;
             const data = Object.create(
                 {
@@ -102,9 +102,8 @@ export default function EditCourse(props) {
                 EditSuccess();
             } else {
 
-                setOpenToast(true);
-                onToast("رمز کاربر بروزرسانی نشد", "error");
-                closePopUpEdit();
+                toast.error("!رمز عبور اشتباه است");
+                // closePopUpEdit();
             }
         } else if (newPass && oldPass && newAgainPass && newPass != newAgainPass) {
             setErrorAgainPass(true);
@@ -118,17 +117,17 @@ export default function EditCourse(props) {
             setErrorAgainPass(true);
             setErrorOldPass(true);
             setErrorAgainPassTxt("رمز جدید وارد نشده است");
-            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+            setErrorOldPassTxt("رمز عبور وارد نشده است");
         }
         else if (!newPass && !oldPass && newAgainPass) {
             setErrorPass(true);
             setErrorOldPass(true);
             setErrorPassTxt("رمز جدید وارد نشده است");
-            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+            setErrorOldPassTxt("رمز عبور وارد نشده است");
         }
         else if (newPass && !oldPass && newAgainPass) {
             setErrorOldPass(true);
-            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+            setErrorOldPassTxt("رمز عبور وارد نشده است");
         }
         else if (!newPass && oldPass && newAgainPass) {
             setErrorPass(true);
@@ -137,14 +136,14 @@ export default function EditCourse(props) {
         else if (newPass && oldPass && !newAgainPass) {
             setErrorAgainPass(true);
             setErrorAgainPassTxt("تکرار جدید وارد نشده است");
-        } else if(!newPass && !oldPass && !newAgainPass) {
+        } else if (!newPass && !oldPass && !newAgainPass) {
             setErrorPass(true);
             setErrorOldPass(true);
             setErrorAgainPass(true);
             setErrorPassTxt("رمز جدید وارد نشده است");
-            setErrorOldPassTxt("رمز قدیمی وارد نشده است");
+            setErrorOldPassTxt("رمز عبور وارد نشده است");
             setErrorAgainPassTxt("رمز جدید وارد نشده است");
-        }else{
+        } else {
             setErrorPass(true);
             setErrorAgainPass(true);
             setErrorPassTxt("رمز جدید باید ۸ کاراکتر و شامل حروف بزرگ و کوچیک و علامت باشد");
@@ -174,7 +173,7 @@ export default function EditCourse(props) {
                                     <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="رمز عبور قدیمی"
+                                            labelText="رمز عبور"
                                             value={oldPass}
                                             onChange={(e) => {
                                                 setTextLeftOld(true)

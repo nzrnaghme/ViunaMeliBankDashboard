@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -12,23 +13,22 @@ import CardBody from "components/Card/CardBody.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 // @material-ui/icons
-import { GeneralContext } from "providers/GeneralContext";
 
 import "./group.css"
 import { addGroup } from "api/Core/Group";
 
-export const User_Status = [
-    {
-        _id: 0,
-        fullName: "غیر فعال"
-    },
-    {
-        _id: 1,
-        fullName: "فعال"
-    }
-];
+// export const User_Status = [
+//     {
+//         _id: 0,
+//         fullName: "غیر فعال"
+//     },
+//     {
+//         _id: 1,
+//         fullName: "فعال"
+//     }
+// ];
 
 
 const styles = (theme) => ({
@@ -68,7 +68,6 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function InsertGroup(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         InsertSuccess,
@@ -78,7 +77,7 @@ export default function InsertGroup(props) {
 
     const [nameNew, setNameNew] = useState();
     const [displayName, setDisplayName] = useState(null);
-    const [condition, setCondition] = useState(1);
+    // const [condition, setCondition] = useState(1);
     const [description, setDescription] = useState(null);
     const [errorName, setErrorName] = useState(false);
 
@@ -88,7 +87,7 @@ export default function InsertGroup(props) {
             const data = Object.create(
                 {
                     groupName: {
-                        GROUP_STATUS: condition.toString(),
+                        GROUP_STATUS: "1",//condition.toString()
                         GROUP_DESCRIPTION: description,
                         GROUP_DISPLAYNAME: displayName
                     },
@@ -100,8 +99,7 @@ export default function InsertGroup(props) {
                 InsertSuccess();
             }
             else {
-                setOpenToast(true)
-                onToast("گروه اضافه نشد", "error")
+                toast.error("گروه اضافه نشد")
                 closePopUp()
             }
         } else {
@@ -124,7 +122,7 @@ export default function InsertGroup(props) {
                         <CardBody className="bodyEditGroup">
                             <div>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    <GridItem xs={12} sm={12} md={12}>
 
                                         <CustomInput
                                             error={errorName}
@@ -143,7 +141,7 @@ export default function InsertGroup(props) {
                                             }}
                                         />
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    {/* <GridItem xs={12} sm={12} md={6}>
                                         {User_Status && User_Status.length > 0 &&
                                             <CustomSelectInput
                                                 labelText="وضعیت گروه"
@@ -153,7 +151,7 @@ export default function InsertGroup(props) {
                                                     setCondition(e.target.value)
                                                 }} />
                                         }
-                                    </GridItem>
+                                    </GridItem> */}
                                 </GridContainer>
                                 <GridContainer>
 
@@ -202,7 +200,7 @@ export default function InsertGroup(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { trackPromise(InsertGroup()) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(InsertGroup()) }}>ایجاد گروه</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

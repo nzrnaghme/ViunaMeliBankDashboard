@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -59,9 +60,7 @@ export default function UsersList() {
   const classes = useStyles();
   const {
     setConfirmPopupOpen,
-    onConfirmSetter,
-    setOpenToast,
-    onToast
+    onConfirmSetter
   } = useContext(GeneralContext);
 
   const [allUsers, setAllUsers] = useState({});
@@ -94,11 +93,15 @@ export default function UsersList() {
     }
     let response1 = await getListUser(data);
     if (Object.values(response1.data).length > 0) {
-      setAllUsers(response1.data);
+
+      const sortedData = Object.fromEntries(
+        Object.entries(response1.data).sort((a, b) => b[1].USER_ID - a[1].USER_ID)
+      );
+
+      setAllUsers(sortedData);
     } else {
       setCurrentPage_MainbarMyUsers(currentPage_MainbarMyUsers - 10);
-      onToast("کاربری دیگر وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("کاربری دیگر وجود ندارد")
     }
 
   };
@@ -118,12 +121,10 @@ export default function UsersList() {
     let response = await removeUser(data);
 
     if (response.data === "SUCCESSFUL") {
-      setOpenToast(true);
-      onToast("کاربر با موفقیت حذف شد", "success");
+      toast.success("کاربر با موفقیت حذف شد");
       getUsers()
     } else {
-      setOpenToast(true);
-      onToast("کاربر حذف نشد", "error");
+      toast.error("کاربر حذف نشد");
     }
   };
 
@@ -162,8 +163,7 @@ export default function UsersList() {
     if (Object.values(response.data).length > 0) {
       setAllUsers(Object.values(response.data))
     } else {
-      onToast("کاربری با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("کاربری با این مشخصات وجود ندارد")
     }
   }
 
@@ -175,8 +175,7 @@ export default function UsersList() {
     if (Object.values(response.data).length > 0) {
       setAllUsers(Object.values(response.data))
     } else {
-      onToast("کاربری با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("کاربری با این مشخصات وجود ندارد")
     }
   }
 
@@ -188,8 +187,7 @@ export default function UsersList() {
     if (Object.values(response.data).length > 0) {
       setAllUsers(Object.values(response.data))
     } else {
-      onToast("کاربری با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("کاربری با این مشخصات وجود ندارد")
     }
   }
 
@@ -231,7 +229,7 @@ export default function UsersList() {
                     "اسم کاربری",
                     "عنوان",
                     "توضیحات",
-                    "وضعیت کاربر",
+                    // "وضعیت کاربر",
                     "عملیات",
                   ]}
                   tableData={Object.values(allUsers)}
@@ -306,8 +304,7 @@ export default function UsersList() {
           EditSuccess={() => {
             setOpenPopUpEditUser(false);
 
-            setOpenToast(true);
-            onToast("کاربر بروزرسانی شد", "success");
+            toast.success("کاربر بروزرسانی شد");
             getUsers();
           }}
         />
@@ -319,8 +316,7 @@ export default function UsersList() {
           CreateSuccess={() => {
             setOpenPopUpCreateUser(false);
 
-            setOpenToast(true);
-            onToast("کاربر اضافه شد", "success");
+            toast.success("کاربر اضافه شد");
             getUsers();
           }}
           closePopUpCreate={() => {
@@ -345,8 +341,7 @@ export default function UsersList() {
           }}
           EditSuccess={() => {
             setOpenChangePass(false);
-            setOpenToast(true);
-            onToast("کاربر بروزرسانی شد", "success");
+            toast.success("کاربر بروزرسانی شد");
             getUsers();
           }}
         />

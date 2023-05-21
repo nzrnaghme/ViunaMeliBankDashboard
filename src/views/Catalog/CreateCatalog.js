@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -12,7 +13,6 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { GeneralContext } from "providers/GeneralContext";
 
 import "../UsersList/User.css";
 import { createCatalog } from "api/Core/Catalog";
@@ -55,7 +55,6 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function CreateUser(props) {
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const classes = useStyles();
     const {
@@ -84,14 +83,12 @@ export default function CreateUser(props) {
                 CreateSuccess();
 
             } else {
-                setOpenToast(true);
-                onToast("فایل اضافه نشد", "error");
+                toast.error("فایل اضافه نشد");
             }
 
         } else {
             setErrorName(true);
-            setOpenToast(true);
-            onToast("اطلاعات کافی نیست", "error");
+            toast.error("اطلاعات کافی نیست");
         }
     };
 
@@ -150,7 +147,7 @@ export default function CreateUser(props) {
                                             trackPromise(createNewCourse());
                                         }}
                                     >
-                                        ثبت تغییرات
+                                        ایجاد کاتالوگ
                                     </RegularButton>
                                     <RegularButton
                                         color="danger"

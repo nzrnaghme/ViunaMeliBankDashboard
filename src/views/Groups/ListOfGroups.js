@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
-
+import { toast } from "react-toastify";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -81,13 +81,15 @@ export default function ListOfGroups(props) {
 
     const [allGroup, setAllGroups] = useState()
 
-    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
     const [rowsPerPageGroup, setRowsPerPageGroup] = useState(10);
     const [currentGroupToGroup, setCurrentGroupToGroup] = useState([])
 
     const [currentPage_MainbarCurrentRole, setCurrentPage_MainbarCurrentRole] = useState(0);
     const [rowsPerPageRole, setRowsPerPageRole] = useState(10);
     const [currentRoleToGroup, setCurrentRoleToGroup] = useState([]);
+
+    const [which, setWhich] = useState("گروه")
 
     const {
         openListGrouptPopUp,
@@ -119,7 +121,7 @@ export default function ListOfGroups(props) {
             setCurrentGroupToGroup(currentGroup);
         }
         if (response.data) {
-            var newData = Object.values(response.data).map((item, index) => ({
+            const newData = Object.values(response.data).map((item, index) => ({
                 GROUP_NAME: Object.keys(response.data)[index],
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
@@ -127,14 +129,15 @@ export default function ListOfGroups(props) {
                 GROUP_DISPLAYNAME: item.GROUP_DISPLAYNAME,
             }));
             var responceCurrent = newData.filter((item) => item.GROUP_NAME != dataGroupToGroup.GROUP_NAME)
+            var sortedData = responceCurrent.sort((a, b) => b.GROUP_ID - a.GROUP_ID);
 
         }
         if (currentGroup.length > 0) {
-            var select = responceCurrent.filter((e) => (
+            var select = sortedData.filter((e) => (
                 currentGroup.includes(e.GROUP_NAME)
             ))
 
-            var AllGroups = responceCurrent.filter((e) => (
+            var AllGroups = sortedData.filter((e) => (
                 !currentGroup.includes(e.GROUP_NAME)
             ))
 
@@ -143,7 +146,7 @@ export default function ListOfGroups(props) {
             });
 
             setAllGroups(AllGroups);
-        } else setAllGroups(responceCurrent)
+        } else setAllGroups(sortedData)
 
     };
 
@@ -167,20 +170,22 @@ export default function ListOfGroups(props) {
         }
 
         if (response.data) {
-            var newData = Object.values(response.data).map((item, index) => ({
+            const newData = Object.values(response.data).map((item, index) => ({
                 ROLE_NAME: Object.keys(response.data)[index],
                 ROLE_STATUS: item.ROLE_STATUS,
                 ROLE_ID: item.ROLE_ID,
                 ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
                 ROLE_DISPLAYNAME: item.ROLE_DISPLAYNAME,
             }));
+            var sortedData = newData.sort((a, b) => b.ROLE_ID - a.ROLE_ID);
+
         }
         if (currentRole.length > 0) {
-            var select = newData.filter((e) => (
+            var select = sortedData.filter((e) => (
                 currentRole.includes(e.ROLE_NAME)
             ))
 
-            var AllRoles = newData.filter((e) => (
+            var AllRoles = sortedData.filter((e) => (
                 !currentRole.includes(e.ROLE_NAME)
             ))
 
@@ -188,7 +193,7 @@ export default function ListOfGroups(props) {
                 AllRoles.unshift(element1)
             });
             setAllRoles(AllRoles)
-        } else setAllRoles(newData)
+        } else setAllRoles(sortedData)
 
     };
 
@@ -225,14 +230,12 @@ export default function ListOfGroups(props) {
 
         let response = await addGroupToGroup(data);
         if (response.data === "SUCCESSFUL") {
-            setOpenToast(true);
-            onToast("گروه با موفقیت اضافه شد", "success");
+            toast.success("گروه با موفقیت اضافه شد");
             trackPromise(getGroups(dataGroupToGroup.GROUP_NAME));
             setRowsPerPageGroup(10);
             setCurrentPage_MainbarCurrentGroup(0);
         } else {
-            setOpenToast(true);
-            onToast("گروه قبلا اضافه شده است", "error");
+            toast.error("گروه قبلا اضافه شده است");
         }
     }
 
@@ -251,12 +254,10 @@ export default function ListOfGroups(props) {
 
         let response = await removeGroupToGroup(data);
         if (response.data === "SUCCESSFUL") {
-            setOpenToast(true);
-            onToast("گروه با موفقیت از کاربر حذف شد", "success");
+            toast.success("گروه با موفقیت از کاربر حذف شد");
             trackPromise(getGroups(dataGroupToGroup.GROUP_NAME));
         } else {
-            setOpenToast(true);
-            onToast("گروه از کاربر حذف نشد", "error");
+            toast.error("گروه از کاربر حذف نشد");
         }
     }
 
@@ -273,15 +274,13 @@ export default function ListOfGroups(props) {
         data[roleName] = data["roleName"];
         let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
-            setOpenToast(true);
-            onToast("گروه با موفقیت به نقش اضافه شد", "success");
+            toast.success("گروه با موفقیت به نقش اضافه شد");
             trackPromise(getRoles(dataGroupToGroup.GROUP_NAME));
             setRowsPerPageRole(10);
             setCurrentPage_MainbarCurrentRole(0);
 
         } else {
-            setOpenToast(true);
-            onToast("گروه قبلا به نقش اضافه شده است", "error");
+            toast.error("گروه قبلا به نقش اضافه شده است");
         }
     }
 
@@ -299,19 +298,19 @@ export default function ListOfGroups(props) {
 
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
-            setOpenToast(true);
-            onToast("نقش با موفقیت از گروه حذف شد", "success");
+            toast.success("نقش با موفقیت از گروه حذف شد");
             trackPromise(getRoles(dataGroupToGroup.GROUP_NAME));
         } else {
-            setOpenToast(true);
-            onToast("نقش از گروه حذف نشد", "error");
+            toast.error("نقش از گروه حذف نشد", "error");
         }
     }
 
     const handleChange = (event, newValue) => {
         setItemTabs(newValue);
+        if (newValue === 0) setWhich("گروه")
+        else setWhich("نقش")
     };
-    
+
     const searchWithNameGroup = async (nameSearch) => {
         let data = {
             GROUP_NAME: nameSearch
@@ -322,8 +321,7 @@ export default function ListOfGroups(props) {
             setCurrentPage_MainbarCurrentGroup(0);
             setRowsPerPageGroup(10);
         } else {
-            onToast("گروهی با این اسم وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("گروهی با این اسم وجود ندارد")
         }
     }
 
@@ -337,8 +335,7 @@ export default function ListOfGroups(props) {
             setCurrentPage_MainbarCurrentGroup(0);
             setRowsPerPageGroup(10);
         } else {
-            onToast("گروهی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("گروهی با این مشخصات وجود ندارد")
         }
     }
 
@@ -352,8 +349,7 @@ export default function ListOfGroups(props) {
             setCurrentPage_MainbarCurrentGroup(0);
             setRowsPerPageGroup(10);
         } else {
-            onToast("گروهی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("گروهی با این مشخصات وجود ندارد")
         }
     }
 
@@ -367,8 +363,7 @@ export default function ListOfGroups(props) {
             setRowsPerPageRole(10);
             setCurrentPage_MainbarCurrentRole(0);
         } else {
-            onToast("نقشی با این اسم وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("نقشی با این اسم وجود ندارد")
         }
     }
 
@@ -383,8 +378,7 @@ export default function ListOfGroups(props) {
             setRowsPerPageRole(10);
             setCurrentPage_MainbarCurrentRole(0);
         } else {
-            onToast("نقشی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("نقشی با این مشخصات وجود ندارد")
         }
     }
 
@@ -398,8 +392,7 @@ export default function ListOfGroups(props) {
             setRowsPerPageRole(10);
             setCurrentPage_MainbarCurrentRole(0);
         } else {
-            onToast("نقشی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("نقشی با این مشخصات وجود ندارد")
         }
     }
 
@@ -412,7 +405,7 @@ export default function ListOfGroups(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning">
-                            <h4 className={classes.cardTitleWhite}>اضافه کردن به گروه {dataGroupToGroup.GROUP_NAME}</h4>
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن گروه {dataGroupToGroup.GROUP_NAME} به {which}</h4>
                         </CardHeader>
                         <CardBody>
 
@@ -434,14 +427,19 @@ export default function ListOfGroups(props) {
                                 allGroup.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["اسم گروه","عنوان", "توضیحات گروه", "وضعیت گروه", "عملیات"]}
+                                    tableHead={[
+                                        "اسم گروه",
+                                        "عنوان",
+                                        "توضیحات گروه",
+                                        // "وضعیت گروه",
+                                        "عملیات"]}
                                     rowsCount={rowsPerPageGroup}
                                     tableData={allGroup}
                                     currentPage={currentPage_MainbarCurrentGroup}
                                     handleChangePage={handleChangePageGroup}
                                     handleChangeRowsPerPage={handleChangeRowsPerPageGroup}
                                     addToGroup={(row) => {
-                                        onConfirmSetter('آیا برای اضافه کردن گروه مطمئن هستید؟', () => {
+                                        onConfirmSetter('آیا برای اضافه کردن گروه به گروه مطمئن هستید؟', () => {
                                             trackPromise(addGroupToGroups(row))
                                         })
                                         setConfirmPopupOpen(true)
@@ -480,14 +478,19 @@ export default function ListOfGroups(props) {
                                     allRoles != undefined && allRoles.length > 0 ?
                                     <Table
                                         tableHeaderColor="info"
-                                        tableHead={["اسم نقش","عنوان", "توضیحات نقش", "وضعیت", "عملیات"]}
+                                        tableHead={[
+                                            "اسم نقش",
+                                            "عنوان",
+                                            "توضیحات نقش",
+                                            // "وضعیت",
+                                            "عملیات"]}
                                         tableData={allRoles}
                                         rowsCount={rowsPerPageRole}
                                         currentPage={currentPage_MainbarCurrentRole}
                                         handleChangePage={handleChangePageRole}
                                         handleChangeRowsPerPage={handleChangeRowsPerPageRole}
                                         addRoleToGroup={(row) => {
-                                            onConfirmSetter('آیا برای اضافه کردن نقش به گروه مطمئن هستید؟', () => {
+                                            onConfirmSetter('آیا برای اضافه کردن گروه به نقش مطمئن هستید؟', () => {
                                                 trackPromise(addGroupToRoles(row))
                                             })
                                             setConfirmPopupOpen(true)
@@ -495,7 +498,7 @@ export default function ListOfGroups(props) {
                                         groupToRole
                                         currentRoleToGroup={currentRoleToGroup}
                                         removeRoleToGroup={(row) => {
-                                            onConfirmSetter('آیا برای حذف کردن نقش از گروه مطمئن هستید؟', () => {
+                                            onConfirmSetter('آیا برای حذف کردن گروه از نقش مطمئن هستید؟', () => {
                                                 trackPromise(removeGroupToRole(row))
                                             })
                                             setConfirmPopupOpen(true)
@@ -530,7 +533,7 @@ export default function ListOfGroups(props) {
                                         borderRadius: 5,
                                         paddingTop: 10,
                                         paddingBottom: 10
-                                    }}>گروهی ثبت نام نکرده</div>}
+                                    }}>اطلاعاتی ثبت نشده است</div>}
                         </CardBody>
                         {allGroup != undefined && allGroup.length > 0 &&
                             <div style={{ display: "flex", justifyContent: "center" }}>

@@ -38,19 +38,20 @@ const dashboardRoutes = [
     component: Roles,
   },
 
+
+  {
+    path: "/catalog",
+    name: "مدیریت کاتالوگ",
+    icon: ImportContactsIcon,
+    component: Catalog,
+  },
   {
     path: "/setting",
     name: "تنظیمات",
     icon: SettingsIcon,
     component: Setting,
   },
-  {
-    path: "/catalog",
-    name: "فایل",
-    icon: ImportContactsIcon,
-    component: Catalog,
-  },
-  
+
 
 ];
 

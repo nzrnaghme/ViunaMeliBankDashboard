@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
@@ -15,18 +16,17 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
 import { editeGroup } from "api/Core/Group";
-import { GeneralContext } from "providers/GeneralContext";
 
-export const User_Status = [
-    {
-        _id: 0,
-        fullName: "غیر فعال"
-    },
-    {
-        _id: 1,
-        fullName: "فعال"
-    }
-];
+// export const User_Status = [
+//     {
+//         _id: 0,
+//         fullName: "غیر فعال"
+//     },
+//     {
+//         _id: 1,
+//         fullName: "فعال"
+//     }
+// ];
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -66,7 +66,6 @@ const useStyles = makeStyles(styles);
 
 export default function EditTeacher(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         openEditTeacherPopUp,
@@ -74,11 +73,11 @@ export default function EditTeacher(props) {
         closePopUpEdit,
         dataGroup } = props
 
-    const [condition, setCondition] = useState(null);
+    // const [condition, setCondition] = useState(null);
     const [description, setDescription] = useState(null);
 
     useEffect(() => {
-        setCondition(dataGroup.GROUP_STATUS);
+        // setCondition(dataGroup.GROUP_STATUS);
         setDescription(dataGroup.GROUP_DESCRIPTION);
     }, [dataGroup]);
 
@@ -88,7 +87,7 @@ export default function EditTeacher(props) {
         const data = Object.create(
             {
                 groupName: {
-                    GROUP_STATUS: condition.toString(),
+                    GROUP_STATUS: "1",//condition.toString()
                     GROUP_DESCRIPTION: description,
                 },
             },
@@ -101,8 +100,7 @@ export default function EditTeacher(props) {
         }
 
         else {
-            setOpenToast(true)
-            onToast("گروه بروزرسانی نشد", "error")
+            toast.error("گروه بروزرسانی نشد")
             closePopUpEdit();
         }
 
@@ -123,7 +121,7 @@ export default function EditTeacher(props) {
                         <CardBody className="bodyEditGroup">
                             <div>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             disabled
                                             rtlActive
@@ -134,7 +132,7 @@ export default function EditTeacher(props) {
                                             }}
                                         />
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    {/* <GridItem xs={12} sm={12} md={6}>
                                         {User_Status && User_Status.length > 0 &&
                                             <CustomSelectInput
                                                 labelText="وضعیت گروه"
@@ -144,7 +142,7 @@ export default function EditTeacher(props) {
                                                     setCondition(e.target.value)
                                                 }} />
                                         }
-                                    </GridItem>
+                                    </GridItem> */}
 
                                 </GridContainer>
                                 <GridContainer>

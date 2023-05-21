@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -60,7 +61,7 @@ export default function Groups() {
   const [currentPage_MainbarMyGroup, setCurrentPage_MainbarMyGroup] = useState(0);
 
   const [openInsertGroup, setOpenInsertGroup] = useState(false)
-  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+  const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
   const [openUpdateGroup, setOpenUpdateGroup] = useState(false)
   const [dataGroup, setDataGroup] = useState()
@@ -88,11 +89,13 @@ export default function Groups() {
         GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
         GROUP_DISPLAYNAME: item.GROUP_DISPLAYNAME,
       }));
-      setAllGroups(newData);
+
+      const sortedData = newData.sort((a, b) => b.GROUP_ID - a.GROUP_ID);
+
+      setAllGroups(sortedData);
     } else {
       setCurrentPage_MainbarMyGroup(currentPage_MainbarMyGroup - 10);
-      onToast("گروهی دیگر وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("گروهی دیگر وجود ندارد")
     }
 
   }
@@ -111,12 +114,10 @@ export default function Groups() {
 
     let response = await removeGroup(data);
     if (response.data === "SUCCESSFUL") {
-      setOpenToast(true);
-      onToast("گروه با موفقیت حذف شد", "success");
+      toast.success("گروه با موفقیت حذف شد");
       getGroups();
     } else {
-      setOpenToast(true);
-      onToast("گروه حذف نشد", "success");
+      toast.error("گروه حذف نشد");
       getGroups();
     }
   }
@@ -147,8 +148,7 @@ export default function Groups() {
     if (Object.values(response.data).length > 0) {
       setAllGroups(Object.values(response.data))
     } else {
-      onToast("گروهی با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("گروهی با این مشخصات وجود ندارد")
     }
   }
 
@@ -160,8 +160,7 @@ export default function Groups() {
     if (Object.values(response.data).length > 0) {
       setAllGroups(Object.values(response.data))
     } else {
-      onToast("گروهی با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("گروهی با این مشخصات وجود ندارد")
     }
   }
 
@@ -173,8 +172,7 @@ export default function Groups() {
     if (Object.values(response.data).length > 0) {
       setAllGroups(Object.values(response.data))
     } else {
-      onToast("گروهی با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("گروهی با این مشخصات وجود ندارد")
     }
   }
 
@@ -218,7 +216,7 @@ export default function Groups() {
                     "اسم گروه",
                     "عنوان",
                     "توضیحات",
-                    "وضعیت گروه",
+                    // "وضعیت گروه",
                     "عملیات"]}
                   tableData={allGroups}
                   currentPage={currentPage_MainbarMyGroup}
@@ -281,8 +279,7 @@ export default function Groups() {
           openPopUpInsertGroup={openInsertGroup}
           closePopUp={() => { setOpenInsertGroup(false) }}
           InsertSuccess={() => {
-            setOpenToast(true);
-            onToast("گروه اضافه شد", "success");
+            toast.success("گروه اضافه شد");
             trackPromise(getGroups());
             setOpenInsertGroup(false);
           }} />
@@ -293,8 +290,7 @@ export default function Groups() {
           dataGroup={dataGroup}
           closePopUpEdit={() => { setOpenUpdateGroup(false) }}
           EditSuccess={() => {
-            setOpenToast(true);
-            onToast("گروه بروزرسانی شد", "success");
+            toast.success("گروه بروزرسانی شد");
             trackPromise(getGroups());
             setOpenUpdateGroup(false);
           }} />
@@ -305,8 +301,7 @@ export default function Groups() {
           closePopUpList={() => { setOpenGroupToGroup(false) }}
           dataGroupToGroup={dataGroupToGroup}
           InsertSuccess={() => {
-            setOpenToast(true);
-            onToast("گروه بروزرسانی شد", "success");
+            toast.success("گروه بروزرسانی شد");
             trackPromise(getGroups());
             setOpenGroupToGroup(false);
           }}

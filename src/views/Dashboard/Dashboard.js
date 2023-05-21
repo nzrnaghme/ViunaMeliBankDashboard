@@ -90,7 +90,7 @@ export default function RTLPage() {
               </CardIcon>
               <p className={classes.cardCategory}>تعداد گروه ها</p>
               <h3 className={classes.cardTitle}>
-                {digitsEnToFa(countTeachers ? countTeachers : 0)} <small>نفر</small>
+                {digitsEnToFa(countTeachers ? countTeachers : 0)} <small>گروه</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -110,7 +110,7 @@ export default function RTLPage() {
               </CardIcon>
               <p className={classes.cardCategory}>تعداد نقش ها</p>
               <h3 className={classes.cardTitle}>
-                {digitsEnToFa(countCourses ? countCourses : 0)} <small></small>
+                {digitsEnToFa(countCourses ? countCourses : 0)} <small>نقش</small>
               </h3>
             </CardHeader>
             <CardFooter stats>

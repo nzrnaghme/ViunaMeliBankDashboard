@@ -1,4 +1,4 @@
-export const API_V = 'http://5.201.178.229:9502/Utopia/rest/';
+export const API_V = 'http://192.168.1.250:9502/Utopia/rest/';
 
 //user  
 export const LIST_USERS = `${API_V}user/lstusers?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
@@ -10,7 +10,7 @@ export const LIST_GROUP_USER = `${API_V}user/lstgroupsofuser?api_key=X-API-Key&A
 export const LIST_ROLE_USER = `${API_V}user/lstrolesofuser?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const COUNT_USER = `${API_V}user/userscount?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const CHANGE_PASS = `${API_V}user/changeuserspassword?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
-export const FIND_USER = `${API_V}user/finduser?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FIND_USER = `${API_V}user/filterbyusername?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_STATUS = `${API_V}user/filterbyuserstatus?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_DESCRIPTION = `${API_V}user/filterbyuserdesc?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
@@ -27,7 +27,7 @@ export const REMOVE_USER_GROUP = `${API_V}group/removeuserfromgroup?api_key=X-AP
 export const REMOVE_GROUP_GROUP = `${API_V}group/removegroupfromgroup?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const COUNT_GROUP = `${API_V}group/groupscount?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const LIST_ROLE_GROUP = `${API_V}group/lstrolesofgroup?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
-export const FIND_GROUP = `${API_V}group/findgroup?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FIND_GROUP = `${API_V}group/filterbygroupname?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_STATUS_GROUP = `${API_V}group/filterbygroupstatus?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_DESCRIPTION_GROUP = `${API_V}group/filterbygroupdesc?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
@@ -40,7 +40,7 @@ export const ADD_MEMBER_ROLE = `${API_V}role/addmembertorole?api_key=X-API-Key&A
 export const REMOVE_MEMBER_ROLE = `${API_V}role/removememberfromrole?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const LIST_MEMBER_ROLE = `${API_V}role/lstmembersofrole?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const COUNT_ROLE = `${API_V}role/rolescount?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
-export const FIND_ROLE = `${API_V}role/findrole?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FIND_ROLE = `${API_V}role/filterbyrolename?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_STATUS_ROLE = `${API_V}role/filterbyrolestatus?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_DESCRIPTION_ROLE = `${API_V}role/filterbyroledesc?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 

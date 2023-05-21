@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -71,9 +72,7 @@ export default function Setting() {
 
     const {
         setConfirmPopupOpen,
-        onConfirmSetter,
-        setOpenToast,
-        onToast
+        onConfirmSetter
     } = useContext(GeneralContext);
 
     useEffect(() => {
@@ -92,8 +91,7 @@ export default function Setting() {
 
         } else {
             setCurrentPage_MainbarMyConfig(currentPage_MainbarMyConfig - 10);
-            onToast("تنظیماتی دیگر وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("تنظیماتی دیگر وجود ندارد")
         }
     }
 
@@ -124,12 +122,10 @@ export default function Setting() {
 
         let response = await removeConfig(data);
         if (response.data === "SUCCESSFUL") {
-            setOpenToast(true);
-            onToast("گروه با موفقیت حذف شد", "success");
+            toast.success("گروه با موفقیت حذف شد");
             getConfig();
         } else {
-            setOpenToast(true);
-            onToast("گروه حذف نشد", "error");
+            toast.error("گروه حذف نشد");
         }
     }
 
@@ -178,7 +174,7 @@ export default function Setting() {
                                     tableHeaderColor="info"
                                     tableHead={[
                                         "نوع تنظیمات",
-                                        "وضعیت",
+                                        // "وضعیت",
                                         "نام",
                                         "نوع",
                                         "توضیحات",
@@ -196,7 +192,6 @@ export default function Setting() {
                                     config
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
-
                                 />
                             ) : (
                                 <div
@@ -225,8 +220,7 @@ export default function Setting() {
                     dataConfig={dataConfig}
                     closePopUpEdit={() => { setOpenUpdateConfig(false) }}
                     EditSuccess={() => {
-                        setOpenToast(true);
-                        onToast("تنظیمات بروزرسانی شد", "success");
+                        toast.success("تنظیمات بروزرسانی شد");
                         trackPromise(getAllConfigs())
                         setOpenUpdateConfig(false)
                     }} />
@@ -237,8 +231,7 @@ export default function Setting() {
                     openPopUpInsertConfig={openInsertConfig}
                     closePopUp={() => { setOpenInsertConfig(false) }}
                     InsertSuccess={() => {
-                        setOpenToast(true);
-                        onToast("تنظیمات اضافه شد", "success");
+                        toast.success("تنظیمات اضافه شد");
                         trackPromise(getAllConfigs());
                         setOpenInsertConfig(false);
                     }} />

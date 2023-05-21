@@ -44,7 +44,10 @@ export default function CustomTable(props) {
   const [showText2, setShowText2] = useState(false);
   const [showText3, setShowText3] = useState(false);
 
-  const [nameSearch, setNameSearch] = useState(null);
+  const [nameSearch0, setNameSearch0] = useState(null);
+  const [nameSearch1, setNameSearch1] = useState(null);
+  const [nameSearch2, setNameSearch2] = useState(null);
+
   const [status, setStatus] = useState();
 
   const {
@@ -128,16 +131,16 @@ export default function CustomTable(props) {
                         <CustomInput
                           rtlActive
                           labelText={prop}
-                          value={nameSearch}
+                          value={nameSearch0}
                           onChange={(e) => {
-                            setNameSearch(e);
+                            setNameSearch0(e);
                           }}
                           formControlProps={{
                             fullWidth: false,
                           }}
                           className={"showLabel"}
                           EnterAction={() => {
-                            SelectDatas(nameSearch, key)
+                            SelectDatas(nameSearch0, key)
                           }}
                         />
                         :
@@ -145,9 +148,9 @@ export default function CustomTable(props) {
                           <CustomInput
                             rtlActive
                             labelText={prop}
-                            value={nameSearch}
+                            value={nameSearch1}
                             onChange={(e) => {
-                              setNameSearch(e);
+                              setNameSearch1(e);
                             }}
                             formControlProps={{
                               fullWidth: false,
@@ -155,7 +158,7 @@ export default function CustomTable(props) {
                             className={"showLabel"}
                             style={{ width: 50 }}
                             EnterAction={() => {
-                              SelectDatas(nameSearch, key)
+                              SelectDatas(nameSearch1, key)
                             }}
                           />
                           :
@@ -163,16 +166,16 @@ export default function CustomTable(props) {
                             <CustomInput
                               rtlActive
                               labelText={prop}
-                              value={nameSearch}
+                              value={nameSearch2}
                               onChange={(e) => {
-                                setNameSearch(e);
+                                setNameSearch2(e);
                               }}
                               formControlProps={{
                                 fullWidth: false,
                               }}
                               className={"showLabel"}
                               EnterAction={() => {
-                                SelectDatas(nameSearch, key)
+                                SelectDatas(nameSearch2, key)
                               }}
                             />
                             :
@@ -205,27 +208,27 @@ export default function CustomTable(props) {
 
                               switch (key) {
                                 case 0:
-                                  if (!nameSearch && showText0) {
+                                  if (!nameSearch0 && showText0) {
                                     setShowText0(!showText0)
                                     AllDatas()
-                                  } else if (nameSearch && showText0) {
-                                    SelectDatas(nameSearch, key);
+                                  } else if (nameSearch0 && showText0) {
+                                    SelectDatas(nameSearch0, key);
                                   } else setShowText0(!showText0)
                                   break;
                                 case 1:
-                                  if (!nameSearch && showText1) {
+                                  if (!nameSearch1 && showText1) {
                                     setShowText1(!showText1)
                                     AllDatas()
-                                  } else if (nameSearch && showText1) {
-                                    SelectDatas(nameSearch, key)
+                                  } else if (nameSearch1 && showText1) {
+                                    SelectDatas(nameSearch1, key)
                                   } else setShowText1(!showText1)
                                   break;
                                 case 2:
-                                  if (!nameSearch && showText2) {
+                                  if (!nameSearch2 && showText2) {
                                     setShowText2(!showText2)
                                     AllDatas()
-                                  } else if (nameSearch && showText2) {
-                                    SelectDatas(nameSearch, key)
+                                  } else if (nameSearch2 && showText2) {
+                                    SelectDatas(nameSearch2, key)
                                   } else setShowText2(!showText2)
                                   break;
                                 case 3:
@@ -233,11 +236,11 @@ export default function CustomTable(props) {
                                   break;
 
                                 default:
-                                  if (!nameSearch && showText0) {
+                                  if (!nameSearch0 && showText0) {
                                     setShowText0(!showText0)
                                     AllDatas()
-                                  } else if (nameSearch && showText0) {
-                                    SelectDatas(nameSearch, key)
+                                  } else if (nameSearch0 && showText0) {
+                                    SelectDatas(nameSearch0, key)
                                   } else setShowText0(!showText0)
                                   break;
                               }
@@ -272,13 +275,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.USER_DESCRIPTION ? row.USER_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.USER_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top-start"
@@ -377,13 +380,13 @@ export default function CustomTable(props) {
                     {row.CNF_NAME}
                   </TableCell>
 
-                  <TableCell className={classes.tableCell}>
-                    {row.CNF_STATE === 0 ? (
+                  {/* <TableCell className={classes.tableCell}>
+                    {row.CNF_STATE === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {row.CNF_NAME}
                   </TableCell>
@@ -455,13 +458,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top"
@@ -536,7 +539,9 @@ export default function CustomTable(props) {
                 currentPage * rowsCount + rowsCount
               )
               .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
+                <TableRow key={index} className={[classes.tableBodyRow, currentGroupToUser.includes(row.GROUP_NAME) && classes.getTable]}
+                // style={currentGroupToUser.includes(row.GROUP_NAME) && { backgroundColor: "green" }}
+                >
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
                   </TableCell>
@@ -546,13 +551,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   {currentGroupToUser.includes(row.GROUP_NAME) ?
                     <TableCell className={classes.tableCell}>
                       <Tooltip
@@ -570,7 +575,7 @@ export default function CustomTable(props) {
                         >
                           <Close
                             className={
-                              classes.tableActionButtonIcon + " " + classes.Add
+                              classes.tableActionButtonIcon + " " + classes.close
                             }
                           />
                         </IconButton>
@@ -611,7 +616,7 @@ export default function CustomTable(props) {
                 currentPage * rowsCount + rowsCount
               )
               .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
+                <TableRow key={index} className={[classes.tableBodyRow, currentRoleToUser.includes(row.ROLE_NAME) && classes.getTable]}>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_NAME}
                   </TableCell>
@@ -621,13 +626,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.ROLE_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {currentRoleToUser.includes(row.ROLE_NAME) ?
                       <Tooltip
@@ -645,7 +650,7 @@ export default function CustomTable(props) {
                         >
                           <Close
                             className={
-                              classes.tableActionButtonIcon + " " + classes.Add
+                              classes.tableActionButtonIcon + " " + classes.close
                             }
                           />
                         </IconButton>
@@ -684,7 +689,7 @@ export default function CustomTable(props) {
                 currentPage * rowsCount + rowsCount
               )
               .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
+                <TableRow key={index} className={[classes.tableBodyRow, currentGroupToUser.includes(row.GROUP_NAME) && classes.getTable]}>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
                   </TableCell>
@@ -694,13 +699,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   {currentGroupToUser.includes(row.GROUP_NAME) ?
                     <TableCell className={classes.tableCell}>
                       <Tooltip
@@ -718,7 +723,7 @@ export default function CustomTable(props) {
                         >
                           <Close
                             className={
-                              classes.tableActionButtonIcon + " " + classes.Add
+                              classes.tableActionButtonIcon + " " + classes.close
                             }
                           />
                         </IconButton>
@@ -761,23 +766,23 @@ export default function CustomTable(props) {
                 currentPage * rowsCount + rowsCount
               )
               .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
+                <TableRow key={index} className={[classes.tableBodyRow, currentGroupToUser.includes(row.GROUP_NAME) && classes.getTable]}>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
                   </TableCell>
-                   <TableCell className={classes.tableCell}>
+                  <TableCell className={classes.tableCell}>
                     {row.GROUP_DISPLAYNAME ? row.GROUP_DISPLAYNAME : "..."}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   {currentGroupToUser.includes(row.GROUP_NAME) ?
                     <TableCell className={classes.tableCell}>
                       <Tooltip
@@ -795,7 +800,7 @@ export default function CustomTable(props) {
                         >
                           <Close
                             className={
-                              classes.tableActionButtonIcon + " " + classes.Add
+                              classes.tableActionButtonIcon + " " + classes.close
                             }
                           />
                         </IconButton>
@@ -838,7 +843,7 @@ export default function CustomTable(props) {
                 currentPage * rowsCount + rowsCount
               )
               .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
+                <TableRow key={index} className={[classes.tableBodyRow, currentRoleToGroup.includes(row.ROLE_NAME) && classes.getTable]}>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_NAME}
                   </TableCell>
@@ -848,13 +853,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.ROLE_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {currentRoleToGroup.includes(row.ROLE_NAME) ?
                       <Tooltip
@@ -872,7 +877,7 @@ export default function CustomTable(props) {
                         >
                           <Close
                             className={
-                              classes.tableActionButtonIcon + " " + classes.Add
+                              classes.tableActionButtonIcon + " " + classes.close
                             }
                           />
                         </IconButton>
@@ -911,7 +916,7 @@ export default function CustomTable(props) {
                 currentPage * rowsCount + rowsCount
               )
               .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
+                <TableRow key={index} className={[classes.tableBodyRow, currentRoleToGroup.includes(row.ROLE_NAME) && classes.getTable]}>
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_NAME}
                   </TableCell>
@@ -921,13 +926,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.ROLE_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {currentRoleToGroup.includes(row.ROLE_NAME) ?
                       <Tooltip
@@ -945,7 +950,7 @@ export default function CustomTable(props) {
                         >
                           <Close
                             className={
-                              classes.tableActionButtonIcon + " " + classes.Add
+                              classes.tableActionButtonIcon + " " + classes.close
                             }
                           />
                         </IconButton>
@@ -1073,7 +1078,7 @@ export default function CustomTable(props) {
                 currentPage * rowsCount + rowsCount
               )
               .map((row, index) => (
-                <TableRow key={index} className={classes.tableBodyRow}>
+                <TableRow key={index} className={[classes.tableBodyRow, currentRoleToGroup.includes(row.USER_USERNAME) && classes.getTable]}>
                   <TableCell className={classes.tableCell}>
                     {row.USER_USERNAME}
                   </TableCell>
@@ -1083,13 +1088,13 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.USER_DESCRIPTION ? row.USER_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.USER_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   {currentRoleToGroup.includes(row.USER_USERNAME) ?
                     <TableCell className={classes.tableCell}>
                       <Tooltip
@@ -1107,7 +1112,7 @@ export default function CustomTable(props) {
                         >
                           <Close
                             className={
-                              classes.tableActionButtonIcon + " " + classes.Add
+                              classes.tableActionButtonIcon + " " + classes.close
                             }
                           />
                         </IconButton>

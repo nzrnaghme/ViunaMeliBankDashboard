@@ -10,6 +10,9 @@ import "assets/fonts/fonts.css";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "layouts/Main.js";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Auth from "layouts/Authentication.js"
 import { getItem } from "api/storage/storage";
 import PopUpAction from "components/PopUp/PopUpAction";
@@ -30,8 +33,6 @@ export default function App() {
     const User = getItem('user')
     const [confirm, setConfirm] = React.useState({});
     const [open, setOpen] = React.useState(false);
-    const [openToast, setOpenToast] = React.useState(false);
-    const [toast, setToast] = React.useState({});
 
 
     const onConfirmSetter = (
@@ -40,7 +41,6 @@ export default function App() {
         rejectCallback,
     ) => setConfirm({ msg, confirmCallback, rejectCallback });
 
-    const onToast = (msgToast, varient) => setToast({ msgToast, varient })
 
     return (
         <GeneralContext.Provider value={{
@@ -50,16 +50,23 @@ export default function App() {
             confirmCallback: confirm.confirmCallback,
             rejectCallback: confirm.rejectCallback,
             onConfirmSetter,
-            msgToast: toast.msgToast,
-            openToast: openToast,
-            setOpenToast: setOpenToast,
-            onToast,
-            varient: toast.varient,
         }} >
             <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
                     <BrowserRouter>
                         <PopUpAction />
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={5000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            theme="light"
+                        />
                         <Toast />
                         <Loading />
                         <Switch>

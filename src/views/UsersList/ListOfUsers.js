@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -70,7 +71,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function ListOfGroup(props) {
-    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
     const classes = useStyles();
 
     const [currentPage_MainbarCurrentGroup, setCurrentPage_MainbarCurrentGroup] = useState(0);
@@ -84,6 +85,8 @@ export default function ListOfGroup(props) {
     const [allRoles, setAllRoles] = useState();
     const [rowsPerPageRole, setRowsPerPageRole] = useState(10);
     const [currentRoleToUser, setCurrentRoleToUser] = useState();
+
+    const [which, setWhich] = useState("گروه")
 
     const {
         openListGrouptPopUp,
@@ -113,30 +116,30 @@ export default function ListOfGroup(props) {
             setCurrentGroupToUser(currentGroup);
         }
         if (response.data) {
-            var newData = Object.values(response.data).map((item, index) => ({
+            const newData = Object.values(response.data).map((item, index) => ({
                 GROUP_NAME: Object.keys(response.data)[index],
                 GROUP_STATUS: item.GROUP_STATUS,
                 GROUP_ID: item.GROUP_ID,
                 GROUP_DESCRIPTION: item.GROUP_DESCRIPTION,
                 GROUP_DISPLAYNAME: item.GROUP_DISPLAYNAME,
             }));
+            var sortedData = newData.sort((a, b) => b.GROUP_ID - a.GROUP_ID);
         }
         if (currentGroup.length > 0) {
-            var select = newData.filter((e) => (
+            var select = sortedData.filter((e) => (
                 currentGroup.includes(e.GROUP_NAME)
             ))
 
-            var AllGroups = newData.filter((e) => (
+            var AllGroups = sortedData.filter((e) => (
                 !currentGroup.includes(e.GROUP_NAME)
             ))
 
             select.forEach(element1 => {
-                AllGroups.unshift(element1)
+                AllGroups.unshift(element1);
             });
-            setAllGroups(AllGroups)
+            setAllGroups(AllGroups);
         } else {
-
-            setAllGroups(newData)
+            setAllGroups(sortedData);
         }
 
     };
@@ -160,21 +163,23 @@ export default function ListOfGroup(props) {
             setCurrentRoleToUser(currentRole);
         }
         if (response.data) {
-            var newData = Object.values(response.data).map((item, index) => ({
+            const newData = Object.values(response.data).map((item, index) => ({
                 ROLE_NAME: Object.keys(response.data)[index],
                 ROLE_STATUS: item.ROLE_STATUS,
                 ROLE_ID: item.ROLE_ID,
                 ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
                 ROLE_DISPLAYNAME: item.ROLE_DISPLAYNAME,
             }));
+            var sortedData = newData.sort((a, b) => b.ROLE_ID - a.ROLE_ID);
+
         }
 
         if (currentRole.length > 0) {
-            var select = newData.filter((e) => (
+            var select = sortedData.filter((e) => (
                 currentRole.includes(e.ROLE_NAME)
             ))
 
-            var AllRoles = newData.filter((e) => (
+            var AllRoles = sortedData.filter((e) => (
                 !currentRole.includes(e.ROLE_NAME)
             ))
 
@@ -182,7 +187,7 @@ export default function ListOfGroup(props) {
                 AllRoles.unshift(element1)
             });
             setAllRoles(AllRoles)
-        } else setAllRoles(newData)
+        } else setAllRoles(sortedData)
 
     };
 
@@ -222,15 +227,13 @@ export default function ListOfGroup(props) {
         let response = await addGroupMember(data);
         if (response.data === "SUCCESSFUL") {
 
-            setOpenToast(true);
-            onToast("گروه با موفقیت به کاربر اضافه شد", "success");
+            toast.success("گروه با موفقیت به کاربر اضافه شد");
             trackPromise(getGroups(dataUserToGroup.USER_USERNAME));
             setRowsPerPageGroup(10)
             setCurrentPage_MainbarCurrentGroup(0);
         } else {
 
-            setOpenToast(true);
-            onToast("گروه قبلا به کاربر اضافه شده است", "error");
+            toast.error("گروه قبلا به کاربر اضافه شده است");
         }
     }
 
@@ -251,20 +254,20 @@ export default function ListOfGroup(props) {
         let response = await addMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
 
-            setOpenToast(true);
-            onToast("نقش با موفقیت به کاربر اضافه شد", "success");
+            toast.success("نقش با موفقیت به کاربر اضافه شد");
             trackPromise(getRoles(dataUserToGroup.USER_USERNAME));
             setRowsPerPageRole(10)
             setCurrentPage_MainbarCurrentRole(0);
         } else {
 
-            setOpenToast(true);
-            onToast("نقش قبلا به کاربر اضافه شده است", "error");
+            toast.error("نقش قبلا به کاربر اضافه شده است");
         }
     }
 
     const handleChange = (event, newValue) => {
         setItemTabs(newValue);
+        if (newValue === 0) setWhich("گروه")
+        else setWhich("نقش")
     };
 
     const removeGroup = async (row) => {
@@ -283,13 +286,11 @@ export default function ListOfGroup(props) {
         let response = await removeUserFromGroup(data);
         if (response.data === "SUCCESSFUL") {
 
-            setOpenToast(true);
-            onToast("گروه با موفقیت از کاربر حذف شد", "success");
+            toast.success("گروه با موفقیت از کاربر حذف شد");
             trackPromise(getGroups(dataUserToGroup.USER_USERNAME));
         } else {
 
-            setOpenToast(true);
-            onToast("گروه از کاربر حذف نشد", "error");
+            toast.error("گروه از کاربر حذف نشد");
         }
     }
 
@@ -309,13 +310,11 @@ export default function ListOfGroup(props) {
         let response = await removeMemberToRole(data);
         if (response.data === "SUCCESSFUL") {
 
-            setOpenToast(true);
-            onToast("نقش با موفقیت از کاربر حذف شد", "success");
+            toast.success("نقش با موفقیت از کاربر حذف شد");
             trackPromise(getRoles(dataUserToGroup.USER_USERNAME));
         } else {
 
-            setOpenToast(true);
-            onToast("نقش از کاربر حذف نشد", "error");
+            toast.error("نقش از کاربر حذف نشد");
         }
     }
 
@@ -329,8 +328,7 @@ export default function ListOfGroup(props) {
             setCurrentPage_MainbarCurrentGroup(0);
             setRowsPerPageGroup(10);
         } else {
-            onToast("گروهی با این اسم وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("گروهی با این اسم وجود ندارد")
         }
     }
 
@@ -344,8 +342,7 @@ export default function ListOfGroup(props) {
             setCurrentPage_MainbarCurrentGroup(0);
             setRowsPerPageGroup(10);
         } else {
-            onToast("گروهی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("گروهی با این مشخصات وجود ندارد")
         }
     }
 
@@ -359,8 +356,7 @@ export default function ListOfGroup(props) {
             setCurrentPage_MainbarCurrentGroup(0);
             setRowsPerPageGroup(10);
         } else {
-            onToast("گروهی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("گروهی با این مشخصات وجود ندارد")
         }
     }
 
@@ -374,8 +370,7 @@ export default function ListOfGroup(props) {
             setRowsPerPageRole(10);
             setCurrentPage_MainbarCurrentRole(0);
         } else {
-            onToast("نقشی با این اسم وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("نقشی با این اسم وجود ندارد")
         }
     }
 
@@ -390,8 +385,7 @@ export default function ListOfGroup(props) {
             setRowsPerPageRole(10);
             setCurrentPage_MainbarCurrentRole(0);
         } else {
-            onToast("نقشی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("نقشی با این مشخصات وجود ندارد")
         }
     }
 
@@ -405,8 +399,7 @@ export default function ListOfGroup(props) {
             setRowsPerPageRole(10);
             setCurrentPage_MainbarCurrentRole(0);
         } else {
-            onToast("نقشی با این مشخصات وجود ندارد", "warning")
-            setOpenToast(true)
+            toast.warning("نقشی با این مشخصات وجود ندارد")
         }
     }
 
@@ -419,7 +412,7 @@ export default function ListOfGroup(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning">
-                            <h4 className={classes.cardTitleWhite}>اضافه کردن کاربر {dataUserToGroup.USER_USERNAME} </h4>
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن  کاربر {dataUserToGroup.USER_USERNAME} به {which}</h4>
                         </CardHeader>
                         <CardBody>
 
@@ -438,21 +431,26 @@ export default function ListOfGroup(props) {
                             {itemTabs === 0 && currentGroupToUser != undefined && allGroups != undefined && allGroups.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
-                                    tableHead={["اسم گروه", "عنوان", "توضیحات گروه", "وضعیت", "عملیات"]}
+                                    tableHead={[
+                                        "اسم گروه",
+                                        "عنوان",
+                                        "توضیحات گروه",
+                                        // "وضعیت",
+                                        "عملیات"]}
                                     rowsCount={rowsPerPageGroup}
                                     tableData={allGroups}
                                     currentPage={currentPage_MainbarCurrentGroup}
                                     handleChangePage={handleChangePageGroup}
                                     handleChangeRowsPerPage={handleChangeRowsPerPageGroup}
                                     addToUser={(row) => {
-                                        onConfirmSetter('آیا برای اضافه کردن گروه به کاربر مطمئن هستید؟', () => {
+                                        onConfirmSetter('آیا برای اضافه کردن کاربر به گروه مطمئن هستید؟', () => {
                                             trackPromise(addUserToGroup(row))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}
                                     currentGroupToUser={currentGroupToUser}
                                     removeGroupToUser={(row) => {
-                                        onConfirmSetter('آیا برای حذف کردن گروه از کاربر مطمئن هستید؟', () => {
+                                        onConfirmSetter('آیا برای حذف کردن کاربر از گروه مطمئن هستید؟', () => {
                                             trackPromise(removeGroup(row))
                                         })
                                         setConfirmPopupOpen(true)
@@ -483,14 +481,19 @@ export default function ListOfGroup(props) {
                                 itemTabs === 1 && allRoles != undefined && allRoles.length > 0 ?
                                     <Table
                                         tableHeaderColor="info"
-                                        tableHead={["اسم نقش", "عنوان", "توضیحات نقش", "وضعیت", "عملیات"]}
+                                        tableHead={[
+                                            "اسم نقش",
+                                            "عنوان",
+                                            "توضیحات نقش",
+                                            // "وضعیت",
+                                            "عملیات"]}
                                         tableData={allRoles}
                                         rowsCount={rowsPerPageRole}
                                         currentPage={currentPage_MainbarCurrentRole}
                                         handleChangePage={handleChangePageRole}
                                         handleChangeRowsPerPage={handleChangeRowsPerPageRole}
                                         addToUser={(row) => {
-                                            onConfirmSetter('آیا برای اضافه کردن نقش به کاربر مطمئن هستید؟', () => {
+                                            onConfirmSetter('آیا برای اضافه کردن کاربر به نقش مطمئن هستید؟', () => {
                                                 trackPromise(addUserToRoles(row))
                                             })
                                             setConfirmPopupOpen(true)
@@ -499,7 +502,7 @@ export default function ListOfGroup(props) {
                                         userToRole
                                         currentRoleToUser={currentRoleToUser}
                                         removeRoleToUser={(row) => {
-                                            onConfirmSetter('آیا برای حذف کردن نقش از کاربر مطمئن هستید؟', () => {
+                                            onConfirmSetter('آیا برای حذف کردن کاربر از نقش مطمئن هستید؟', () => {
                                                 trackPromise(removeUserToRole(row))
                                             })
                                             setConfirmPopupOpen(true)

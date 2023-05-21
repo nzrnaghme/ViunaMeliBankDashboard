@@ -8,10 +8,5 @@ export const GeneralContext = createContext({
     setConfirmPopupOpen: () => { },
     confirmCallback: () => { },
     rejectCallback: () => { },
-    onConfirmSetter: (msg, confirmCallback, rejectCallback) => { console.log(msg); console.log(rejectCallback); console.log(confirmCallback); },
-    msgToast: null,
-    openToast: false,
-    setOpenToast: () => { },
-    varient: "success",
-    onToast: (msgToast, varient) => { console.log(msgToast); console.log(varient); },
+    onConfirmSetter: (msg, confirmCallback, rejectCallback) => { console.log(msg); console.log(rejectCallback); console.log(confirmCallback); }
 });

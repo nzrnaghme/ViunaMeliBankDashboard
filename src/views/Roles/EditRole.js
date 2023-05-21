@@ -1,8 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {  useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -12,12 +13,11 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { GeneralContext } from "providers/GeneralContext";
 
 import "./role.css";
 
 //‌api
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { editRole } from "api/Core/Role";
 
 const styles = (theme) => ({
@@ -56,16 +56,16 @@ const styles = (theme) => ({
 
 const useStyles = makeStyles(styles);
 
-export const Role_Status = [
-  {
-    _id: 0,
-    fullName: "غیر فعال",
-  },
-  {
-    _id: 1,
-    fullName: "فعال",
-  },
-];
+// export const Role_Status = [
+//   {
+//     _id: 0,
+//     fullName: "غیر فعال",
+//   },
+//   {
+//     _id: 1,
+//     fullName: "فعال",
+//   },
+// ];
 
 export default function EditRole(props) {
   const classes = useStyles();
@@ -74,13 +74,12 @@ export default function EditRole(props) {
     EditSuccess,
     closePopUpEdit,
     dataRole } = props;
-  const { setOpenToast, onToast } = useContext(GeneralContext);
 
   const [description, setDescription] = useState();
-  const [status, setStatus] = useState();
+  // const [status, setStatus] = useState();
 
   useEffect(() => {
-    setStatus(dataRole.ROLE_STATUS);
+    // setStatus(dataRole.ROLE_STATUS);
     setDescription(dataRole.ROLE_DESCRIPTION);
   }, [dataRole])
 
@@ -91,7 +90,7 @@ export default function EditRole(props) {
     const data = Object.create(
       {
         roleName: {
-          ROLE_STATUS: status.toString(),
+          ROLE_STATUS:"1",//status.toString()
           ROLE_DESCRIPTION: description,
         },
       },
@@ -102,8 +101,7 @@ export default function EditRole(props) {
       EditSuccess();
     }
     else {
-      setOpenToast(true)
-      onToast("نفش بروزرسانی نشد", "error")
+      toast.error("نفش بروزرسانی نشد")
       closePopUpEdit();
     }
 
@@ -126,7 +124,7 @@ export default function EditRole(props) {
             <CardBody className="bodyEditStudent">
               <div>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
                       rtlActive
                       labelText="اسم نقش"
@@ -137,7 +135,7 @@ export default function EditRole(props) {
                       disabled
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  {/* <GridItem xs={12} sm={12} md={6}>
                     {Role_Status && Role_Status.length > 0 &&
                       <CustomSelectInput
                         labelText="وضعیت نقش"
@@ -147,7 +145,7 @@ export default function EditRole(props) {
                           setStatus(e.target.value);
                         }}
                       />}
-                  </GridItem>
+                  </GridItem> */}
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>

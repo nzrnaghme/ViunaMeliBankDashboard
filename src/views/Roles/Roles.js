@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -69,9 +70,7 @@ export default function Roles() {
 
   const {
     setConfirmPopupOpen,
-    onConfirmSetter,
-    setOpenToast,
-    onToast
+    onConfirmSetter
   } = useContext(GeneralContext);
 
   const [openEditRole, setOpenEditRole] = useState(false);
@@ -101,12 +100,13 @@ export default function Roles() {
         ROLE_ID: item.ROLE_ID,
         ROLE_DESCRIPTION: item.ROLE_DESCRIPTION,
       }));
-      setAllRoles(newData);
+      const sortedData = newData.sort((a, b) => b.ROLE_ID - a.ROLE_ID);
+
+      setAllRoles(sortedData);
 
     } else {
       setCurrentPage_MainbarMyRoles(currentPage_MainbarMyRoles - 10);
-      onToast("نقشی دیگر وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("نقشی دیگر وجود ندارد")
     }
   };
 
@@ -126,13 +126,11 @@ export default function Roles() {
     if (response.data === "SUCCESSFUL") {
 
       getRoles()
-      setOpenToast(true);
-      onToast("نقش با موفقیت حذف شد", "success");
+      toast.success("نقش با موفقیت حذف شد");
     } else {
 
       getRoles()
-      setOpenToast(true);
-      onToast("نقش حذف نشد", "error");
+      toast.error("نقش حذف نشد");
     }
   }
 
@@ -168,8 +166,7 @@ export default function Roles() {
     if (Object.values(response.data).length > 0) {
       setAllRoles(Object.values(response.data))
     } else {
-      onToast("نقشی با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("نقشی با این مشخصات وجود ندارد")
     }
   }
 
@@ -181,8 +178,7 @@ export default function Roles() {
     if (Object.values(response.data).length > 0) {
       setAllRoles(Object.values(response.data))
     } else {
-      onToast("نقشی با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("نقشی با این مشخصات وجود ندارد")
     }
   }
 
@@ -194,8 +190,7 @@ export default function Roles() {
     if (Object.values(response.data).length > 0) {
       setAllRoles(Object.values(response.data))
     } else {
-      onToast("نقشی با این مشخصات وجود ندارد", "warning")
-      setOpenToast(true)
+      toast.warning("نقشی با این مشخصات وجود ندارد")
     }
   }
 
@@ -307,8 +302,7 @@ export default function Roles() {
             setOpenEditRole(false);
           }}
           EditSuccess={() => {
-            setOpenToast(true);
-            onToast("نقش بروزرسانی شد", "success");
+            toast.success("نقش بروزرسانی شد");
             trackPromise(getRoles());
             setOpenEditRole(false);
           }}
@@ -319,8 +313,7 @@ export default function Roles() {
         <InsertRole
           openPopUpInsertRole={openInsertRole}
           InsertSuccess={() => {
-            setOpenToast(true);
-            onToast("نقش اضافه شد", "success");
+            toast.success("نقش اضافه شد");
             trackPromise(getRoles());
             setOpenInsertRole(false);
           }}
@@ -336,8 +329,7 @@ export default function Roles() {
           closePopUpList={() => { setOpenRole(false); }}
           dataRoleTo={dataRoleTo}
           InsertSuccess={() => {
-            setOpenToast(true);
-            onToast("گروه بروزرسانی شد", "success");
+            toast.success("گروه بروزرسانی شد");
             trackPromise(getRoles());
             setOpenRole(false);
           }}

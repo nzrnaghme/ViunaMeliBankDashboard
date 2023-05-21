@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -12,22 +13,21 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
-import { GeneralContext } from "providers/GeneralContext";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 
 import "./User.css";
 import { editUser } from "api/Core/User";
 
-export const User_Status = [
-  {
-    _id: 1,
-    fullName: "غیر فعال"
-  },
-  {
-    _id: 0,
-    fullName: "فعال"
-  }
-];
+// export const User_Status = [
+//   {
+//     _id: 0,
+//     fullName: "غیر فعال"
+//   },
+//   {
+//     _id: 1,
+//     fullName: "فعال"
+//   }
+// ];
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -66,7 +66,6 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function EditCourse(props) {
   const classes = useStyles();
-  const { setOpenToast, onToast } = useContext(GeneralContext);
 
   const {
     openEditUserPopUp,
@@ -77,12 +76,15 @@ export default function EditCourse(props) {
 
   //new
 
-  const [condition, setCondition] = useState();
+  // const [condition, setCondition] = useState();
   const [description, setDescription] = useState();
+  const [displayName, setDisplayName] = useState();
+
 
   useEffect(() => {
-    setCondition(dataUser.USER_STATUS);
+    // setCondition(dataUser.USER_STATUS);
     setDescription(dataUser.USER_DESCRIPTION)
+    setDisplayName(dataUser.USER_DISPLAYNAME)
   }, [dataUser]);
 
 
@@ -92,7 +94,7 @@ export default function EditCourse(props) {
     const data = Object.create(
       {
         userName: {
-          USER_STATUS: condition.toString(),
+          USER_STATUS: "1",//condition.toString()
           USER_DESCRIPTION: description,
         },
       },
@@ -104,8 +106,7 @@ export default function EditCourse(props) {
       EditSuccess();
     } else {
 
-      setOpenToast(true);
-      onToast("کاربر بروزرسانی نشد", "error");
+      toast.error("کاربر بروزرسانی نشد");
       closePopUpEdit();
     }
   };
@@ -128,7 +129,7 @@ export default function EditCourse(props) {
 
               <div>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       disabled
                       rtlActive
@@ -139,9 +140,22 @@ export default function EditCourse(props) {
                       }}
                     />
                   </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      rtlActive
+                      labelText="عنوان کاربری"
+                      value={displayName}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      onChange={(e) => {
+                        setDisplayName(e);
+                      }}
+                    />
+                  </GridItem>
                 </GridContainer>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={6}>
+                  {/* <GridItem xs={12} sm={12} md={6}>
                     {User_Status && User_Status.length > 0 &&
                       <CustomSelectInput
                         labelText="وضعیت کاربر"
@@ -151,8 +165,8 @@ export default function EditCourse(props) {
                           setCondition(e.target.value)
                         }} />
                     }
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  </GridItem> */}
+                  <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
                       rtlActive
                       labelText="توضیحات"

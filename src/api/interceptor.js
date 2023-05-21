@@ -1,6 +1,6 @@
 import axios from "axios";
 // import { getItem } from "./storage/storage"
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import React, { useContext, useEffect, useState } from "react";
 import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
@@ -48,14 +48,12 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
-        console.log(error,"error");
+        console.log(error, "error");
         // check if error is expected from backend
         try {
 
             if (error.code === 'ERR_NETWORK') {
-                return (<removeLoading />)
-                // toast.warning('لطفا اینترنت را بررسی کنید')
-                // return Promise.reject(error);
+                toast.error('لطفا اینترنت را بررسی کنید')
             }
 
             const expectedError =
@@ -63,14 +61,8 @@ api.interceptors.response.use(
                 error.response.state >= 400 &&
                 error.response.status < 500;
 
-            // if error doesnt expected when we log it
             if (!expectedError) {
-                console.log(expectedError);
-                // tweak it later
-                // get error message from backend (see object of response later... maybe its changed)
-                try {
-                    alert(error.response.data.message[0].message);
-                } catch (error) { console.log(error); }
+                toast.error('لطفا اینترنت را بررسی کنید')
             }
         } catch (error) {
             console.log(error)

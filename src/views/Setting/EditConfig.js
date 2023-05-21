@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -13,7 +14,6 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 
 import { editConfig } from "api/Core/Config";
-import { GeneralContext } from "providers/GeneralContext";
 
 
 const styles = (theme) => ({
@@ -54,7 +54,6 @@ const useStyles = makeStyles(styles);
 
 export default function EditConfig(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         openEditConfigPopUp,
@@ -88,9 +87,7 @@ export default function EditConfig(props) {
         }
 
         else {
-
-            setOpenToast(true)
-            onToast("تنظیمات بروزرسانی نشد", "error")
+            toast.error("تنظیمات بروزرسانی نشد")
             closePopUpEdit();
         }
     }

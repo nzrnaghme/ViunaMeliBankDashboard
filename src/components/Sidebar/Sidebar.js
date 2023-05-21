@@ -14,6 +14,7 @@ import Icon from "@material-ui/core/Icon";
 
 import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
 import { getItem } from "api/storage/storage";
+import RTLNavbarLinks from "../Navbars/RTLNavbarLinks.js";
 
 import PerfectScrollbar from "perfect-scrollbar";
 let ps;
@@ -150,6 +151,15 @@ export default function Sidebar(props) {
         </p>
 
       </a>
+      {/* <div style={{
+        display: "flex",
+        alignItems: "baseline",
+        justifyContent: "center",
+        zIndex: 999,
+        position: "relative"
+      }}>
+        <div>{usersName}</div>
+         <RTLNavbarLinks /> </div> */}
     </div>
   );
   return (
@@ -177,7 +187,10 @@ export default function Sidebar(props) {
             setDrawerLogo(true);
           }}
         >
+
           {brand}
+
+
           <div className={classes.sidebarWrapper}>
             {links}
           </div>

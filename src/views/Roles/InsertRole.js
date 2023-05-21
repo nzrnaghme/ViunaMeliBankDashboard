@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -12,10 +13,9 @@ import CardBody from "components/Card/CardBody.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
-import { GeneralContext } from "providers/GeneralContext";
 
 //api
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { addRole } from "api/Core/Role";
 
 const styles = (theme) => ({
@@ -52,26 +52,25 @@ const styles = (theme) => ({
   },
 });
 
-export const Role_Status = [
-  {
-    _id: 0,
-    fullName: "غیر فعال",
-  },
-  {
-    _id: 1,
-    fullName: "فعال",
-  },
-];
+// export const Role_Status = [
+//   {
+//     _id: 0,
+//     fullName: "غیر فعال",
+//   },
+//   {
+//     _id: 1,
+//     fullName: "فعال",
+//   },
+// ];
 
 const useStyles = makeStyles(styles);
 export default function InsertRole(props) {
   const classes = useStyles();
   const { InsertSuccess, openPopUpInsertRole, closePopUp } = props;
-  const { setOpenToast, onToast } = useContext(GeneralContext);
 
   const [title, setTitle] = useState(null);
   const [displayName, setDisplayName] = useState(null);
-  const [status, setStatus] = useState(1);
+  // const [status, setStatus] = useState(1);
   const [description, setDescription] = useState(null);
   const [errorName, setErrorName] = useState(false);
 
@@ -81,7 +80,7 @@ export default function InsertRole(props) {
       const data = Object.create(
         {
           roleName: {
-            ROLE_STATUS: status.toString(),
+            ROLE_STATUS: "1",//status.toString()
             ROLE_DESCRIPTION: description,
             ROLE_DISPLAYNAME: displayName
           },
@@ -94,8 +93,7 @@ export default function InsertRole(props) {
         InsertSuccess();
       }
       else {
-        setOpenToast(true)
-        onToast("نقش اضافه نشد", "error")
+        toast.error("نقش اضافه نشد")
         closePopUp()
       }
     } else {
@@ -120,7 +118,7 @@ export default function InsertRole(props) {
             <CardBody className="bodyCreateStudent">
               <div>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
                       rtlActive
                       labelText="اسم نقش"
@@ -136,7 +134,7 @@ export default function InsertRole(props) {
                       }}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  {/* <GridItem xs={12} sm={12} md={6}>
                     <CustomSelectInput
                       labelText="وضعیت نقش"
                       value={status}
@@ -145,7 +143,7 @@ export default function InsertRole(props) {
                         setStatus(e.target.value);
                       }}
                     />
-                  </GridItem>
+                  </GridItem> */}
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
@@ -193,7 +191,7 @@ export default function InsertRole(props) {
                       trackPromise(insertRole());
                     }}
                   >
-                    ثبت تغییرات
+                    ایجاد نقش
                   </RegularButton>
                   <RegularButton
                     color="danger"

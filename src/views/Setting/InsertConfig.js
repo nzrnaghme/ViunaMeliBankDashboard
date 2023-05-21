@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -12,23 +13,22 @@ import CardBody from "components/Card/CardBody.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 // @material-ui/icons
-import { GeneralContext } from "providers/GeneralContext";
 import { addConfig } from "api/Core/Config";
 
 import "../Groups/group.css"
 
-export const User_Status = [
-    {
-        _id: 0,
-        fullName: "غیر فعال"
-    },
-    {
-        _id: 1,
-        fullName: "فعال"
-    }
-];
+// export const User_Status = [
+//     {
+//         _id: 0,
+//         fullName: "غیر فعال"
+//     },
+//     {
+//         _id: 1,
+//         fullName: "فعال"
+//     }
+// ];
 
 
 
@@ -69,7 +69,6 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function InsertConfig(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         InsertSuccess,
@@ -78,7 +77,7 @@ export default function InsertConfig(props) {
     } = props;
 
     const [typeConfig, setTypeConfig] = useState(null)
-    const [condition, setCondition] = useState(1);
+    // const [condition, setCondition] = useState(1);
     const [description, setDescription] = useState(null);
     const [nameConfig, setNameConfig] = useState()
 
@@ -89,7 +88,7 @@ export default function InsertConfig(props) {
             const data = Object.create(
                 {
                     configName: {
-                        CNF_STATE: condition.toString(),
+                        CNF_STATE:"1" ,//condition.toString(),
                         CNF_DESCRIPTION: description,
                         CNF_TYPE: typeConfig,
                         CNF_NAME: nameConfig
@@ -102,12 +101,10 @@ export default function InsertConfig(props) {
                 InsertSuccess();
             }
             else {
-                setOpenToast(true)
-                onToast("تنظیمات اضافه نشد", "error")
+                toast.error("تنظیمات اضافه نشد")
             }
         } else {
-            setOpenToast(true)
-            onToast("اطلاعات ناقص است", "error")
+            toast.error("اطلاعات ناقص است")
         }
 
     }
@@ -160,7 +157,7 @@ export default function InsertConfig(props) {
 
                                 </GridContainer>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    {/* <GridItem xs={12} sm={12} md={6}>
                                         {User_Status && User_Status.length > 0 &&
                                             <CustomSelectInput
                                                 labelText="وضعیت تنظیمات"
@@ -170,8 +167,8 @@ export default function InsertConfig(props) {
                                                     setCondition(e.target.value)
                                                 }} />
                                         }
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    </GridItem> */}
+                                    <GridItem xs={12} sm={12} md={12}>
 
                                         <CustomInput
                                             rtlActive

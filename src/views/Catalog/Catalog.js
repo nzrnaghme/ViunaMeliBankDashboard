@@ -3,8 +3,19 @@ import { makeStyles } from '@material-ui/core/styles';
 // @material-ui/core components
 import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
+import Typography from '@material-ui/core/Typography';
+//icons
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import DvrIcon from '@material-ui/icons/Dvr';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import FolderIcon from '@material-ui/icons/Folder';
+import Label from '@material-ui/icons/Label';
+
+import { toast } from "react-toastify";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
@@ -28,7 +39,7 @@ const useStyles = makeStyles({
     root: {
         // height: 240,
         flexGrow: 1,
-        // maxWidth: 400,
+        maxWidth: 400,
     },
 });
 
@@ -44,8 +55,8 @@ export default function Setting() {
 
 
     const {
-        setOpenToast,
-        onToast
+        setConfirmPopupOpen,
+        onConfirmSetter,
     } = useContext(GeneralContext);
 
     useEffect(() => {
@@ -65,13 +76,15 @@ export default function Setting() {
                 name: item.caption,
                 id: Math.random(),
                 children: [],
-                path: item.path
+                path: item.path,
+                type: item.type
             }));
-            setCatalog(newData);
+            const filteredData = newData.filter(item => item.path === "/shared" || item.path === "/users");
+
+            setCatalog(filteredData);
 
         } else {
-            onToast("فایلی وجود ندارد", "warning");
-            setOpenToast(true);
+            toast.warning("فایلی وجود ندارد");
         }
     }
 
@@ -89,14 +102,13 @@ export default function Setting() {
                 name: item.caption,
                 id: Math.random(),
                 children: [],
-                path: item.path
+                path: item.path,
+                type: item.type
             }));
-
             addChildToUser(Catalog, catalogName, newData);
 
         } else {
-            onToast("فایل داخلی وجود ندارد", "warning");
-            setOpenToast(true);
+            toast.warning("فایل داخلی وجود ندارد");
         }
     }
 
@@ -132,7 +144,27 @@ export default function Setting() {
         <TreeItem
             key={nodes.id}
             nodeId={nodes.id}
-            label={nodes.name}
+            label={
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "0.5px 0px"
+                }}>
+                    {nodes.type === "Folder" ? <FolderIcon color="inherit" style={{ marginRight: 1, color: "#e3742f", fontSize: "1.2rem", marginLeft: 5 }} /> :
+                        nodes.type === "Dashboards" ? <DvrIcon color="inherit" style={{ marginRight: 1, color: "#e3742f", fontSize: "1.2rem", marginLeft: 5 }} /> :
+                            nodes.type === "Analysis" ? <AssessmentIcon color="inherit" style={{ marginRight: 1, color: "#e3742f", fontSize: "1.2rem", marginLeft: 5 }} /> :
+                                nodes.type === "Filter" ? <FilterListIcon color="inherit" style={{ marginRight: 1, color: "#e3742f", fontSize: "1.2rem", marginLeft: 5 }} /> :
+                                    nodes.type === "Dashboard Prompt" ? <PlaylistAddCheckIcon color="inherit" style={{ marginRight: 1, color: "#e3742f", fontSize: "1.2rem", marginLeft: 5 }} /> :
+                                        nodes.type === "Condition" ? <SettingsEthernetIcon color="inherit" style={{ marginRight: 1, color: "#e3742f", fontSize: "1.2rem", marginLeft: 5 }} /> :
+                                            <Label color="inherit" style={{ marginRight: 1, color: "#e3742f", fontSize: "1.2rem", marginLeft: 5 }} />
+                    }
+
+                    <Typography variant="body2" style={{ fontWeight: "inherit", flexGrow: 1 }}>
+                        {nodes.name}
+                    </Typography>
+                </div>
+            }
+
             onClick={() => {
                 if (oldNode != nodes.path)
                     getChildren(nodes.path);
@@ -141,6 +173,24 @@ export default function Setting() {
 
         </TreeItem>
     );
+
+    const removeSelectCatalog = async () => {
+        if (oldNode) {
+            const data = {
+                PATH: oldNode,
+                RECURSIVE: "true"
+            }
+            const response = await removeCatalog(data);
+            if (response.data === "RemoveFolder_Done") {
+                toast.success("فایل حذف شد");
+                trackPromise(getCatalog());
+            } else {
+                toast.error("فایل حذف نشد");
+            }
+        } else {
+            toast.error("لطفا فایل انتخاب کنید");
+        }
+    }
 
     return (
         <>
@@ -157,7 +207,9 @@ export default function Setting() {
                             aria-label="Key"
                             className={classes.tableActionButton}
                             onClick={() => {
-                                setOpenPopUpCreateCatalog(true);
+                                if (oldNode)
+                                    setOpenPopUpCreateCatalog(true);
+                                else toast.warning("!!لطفا یک کاتالوگ انتخاب کنید")
                             }}
                         >
                             <AddIcon
@@ -183,27 +235,11 @@ export default function Setting() {
                             className={classes.tableActionButton}
 
 
-                            onClick={async () => {
-                                if (oldNode) {
-                                    const data = {
-                                        PATH: oldNode,
-                                        RECURSIVE: "true"
-                                    }
-                                    const response = await removeCatalog(data);
-                                    if (response.data === "RemoveFolder_Done") {
-                                        setOpenToast(true);
-                                        onToast("فایل حذف شد", "success");
-                                        trackPromise(getCatalog());
-                                    } else {
-                                        setOpenToast(true);
-                                        onToast("فایل حذف نشد", "error");
-                                    }
-                                } else {
-                                    setOpenToast(true);
-                                    onToast("لطفا فایل انتخاب کنید", "error");
-                                }
-
-
+                            onClick={() => {
+                                onConfirmSetter("آیا برای حذف کاتالوگ مطمئن هستید؟", () => {
+                                    trackPromise(removeSelectCatalog());
+                                });
+                                setConfirmPopupOpen(true);
                             }}
                         >
                             <Close
@@ -235,15 +271,14 @@ export default function Setting() {
                         </CardBody>
                     </Card>
                 </GridItem>
-            </GridContainer>
+            </GridContainer >
             {openPopUpCreateCatalog && (
                 <CreateCatalog
                     openCreateUserPopUp={openPopUpCreateCatalog}
                     CreateSuccess={() => {
                         setOpenPopUpCreateCatalog(false);
 
-                        setOpenToast(true);
-                        onToast("فایل اضافه شد", "success");
+                        toast.success("فایل اضافه شد");
                         trackPromise(getCatalog());
                     }}
                     closePopUpCreate={() => {
@@ -251,7 +286,8 @@ export default function Setting() {
                     }}
                     parentPath={oldNode}
                 />
-            )}
+            )
+            }
         </>
     );
 }

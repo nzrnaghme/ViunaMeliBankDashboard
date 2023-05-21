@@ -634,7 +634,7 @@ footer ul li a:hover {
 }
 
 
-.btnAdd2{
+.btnAdd2 {
   position: absolute;
   top: 91%;
   left: 18px;
@@ -654,7 +654,7 @@ footer ul li a:hover {
   cursor: pointer;
 }
 
-.btnremove2{
+.btnremove2 {
   position: absolute;
   top: 81%;
   left: 18px;
@@ -672,4 +672,12 @@ footer ul li a:hover {
   justify-content: center;
   display: flex;
   cursor: pointer;
+}
+
+.Toastify__toast-body {
+  font-family: bakh !important;
+}
+
+.MuiTreeItem-root.Mui-selected > .MuiTreeItem-content .MuiTreeItem-label{
+  background-color: #fcefe3 !important;
 }

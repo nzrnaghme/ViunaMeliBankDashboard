@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
+import { toast } from "react-toastify";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from '@material-ui/icons/Visibility';
@@ -22,7 +23,6 @@ import CardBody from "components/Card/CardBody";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
 import { setItem } from "api/storage/storage";
-import { GeneralContext } from "providers/GeneralContext";
 
 //captcha pic
 import captchaPic from "./../../assets/img/captcha.png";
@@ -40,10 +40,6 @@ export default function LoginPage() {
 
   const [showPass, setShowPass] = useState(false);
 
-
-  const {
-    setOpenToast,
-    onToast } = useContext(GeneralContext);
 
   const handleToggle = (value) => {
     setCheck(value.target.checked);
@@ -64,32 +60,26 @@ export default function LoginPage() {
     let response = await loginUser(data);
     console.log(response);
     if (response.status != "200") {
-      setOpenToast(true);
-      onToast("کاربر وجود ندارد", "error")
+      toast.error("کاربر وجود ندارد")
     } else {
       switch (response.data) {
         case 0:
-          setOpenToast(true);
-          onToast("ورود موفقیت آمیز نبود", "error")
+          toast.error("نام کاربری یا رمز عبور اشتباه است!")
           break;
         case 1:
           window.location = "/dashboard";
           setItem("user", userName);
-
           break;
         case 2:
-          setOpenToast(true);
-          onToast("کاربر قفل شده", "error")
+          toast.error("کاربر قفل شده!")
 
           break;
         case 3:
-          setOpenToast(true);
-          onToast("کاربر فعال نیست", "error")
+          toast.error("کاربر فعال نیست!")
 
           break;
         case 4:
-          setOpenToast(true);
-          onToast("کاربر تعریف نشده", "error")
+          toast.error("کاربر تعریف نشده!")
           break;
 
         default:

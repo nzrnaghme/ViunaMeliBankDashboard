@@ -100,16 +100,19 @@ const tableStyle = (theme) => ({
     outline: "none",
     verticalAlign: "middle",
   },
+  getTable: {
+    backgroundColor: "#deedde"
+  },
   showMessage: {
     borderRightColor: 'blue',
     borderRightWidth: 3,
     borderRightStyle: 'solid',
     backgroundColor: 'aliceblue',
   },
-  hideMessage:{
+  hideMessage: {
     backgroundColor: 'none',
-    borderRightStyle:'none',
-    borderRightColor:'none'
+    borderRightStyle: 'none',
+    borderRightColor: 'none'
   },
   tableActionButton: {
     width: "27px",
