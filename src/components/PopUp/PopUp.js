@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import Close from "@material-ui/icons/Close";
+import CloseIcon from '@material-ui/icons/Close';
 // @material-ui/core components
 import Slide from '@material-ui/core/Slide';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -44,13 +44,22 @@ export default function PopUpCustome(props) {
                         position: 'absolute',
                         right: 8,
                         top: 8,
-                        color: (theme) => theme.palette.grey[500],
                     }}
+                    style={{
+                        position: "absolute",
+                        zIndex: 999,
+                        color: "black",
+                        left: "10%",
+                        top: 25,
+                        borderRadius: 5
+                    }}
+                    className="btnHover"
                 >
-                    <Close />
+                    <CloseIcon />
                 </IconButton>
             ) : null}
-            {title && <DialogTitle>{title}</DialogTitle>}
+            {title && <DialogTitle>{title}
+            </DialogTitle>}
             <DialogContent>{children}</DialogContent>
         </Dialog>
     )

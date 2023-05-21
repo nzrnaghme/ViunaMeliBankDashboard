@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -90,7 +89,6 @@ export default function ListOfGroup(props) {
 
     const {
         openListGrouptPopUp,
-        InsertSuccess,
         closePopUpList,
         dataUserToGroup } = props
 
@@ -407,8 +405,10 @@ export default function ListOfGroup(props) {
         <PopUpCustome
             open={openListGrouptPopUp}
             handleClose={() => { closePopUpList() }}
-            className="popUpAllCurrentStudent">
+            className="popUpAllCurrentStudent"
+            closeBtn>
             <GridContainer>
+
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
                         <CardHeader color="warning">
@@ -542,14 +542,14 @@ export default function ListOfGroup(props) {
                             }
 
                         </CardBody>
-                        {itemTabs === 0 && allGroups != undefined && allGroups.length > 0 &&
+                        {/* {itemTabs === 0 && allGroups != undefined && allGroups.length > 0 &&
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <RegularButton
                                     color="success"
                                     size="sm"
                                     onClick={InsertSuccess}>ثبت تغییرات</RegularButton>
                             </div>
-                        }
+                        } */}
 
                     </Card>
                 </GridItem>

@@ -5,6 +5,11 @@ import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
 import { toast } from "react-toastify";
 
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import IconButton from '@material-ui/core/IconButton';
+
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -88,6 +93,8 @@ export default function CreateUser(props) {
     const [errorPass, setErrorPass] = useState(false);
     const [textLeft, setTextLeft] = useState(false);
     const [errorDisplayName, setErrorDisplayName] = useState(false);
+
+    const [showPass, setShowPass] = useState(false);
 
     function validatePassword(password) {
         const regex = /^(?=.*[0-7])(?=.*[!@#$%^&*])[a-zA-Z0-7!@#$%^&*]{8,}$/;
@@ -184,7 +191,7 @@ export default function CreateUser(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی باشد و ۸ کاراکتر باشد"}
+                                            errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی و کاراکتر خاص باشد و ۸ کاراکتر باشد"}
                                             textLeft={textLeft}
                                             labelText="رمز عبور"
                                             value={pass}
@@ -200,8 +207,24 @@ export default function CreateUser(props) {
                                             inputProps={{
                                                 required: true,
                                                 minLength: 8,
-                                                dir: "ltr"
+                                                // dir: "ltr",
+                                                name: "password",
+                                                endAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <IconButton
+
+                                                            onClick={() => {
+                                                                setShowPass(!showPass)
+                                                            }}
+
+                                                        >
+                                                            {showPass ? <Visibility /> : <VisibilityOff />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
                                             }}
+                                            type={showPass ? 'text' : 'password'}
+
                                         />
                                     </GridItem>
                                 </GridContainer>

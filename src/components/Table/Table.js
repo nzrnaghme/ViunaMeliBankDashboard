@@ -92,7 +92,8 @@ export default function CustomTable(props) {
     AllDatas,
     SelectDatas,
     RoleToGroup,
-    RoleToRole
+    RoleToRole,
+    totalCoun
   } = props;
 
 
@@ -140,7 +141,12 @@ export default function CustomTable(props) {
                           }}
                           className={"showLabel"}
                           EnterAction={() => {
-                            SelectDatas(nameSearch0, key)
+                            if (nameSearch0)
+                              SelectDatas(nameSearch0, key)
+                            else {
+                              AllDatas()
+                              setShowText0(false)
+                            }
                           }}
                         />
                         :
@@ -158,7 +164,12 @@ export default function CustomTable(props) {
                             className={"showLabel"}
                             style={{ width: 50 }}
                             EnterAction={() => {
-                              SelectDatas(nameSearch1, key)
+                              if (nameSearch1)
+                                SelectDatas(nameSearch1, key)
+                              else {
+                                AllDatas()
+                                setShowText1(false)
+                              }
                             }}
                           />
                           :
@@ -175,7 +186,12 @@ export default function CustomTable(props) {
                               }}
                               className={"showLabel"}
                               EnterAction={() => {
-                                SelectDatas(nameSearch2, key)
+                                if (nameSearch2)
+                                  SelectDatas(nameSearch2, key)
+                                else {
+                                  AllDatas();
+                                  setShowText2(false)
+                                }
                               }}
                             />
                             :
@@ -213,7 +229,19 @@ export default function CustomTable(props) {
                                     AllDatas()
                                   } else if (nameSearch0 && showText0) {
                                     SelectDatas(nameSearch0, key);
-                                  } else setShowText0(!showText0)
+                                    setShowText1(false)
+                                    setShowText2(false)
+                                    setShowText3(false)
+
+                                  } else {
+                                    setShowText0(!showText0)
+                                    setShowText1(false)
+                                    setShowText2(false)
+                                    setShowText3(false)
+                                    AllDatas()
+                                    setNameSearch0(null)
+
+                                  }
                                   break;
                                 case 1:
                                   if (!nameSearch1 && showText1) {
@@ -221,7 +249,18 @@ export default function CustomTable(props) {
                                     AllDatas()
                                   } else if (nameSearch1 && showText1) {
                                     SelectDatas(nameSearch1, key)
-                                  } else setShowText1(!showText1)
+                                    setShowText0(false)
+                                    setShowText2(false)
+                                    setShowText3(false)
+                                  } else {
+                                    setShowText1(!showText1)
+                                    setShowText0(false)
+                                    setShowText2(false)
+                                    setShowText3(false)
+                                    AllDatas()
+                                    setNameSearch1(null)
+
+                                  }
                                   break;
                                 case 2:
                                   if (!nameSearch2 && showText2) {
@@ -229,7 +268,17 @@ export default function CustomTable(props) {
                                     AllDatas()
                                   } else if (nameSearch2 && showText2) {
                                     SelectDatas(nameSearch2, key)
-                                  } else setShowText2(!showText2)
+                                    setShowText1(false)
+                                    setShowText0(false)
+                                    setShowText3(false)
+                                  } else {
+                                    setShowText2(!showText2)
+                                    setShowText1(false)
+                                    setShowText0(false)
+                                    setShowText3(false)
+                                    AllDatas()
+                                    setNameSearch2(null)
+                                  }
                                   break;
                                 case 3:
                                   setShowText3(!showText3)
@@ -241,6 +290,12 @@ export default function CustomTable(props) {
                                     AllDatas()
                                   } else if (nameSearch0 && showText0) {
                                     SelectDatas(nameSearch0, key)
+                                    setShowText1(false)
+                                    setShowText2(false)
+                                    setShowText3(false)
+                                    AllDatas()
+                                    setNameSearch0(null)
+
                                   } else setShowText0(!showText0)
                                   break;
                               }
@@ -375,11 +430,6 @@ export default function CustomTable(props) {
             ? tableData
               .map((row, index) => (
                 <TableRow key={index} className={classes.tableBodyRow}>
-
-                  <TableCell className={classes.tableCell}>
-                    {row.CNF_NAME}
-                  </TableCell>
-
                   {/* <TableCell className={classes.tableCell}>
                     {row.CNF_STATE === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
@@ -1152,9 +1202,9 @@ export default function CustomTable(props) {
 
 
       {
-        (userToGroup || userToRole || groupToGroup || roleToUser || groupToRole) ?
+        (userToGroup || userToRole || groupToGroup || roleToUser || groupToRole || RoleToGroup || RoleToRole) ?
           <TablePagination
-            rowsPerPageOptions={[10, 10]}
+            rowsPerPageOptions={[10, 20]}
             component="div"
             count={tableData.length}
             rowsPerPage={rowsCount}
@@ -1164,7 +1214,7 @@ export default function CustomTable(props) {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
           : <div className="btnEditCourse">
-            <p>{`${currentPage + 10} - ${currentPage}`}</p>
+            <p>{`${currentPage + 10} - ${currentPage}`} از {totalCoun}</p>
             <div
               style={{
                 display: "flex",
@@ -1223,6 +1273,8 @@ CustomTable.propTypes = {
   rowsCount: PropTypes.number,
   handleChangePage: PropTypes.func,
   handleChangeRowsPerPage: PropTypes.func,
+
+  totalCoun: PropTypes.number,
 
   Users: PropTypes.bool,
   removeCourse: PropTypes.func,

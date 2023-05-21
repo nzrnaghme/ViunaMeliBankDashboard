@@ -21,7 +21,7 @@ import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeUser, getListUser, findUser } from "api/Core/User";
 import { filterByStatus } from "api/Core/User";
-import { filterByDescription } from "api/Core/User";
+import { filterByDescription,countOfUser } from "api/Core/User";
 
 const styles = {
   cardCategoryWhite: {
@@ -64,6 +64,7 @@ export default function UsersList() {
   } = useContext(GeneralContext);
 
   const [allUsers, setAllUsers] = useState({});
+  const [countStudents, setCountStudents] = useState(0);
 
   const [
     currentPage_MainbarMyUsers,
@@ -83,7 +84,16 @@ export default function UsersList() {
 
   useEffect(() => {
     trackPromise(getUsers());
+    trackPromise(getAllUser());
+
   }, []);
+
+  const getAllUser = async () => {
+    let response = await countOfUser();
+    if (response.data) {
+      setCountStudents(Object.values(response.data)[0]);
+    }
+  }
 
   const getUsers = async (currentPage) => {
 
@@ -249,7 +259,7 @@ export default function UsersList() {
                     setOpenGroupToGroup(true);
                   }}
                   editPass={editPass}
-
+                  totalCoun={countStudents}
                   AllDatas={() => {
                     getUsers();
                   }}
@@ -328,7 +338,7 @@ export default function UsersList() {
         <ListOfUsers
           dataUserToGroup={dataGroupToGroup}
           closePopUpList={() => { setOpenGroupToGroup(false) }}
-          InsertSuccess={getUsers}
+
           openListGrouptPopUp={openGroupToGroup} />
       }
 

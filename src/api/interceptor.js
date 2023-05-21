@@ -53,7 +53,7 @@ api.interceptors.response.use(
         try {
 
             if (error.code === 'ERR_NETWORK') {
-                toast.error('لطفا اینترنت را بررسی کنید')
+                toast.error('لطفا ارتباط شبکه را بررسی کنید')
             }
 
             const expectedError =
@@ -62,7 +62,7 @@ api.interceptors.response.use(
                 error.response.status < 500;
 
             if (!expectedError) {
-                toast.error('لطفا اینترنت را بررسی کنید')
+                toast.error('لطفا ارتباط شبکه را بررسی کنید')
             }
         } catch (error) {
             console.log(error)

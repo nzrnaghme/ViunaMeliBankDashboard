@@ -2,12 +2,12 @@
     width: 300px;
 } */
 
-.popUpCustome .MuiDialog-container .MuiPaper-root{
+.popUpCustome .MuiDialog-container .MuiPaper-root {
     width: 400px;
 }
 
 @media screen and (max-width:749px) {
-    .MuiPaper-root .MuiTypography-h6{
+    .MuiPaper-root .MuiTypography-h6 {
         font-size: 13px;
     }
 }
@@ -37,11 +37,21 @@
         width: 80%;
         margin: auto;
     }
-    .confirm-popup-content{
+
+    .confirm-popup-content {
         font-size: smaller;
     }
 }
 
-.MuiDialog-paperWidthSm{
+.MuiDialog-paperWidthSm {
     max-width: 1000px !important;
+}
+
+.btnHover:hover {
+    background-color: rgba(224, 70, 70, 0.611) !important;
+    transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 200ms !important;
+}
+
+.btnHover {
+    padding: 3px !important;
 }

@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -93,7 +92,6 @@ export default function ListOfGroups(props) {
 
     const {
         openListGrouptPopUp,
-        InsertSuccess,
         closePopUpList,
         dataGroupToGroup } = props
 
@@ -134,7 +132,7 @@ export default function ListOfGroups(props) {
         }
         if (currentGroup.length > 0) {
             var select = sortedData.filter((e) => (
-                currentGroup.includes(e.GROUP_NAME)
+                currentGroup.includes(e.GROUP_NAME && dataGroupToGroup.GROUP_ID)
             ))
 
             var AllGroups = sortedData.filter((e) => (
@@ -400,7 +398,8 @@ export default function ListOfGroups(props) {
         <PopUpCustome
             open={openListGrouptPopUp}
             handleClose={() => { closePopUpList() }}
-            className="popUpAllCurrentStudent">
+            className="popUpAllCurrentStudent"
+            closeBtn>
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
@@ -535,14 +534,7 @@ export default function ListOfGroups(props) {
                                         paddingBottom: 10
                                     }}>اطلاعاتی ثبت نشده است</div>}
                         </CardBody>
-                        {allGroup != undefined && allGroup.length > 0 &&
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                <RegularButton
-                                    color="success"
-                                    size="sm"
-                                    onClick={InsertSuccess}>ثبت تغییرات</RegularButton>
-                            </div>
-                        }
+                       
                     </Card>
                 </GridItem>
             </GridContainer>

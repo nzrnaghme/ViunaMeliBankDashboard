@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -102,7 +101,6 @@ export default function ListOfRole(props) {
 
     const {
         openListRolePopUp,
-        InsertSuccess,
         closePopUpList,
         dataRoleTo } = props
 
@@ -190,7 +188,7 @@ export default function ListOfRole(props) {
         }
         if (currentRole.length > 0) {
             var select = sortedData.filter((e) => (
-                currentRole.includes(e.ROLE_NAME)
+                currentRole.includes(e.ROLE_NAME && dataRoleTo.ROLE_ID)
             ))
 
             var AllRoles = sortedData.filter((e) => (
@@ -568,7 +566,8 @@ export default function ListOfRole(props) {
         <PopUpCustome
             open={openListRolePopUp}
             handleClose={() => { closePopUpList() }}
-            className="popUpAllCurrentStudent">
+            className="popUpAllCurrentStudent"
+            closeBtn>
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card style={{ boxShadow: 'none' }}>
@@ -757,14 +756,7 @@ export default function ListOfRole(props) {
                                             paddingBottom: 10
                                         }}>اطلاعاتی ثبت نام نکرده</div>}
                         </CardBody>
-                        {allGroup != undefined && allGroup.length > 0 &&
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                <RegularButton
-                                    color="success"
-                                    size="sm"
-                                    onClick={InsertSuccess}>ثبت تغییرات</RegularButton>
-                            </div>
-                        }
+                      
                     </Card>
                 </GridItem>
             </GridContainer>

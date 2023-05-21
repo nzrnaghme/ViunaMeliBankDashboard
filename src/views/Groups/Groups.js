@@ -21,7 +21,7 @@ import { GeneralContext } from "providers/GeneralContext";
 import { getAllGroups, removeGroup, findGroup } from "api/Core/Group";
 import ListOfUGroups from "./ListOfGroups";
 import { filterByStatusGroup } from "api/Core/Group";
-import { filterByDescriptionGroup } from "api/Core/Group";
+import { filterByDescriptionGroup, countOfGroup } from "api/Core/Group";
 
 const styles = {
   cardCategoryWhite: {
@@ -58,6 +58,8 @@ const useStyles = makeStyles(styles);
 export default function Groups() {
   const classes = useStyles();
   const [allGroups, setAllGroups] = useState([]);
+  const [countCourses, setCountCourses] = useState(0);
+
   const [currentPage_MainbarMyGroup, setCurrentPage_MainbarMyGroup] = useState(0);
 
   const [openInsertGroup, setOpenInsertGroup] = useState(false)
@@ -71,7 +73,16 @@ export default function Groups() {
 
   useEffect(() => {
     trackPromise(getGroups());
+    trackPromise(getCountGroups());
+
   }, [])
+
+  const getCountGroups = async () => {
+    let response = await countOfGroup();
+    if (response.data) {
+      setCountCourses(Object.values(response.data)[0]);
+    }
+  }
 
   const getGroups = async (currentPage) => {
 
@@ -238,6 +249,7 @@ export default function Groups() {
                   AllDatas={() => {
                     trackPromise(getGroups())
                   }}
+                  totalCoun={countCourses}
 
                   SelectDatas={(nameSearch, key) => {
 
@@ -300,11 +312,6 @@ export default function Groups() {
           openListGrouptPopUp={openGroupToGroup}
           closePopUpList={() => { setOpenGroupToGroup(false) }}
           dataGroupToGroup={dataGroupToGroup}
-          InsertSuccess={() => {
-            toast.success("گروه بروزرسانی شد");
-            trackPromise(getGroups());
-            setOpenGroupToGroup(false);
-          }}
         />
       }
 

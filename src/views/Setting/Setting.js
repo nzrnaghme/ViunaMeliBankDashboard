@@ -173,7 +173,6 @@ export default function Setting() {
                                 <Table
                                     tableHeaderColor="info"
                                     tableHead={[
-                                        "نوع تنظیمات",
                                         // "وضعیت",
                                         "نام",
                                         "نوع",

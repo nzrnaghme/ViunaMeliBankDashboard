@@ -20,9 +20,14 @@ import ListOfRole from "./listOfRole";
 
 import "./role.css";
 import { GeneralContext } from "providers/GeneralContext";
-import { getAllRoles, removeRole, findRole } from "api/Core/Role";
-import { filterByDescriptionRole } from "api/Core/Role";
-import { filterByStatusRole } from "api/Core/Role";
+import {
+  filterByStatusRole,
+  countOfRole,
+  filterByDescriptionRole,
+  getAllRoles,
+  removeRole,
+  findRole
+} from "api/Core/Role";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -75,6 +80,8 @@ export default function Roles() {
 
   const [openEditRole, setOpenEditRole] = useState(false);
   const [dataRole, setDataRole] = useState();
+  const [countRoles, setCountRoles] = useState(0);
+
 
   const [openInsertRole, setOpenInsertRole] = useState(false);
 
@@ -83,7 +90,16 @@ export default function Roles() {
 
   useEffect(() => {
     trackPromise(getRoles());
+    trackPromise(getCountRoles());
+
   }, []);
+
+  const getCountRoles = async () => {
+    let response = await countOfRole();
+    if (response.data) {
+      setCountRoles(Object.values(response.data)[0]);
+    }
+  }
 
   const getRoles = async (currentPage) => {
 
@@ -251,6 +267,7 @@ export default function Roles() {
                     setDataRoleTo(row)
                     setOpenRole(true);
                   }}
+                  totalCoun={countRoles}
 
                   AllDatas={() => {
                     trackPromise(getRoles())
@@ -328,11 +345,6 @@ export default function Roles() {
           openListRolePopUp={openRole}
           closePopUpList={() => { setOpenRole(false); }}
           dataRoleTo={dataRoleTo}
-          InsertSuccess={() => {
-            toast.success("گروه بروزرسانی شد");
-            trackPromise(getRoles());
-            setOpenRole(false);
-          }}
         />
       }
 
