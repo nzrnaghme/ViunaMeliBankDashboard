@@ -77,8 +77,8 @@ export default function EditCourse(props) {
   //new
 
   // const [condition, setCondition] = useState();
-  const [description, setDescription] = useState();
-  const [displayName, setDisplayName] = useState();
+  const [description, setDescription] = useState(null);
+  const [displayName, setDisplayName] = useState(null);
 
 
   useEffect(() => {
@@ -96,6 +96,7 @@ export default function EditCourse(props) {
         userName: {
           USER_STATUS: "1",//condition.toString()
           USER_DESCRIPTION: description,
+          USER_DISPLAYNAME: displayName,
         },
       },
     );

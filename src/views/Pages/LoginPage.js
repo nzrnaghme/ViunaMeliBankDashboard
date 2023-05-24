@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { trackPromise } from "react-promise-tracker";
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import ReplayIcon from '@material-ui/icons/Replay';
 import IconButton from '@material-ui/core/IconButton';
 
 import Checkbox from "@material-ui/core/Checkbox";
@@ -25,8 +26,9 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import { setItem } from "api/storage/storage";
 
 //captcha pic
-import captchaPic from "./../../assets/img/captcha.png";
-import { loginUser } from "api/Core/Login";
+// import captchaPic from "./../../assets/img/captcha.png";
+import { loginUser, getCaptcha, retryCaptcha } from "api/Core/Login";
+import { validCaptcha } from "api/Core/Login";
 
 const useStyles = makeStyles(styles);
 
@@ -37,28 +39,69 @@ export default function LoginPage() {
   const [userName, setUserName] = useState();
   const [pass, setPass] = useState();
   const [captcha, setCaptcha] = useState();
+  const [captchaImg, setCaptchaImg] = useState();
+  const [captchaId, setCaptchaId] = useState();
+
 
   const [showPass, setShowPass] = useState(false);
+
+  useEffect(() => {
+    getImgCaptcha()
+  }, [])
+
+  const getImgCaptcha = async () => {
+    let response = await getCaptcha()
+    if (response.data) {
+      var image = new Image();
+      image.src = `data:image/png;base64,${response.data.captchaImg}`;
+      setCaptchaImg(image.src);
+      setCaptchaId(response.data.captchaId)
+    }
+  }
+
+  const getRetryImgCaptcha = async () => {
+    let response = await retryCaptcha()
+    if (response.data) {
+      var image = new Image();
+      image.src = `data:image/png;base64,${response.data.captchaImg}`;
+      setCaptchaImg(image.src)
+      setCaptchaId(response.data.captchaId)
+
+    }
+  }
 
 
   const handleToggle = (value) => {
     setCheck(value.target.checked);
   };
 
+  const checkCaptcha = async () => {
+    const dataCaptcha = {
+      captchaAnswer: captcha,
+      captchaId: captchaId
+    }
+    let response = await validCaptcha(dataCaptcha)
+    if (response.data) {
+      return;
+    }
+  }
+
   const login = async (e) => {
     e.preventDefault();
+
+    trackPromise(checkCaptcha());
+
     const userN = userName;
     const data = Object.create(
       {
         userN: {
           PASSWORD: pass,
-          USER_DESCRIPTION: "loginUser",
+          USER_DESCRIPTION: "test",
         },
       },
     );
     data[userN] = data["userN"];
     let response = await loginUser(data);
-    console.log(response);
     if (response.status != "200") {
       toast.error("کاربر وجود ندارد")
     } else {
@@ -133,6 +176,7 @@ export default function LoginPage() {
                     fullWidth: true,
                     className: classes.formControlClassName,
                   }}
+                  className="password"
                   value={pass}
                   onChange={(e) => {
                     setPass(e);
@@ -177,9 +221,10 @@ export default function LoginPage() {
                   style={{
                     width: "35%",
                     height: "45px",
-
+                    display: "flex",
                     margin: "auto",
                     marginTop: "25px",
+                    justifyContent: 'center'
                   }}
                 >
                   <img
@@ -188,9 +233,18 @@ export default function LoginPage() {
                       width: "auto",
                       objectPosition: "center",
                     }}
-                    src={captchaPic}
+                    src={captchaImg}
                     alt="captchaPic"
                   />
+                  <IconButton
+                    aria-label="Edit"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      trackPromise(getRetryImgCaptcha())
+                    }}
+                  >
+                    <ReplayIcon />
+                  </IconButton>
                 </div>
                 <FormControlLabel
                   classes={{

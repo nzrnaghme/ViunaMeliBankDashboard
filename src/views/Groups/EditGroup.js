@@ -75,10 +75,13 @@ export default function EditTeacher(props) {
 
     // const [condition, setCondition] = useState(null);
     const [description, setDescription] = useState(null);
+    const [displayName, setDisplayName] = useState(null);
 
     useEffect(() => {
         // setCondition(dataGroup.GROUP_STATUS);
         setDescription(dataGroup.GROUP_DESCRIPTION);
+        setDisplayName(dataGroup.GROUP_DISPLAYNAME);
+
     }, [dataGroup]);
 
     const updateDataGroup = async () => {
@@ -89,6 +92,8 @@ export default function EditTeacher(props) {
                 groupName: {
                     GROUP_STATUS: "1",//condition.toString()
                     GROUP_DESCRIPTION: description,
+                    GROUP_DISPLAYNAME: displayName,
+
                 },
             },
         );
@@ -121,7 +126,7 @@ export default function EditTeacher(props) {
                         <CardBody className="bodyEditGroup">
                             <div>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}>
+                                    <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             disabled
                                             rtlActive
@@ -129,6 +134,19 @@ export default function EditTeacher(props) {
                                             value={dataGroup.GROUP_NAME}
                                             formControlProps={{
                                                 fullWidth: true,
+                                            }}
+                                        />
+                                    </GridItem>
+                                    <GridItem xs={12} sm={12} md={6}>
+                                        <CustomInput
+                                            rtlActive
+                                            labelText="عنوان گروه"
+                                            value={displayName}
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                            onChange={(e) => {
+                                                setDisplayName(e);
                                             }}
                                         />
                                     </GridItem>

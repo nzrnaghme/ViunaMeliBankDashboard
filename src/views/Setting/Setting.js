@@ -70,6 +70,8 @@ export default function Setting() {
     const [dataConfig, setDataConfig] = useState()
     const [openUpdateConfig, setOpenUpdateConfig] = useState(false)
 
+    const [noNext, setNoNext] = useState(false)
+
     const {
         setConfirmPopupOpen,
         onConfirmSetter
@@ -79,7 +81,7 @@ export default function Setting() {
         trackPromise(getConfig())
     }, [])
 
-    const getConfig = async (currentPage) => {
+    const getConfig = async (currentPage, fromHandlePlus, fromHandleMisen) => {
 
         const data = {
             first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyConfig.toString(),
@@ -88,22 +90,25 @@ export default function Setting() {
         let response1 = await getAllConfigs(data);
         if (Object.values(response1.data).length > 0) {
             setAllConfig(response1.data);
-
+            if (fromHandlePlus) {
+                setCurrentPage_MainbarMyConfig(currentPage);
+            }
+            else if (fromHandleMisen) {
+                setCurrentPage_MainbarMyConfig(currentPage);
+            }
         } else {
-            setCurrentPage_MainbarMyConfig(currentPage_MainbarMyConfig - 10);
-            toast.warning("تنظیماتی دیگر وجود ندارد")
+            setNoNext(false);
+            toast.warning("تنظیماتی دیگر وجود ندارد");
         }
     }
 
     const handleChangePage = (currentPage) => {
-        setCurrentPage_MainbarMyConfig(currentPage + 10);
-        getConfig(currentPage + 10)
+        trackPromise(getConfig(currentPage + 10, true));
     };
 
     const handleChangeRowsPerPage = (currentPage) => {
         let currPage = currentPage - 10;
-        setCurrentPage_MainbarMyConfig(currPage);
-        getConfig(currPage)
+        trackPromise(getConfig(currPage, false, true));
     };
 
     const removeSelectConfig = async (row) => {
@@ -123,7 +128,7 @@ export default function Setting() {
         let response = await removeConfig(data);
         if (response.data === "SUCCESSFUL") {
             toast.success("گروه با موفقیت حذف شد");
-            getConfig();
+            trackPromise(getConfig());
         } else {
             toast.error("گروه حذف نشد");
         }
@@ -179,6 +184,7 @@ export default function Setting() {
                                         "توضیحات",
                                         "عملیات",
                                     ]}
+                                    NoNext={noNext}
                                     tableData={Object.values(allConfig)}
                                     currentPage={currentPage_MainbarMyConfig}
                                     removeConfig={(row) => {

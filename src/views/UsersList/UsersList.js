@@ -21,7 +21,7 @@ import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeUser, getListUser, findUser } from "api/Core/User";
 import { filterByStatus } from "api/Core/User";
-import { filterByDescription,countOfUser } from "api/Core/User";
+import { filterByDescription, countOfUser } from "api/Core/User";
 
 const styles = {
   cardCategoryWhite: {
@@ -82,6 +82,8 @@ export default function UsersList() {
   const [openChangePass, setOpenChangePass] = useState(false)
   const [dataUser, setDataUser] = useState();
 
+  const [noNext, setNoNext] = useState(false)
+
   useEffect(() => {
     trackPromise(getUsers());
     trackPromise(getAllUser());
@@ -95,7 +97,7 @@ export default function UsersList() {
     }
   }
 
-  const getUsers = async (currentPage) => {
+  const getUsers = async (currentPage, fromHandlePlus, fromHandleMisen) => {
 
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyUsers.toString(),
@@ -109,8 +111,14 @@ export default function UsersList() {
       );
 
       setAllUsers(sortedData);
+      if (fromHandlePlus) {
+        setCurrentPage_MainbarMyUsers(currentPage);
+      }
+      else if (fromHandleMisen) {
+        setCurrentPage_MainbarMyUsers(currentPage);
+      }
     } else {
-      setCurrentPage_MainbarMyUsers(currentPage_MainbarMyUsers - 10);
+      setNoNext(false)
       toast.warning("کاربری دیگر وجود ندارد")
     }
 
@@ -132,7 +140,7 @@ export default function UsersList() {
 
     if (response.data === "SUCCESSFUL") {
       toast.success("کاربر با موفقیت حذف شد");
-      getUsers()
+      trackPromise(getUsers())
     } else {
       toast.error("کاربر حذف نشد");
     }
@@ -150,14 +158,12 @@ export default function UsersList() {
 
 
   const handleChangePage = (currentPage) => {
-    setCurrentPage_MainbarMyUsers(currentPage + 10);
-    getUsers(currentPage + 10);
+    trackPromise(getUsers(currentPage + 10, true));
   };
 
   const handleChangeRowsPerPage = (currentPage) => {
     let currPage = currentPage - 10;
-    setCurrentPage_MainbarMyUsers(currPage);
-    getUsers(currPage);
+    trackPromise(getUsers(currPage, false, true));
   };
 
   const editPass = (row) => {
@@ -252,6 +258,7 @@ export default function UsersList() {
                   }}
                   EditUser={EditUsers}
                   Users
+                  NoNext={noNext}
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
                   addUserToGroup={(row) => {

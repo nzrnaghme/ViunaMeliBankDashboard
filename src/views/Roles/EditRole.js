@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -75,12 +75,16 @@ export default function EditRole(props) {
     closePopUpEdit,
     dataRole } = props;
 
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState(null);
+  const [displayName, setDisplayName] = useState(null);
+
   // const [status, setStatus] = useState();
 
   useEffect(() => {
     // setStatus(dataRole.ROLE_STATUS);
     setDescription(dataRole.ROLE_DESCRIPTION);
+    setDisplayName(dataRole.ROLE_DISPLAYNAME);
+
   }, [dataRole])
 
 
@@ -90,8 +94,9 @@ export default function EditRole(props) {
     const data = Object.create(
       {
         roleName: {
-          ROLE_STATUS:"1",//status.toString()
+          ROLE_STATUS: "1",//status.toString()
           ROLE_DESCRIPTION: description,
+          ROLE_DISPLAYNAME: displayName
         },
       },
     );
@@ -124,7 +129,7 @@ export default function EditRole(props) {
             <CardBody className="bodyEditStudent">
               <div>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
                       labelText="اسم نقش"
@@ -133,6 +138,19 @@ export default function EditRole(props) {
                         fullWidth: true,
                       }}
                       disabled
+                    />
+                  </GridItem>
+                     <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      rtlActive
+                      labelText="عنوان نقش"
+                      value={displayName}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                       onChange={(e) => {
+                        setDisplayName(e);
+                      }}
                     />
                   </GridItem>
                   {/* <GridItem xs={12} sm={12} md={6}>

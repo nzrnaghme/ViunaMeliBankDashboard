@@ -5,6 +5,11 @@ import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
 import { toast } from "react-toastify";
 
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import IconButton from '@material-ui/core/IconButton';
+
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -78,6 +83,11 @@ export default function EditCourse(props) {
     const [textLeftNew, setTextLeftNew] = useState(false);
     const [textLeftOld, setTextLeftOld] = useState(false);
     const [textLeft, setTextLeft] = useState(false);
+
+    const [showPass, setShowPass] = useState(false);
+    const [showPassNew, setShowPassNew] = useState(false);
+    const [showPassAgainNew, setShowPassAgainNew] = useState(false);
+
 
     function validatePassword(password) {
         const regex = /^(?=.*[0-7])(?=.*[!@#$%^&*])[a-zA-Z0-7!@#$%^&*]{8,}$/;
@@ -187,8 +197,23 @@ export default function EditCourse(props) {
                                             inputProps={{
                                                 required: true,
                                                 minLength: 8,
-                                                dir: "ltr"
+                                                endAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <IconButton
+
+                                                            onClick={() => {
+                                                                setShowPass(!showPass)
+                                                            }}
+
+                                                        >
+                                                            {showPass ? <Visibility /> : <VisibilityOff />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
                                             }}
+                                            className="password"
+                                            type={showPass ? 'text' : 'password'}
+
                                             error={errorOldPass}
                                             errorText={errorOldPassTxt}
                                         />
@@ -212,8 +237,23 @@ export default function EditCourse(props) {
                                             inputProps={{
                                                 required: true,
                                                 minLength: 8,
-                                                dir: "ltr"
+                                                endAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <IconButton
+
+                                                            onClick={() => {
+                                                                setShowPassNew(!showPassNew)
+                                                            }}
+
+                                                        >
+                                                            {showPassNew ? <Visibility /> : <VisibilityOff />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
                                             }}
+                                            className="password"
+                                            type={showPassNew ? 'text' : 'password'}
+
                                             error={errorPass}
                                             errorText={errorPassTxt}
                                         />
@@ -237,8 +277,21 @@ export default function EditCourse(props) {
                                             inputProps={{
                                                 required: true,
                                                 minLength: 8,
-                                                dir: "ltr"
+                                                endAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <IconButton
+
+                                                            onClick={() => {
+                                                                setShowPassAgainNew(!showPassAgainNew)
+                                                            }}
+                                                        >
+                                                            {showPassAgainNew ? <Visibility /> : <VisibilityOff />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
                                             }}
+                                            className="password"
+                                            type={showPassAgainNew ? 'text' : 'password'}
                                             error={errorAgainPass}
                                             errorText={errorAgainPassTxt}
                                         />

@@ -88,6 +88,8 @@ export default function Roles() {
   const [openRole, setOpenRole] = useState(false)
   const [dataRoleTo, setDataRoleTo] = useState()
 
+  const [noNext, setNoNext] = useState(false)
+
   useEffect(() => {
     trackPromise(getRoles());
     trackPromise(getCountRoles());
@@ -101,7 +103,7 @@ export default function Roles() {
     }
   }
 
-  const getRoles = async (currentPage) => {
+  const getRoles = async (currentPage, fromHandlePlus, fromHandleMisen) => {
 
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyRoles.toString(),
@@ -119,9 +121,15 @@ export default function Roles() {
       const sortedData = newData.sort((a, b) => b.ROLE_ID - a.ROLE_ID);
 
       setAllRoles(sortedData);
+      if (fromHandlePlus) {
+        setCurrentPage_MainbarMyRoles(currentPage);
+      }
+      else if (fromHandleMisen) {
+        setCurrentPage_MainbarMyRoles(currentPage);
+      }
 
     } else {
-      setCurrentPage_MainbarMyRoles(currentPage_MainbarMyRoles - 10);
+      setNoNext(true);
       toast.warning("نقشی دیگر وجود ندارد")
     }
   };
@@ -141,11 +149,11 @@ export default function Roles() {
     let response = await removeRole(data);
     if (response.data === "SUCCESSFUL") {
 
-      getRoles()
+      trackPromise(getRoles())
       toast.success("نقش با موفقیت حذف شد");
     } else {
 
-      getRoles()
+      trackPromise(getRoles())
       toast.error("نقش حذف نشد");
     }
   }
@@ -164,14 +172,12 @@ export default function Roles() {
   };
 
   const handleChangePage = (currentPage) => {
-    setCurrentPage_MainbarMyRoles(currentPage + 10);
-    getRoles(currentPage + 10)
+    trackPromise(getRoles(currentPage + 10, true))
   };
 
   const handleChangeRowsPerPage = (currentPage) => {
     let currPage = currentPage - 10;
-    setCurrentPage_MainbarMyRoles(currPage);
-    getRoles(currPage)
+    trackPromise(getRoles(currPage, false, true))
   };
 
   const searchWithNameRole = async (nameSearch) => {
@@ -252,6 +258,7 @@ export default function Roles() {
                     "وضعیت نقش",
                     "عملیات",
                   ]}
+                  NoNext={noNext}
                   tableData={allRoles}
                   currentPage={currentPage_MainbarMyRoles}
                   removeRole={(row) => {

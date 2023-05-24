@@ -86,15 +86,20 @@ export default function CreateUser(props) {
 
     const [name, setName] = useState();
     const [pass, setPass] = useState();
+    const [passAgain, setPassAgain] = useState();
+
     const [displayName, setDisplayName] = useState(null);
     // const [status, setStatus] = useState(1);
     const [description, setDescription] = useState(null);
     const [errorName, setErrorName] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
+    const [errorPassAgain, setErrorPassAgain] = useState(false);
     const [textLeft, setTextLeft] = useState(false);
+    const [textLeftAgain, setTextLeftAgain] = useState(false);
     const [errorDisplayName, setErrorDisplayName] = useState(false);
 
     const [showPass, setShowPass] = useState(false);
+    const [showPassAgain, setShowPassAgain] = useState(false);
 
     function validatePassword(password) {
         const regex = /^(?=.*[0-7])(?=.*[!@#$%^&*])[a-zA-Z0-7!@#$%^&*]{8,}$/;
@@ -105,7 +110,7 @@ export default function CreateUser(props) {
 
         if (name && pass && displayName) {
 
-            if (pass.length > 7 && validatePassword(pass)) {
+            if (pass.length > 7 && validatePassword(pass) && pass === passAgain) {
 
                 const userName = name;
                 const data = Object.create(
@@ -127,27 +132,63 @@ export default function CreateUser(props) {
                 } else {
                     toast.error("کاربر با اضافه نشد");
                 }
-            } else setErrorPass(true)
+            } else {
+                setErrorPass(true);
+                setErrorPassAgain(true)
+            }
 
 
-        } else if (name && !pass && !displayName) {
-            // setErrorName(true);
+        } else if (name && !pass && !displayName && !passAgain) {
+            setErrorPassAgain(true);
             setErrorPass(true);
             setErrorDisplayName(true)
-            // toast.error("اطلاعات کافی نیست");
-        } else if (!name && !pass && displayName) {
+        } else if (!name && !pass && displayName && !passAgain) {
             setErrorName(true);
             setErrorPass(true);
-        } else if (!name && pass && !displayName) {
+            setErrorPassAgain(true);
+        } else if (!name && pass && !displayName && !passAgain) {
             setErrorName(true);
             setErrorDisplayName(true);
-        } else if (name && pass && !displayName) {
-            setErrorDisplayName(true);
-        } else if (!name && pass && displayName) {
+            setErrorPassAgain(true);
+        } else if (!name && !pass && !displayName && passAgain) {
             setErrorName(true);
-        } else if (name && !pass && displayName) {
+            setErrorDisplayName(true);
             setErrorPass(true);
-        } else {
+        } else if (name && pass && !displayName && !passAgain) {
+            setErrorDisplayName(true);
+            setErrorPassAgain(true);
+        } else if (!name && pass && displayName && !passAgain) {
+            setErrorName(true);
+            setErrorPassAgain(true);
+        } else if (name && !pass && displayName && !passAgain) {
+            setErrorPass(true);
+            setErrorPassAgain(true);
+        } else if (!name && !pass && displayName && passAgain) {
+            setErrorName(true);
+            setErrorPass(true);
+        }
+        else if (!name && pass && !displayName && passAgain) {
+            setErrorName(true);
+            setErrorDisplayName(true);
+        }
+        else if (name && !pass && !displayName && passAgain) {
+            setErrorDisplayName(true);
+            setErrorPass(true);
+        }
+        else if (name && pass && !displayName && passAgain) {
+            setErrorDisplayName(true);
+        }
+        else if (name && !pass && displayName && passAgain) {
+            setErrorPass(true);
+        }
+        else if (!name && pass && displayName && passAgain) {
+            setErrorName(true);
+        }
+        // else if (name && pass && displayName && !passAgain) {
+        //     setErrorPassAgain(true);
+        // }
+
+        else {
             setErrorPass(true);
             setErrorName(true);
             setErrorDisplayName(true);
@@ -188,13 +229,43 @@ export default function CreateUser(props) {
                                             }}
                                         />
                                     </GridItem>
+
+
+
+                                    <GridItem xs={12} sm={12} md={6}>
+                                        <CustomInput
+                                            rtlActive
+                                            labelText="توضیحات"
+                                            value={description}
+                                            onChange={(e) => {
+                                                setDescription(e);
+                                            }}
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                        />
+                                    </GridItem>
+                                </GridContainer>
+
+                                <GridContainer>
+                                    {/* <GridItem xs={12} sm={12} md={6}>
+                                        <CustomSelectInput
+                                            labelText="وضعیت کاربر"
+                                            value={status}
+                                            options={User_Status}
+                                            handleChange={(e) => {
+                                                setStatus(e.target.value);
+                                            }}
+                                        />
+                                    </GridItem> */}
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
                                             errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی و کاراکتر خاص باشد و ۸ کاراکتر باشد"}
                                             textLeft={textLeft}
-                                            labelText="رمز عبور"
+                                            labelText="رمز عبور جدید"
                                             value={pass}
+                                            className="password"
                                             onChange={(e) => {
                                                 setTextLeft(true)
                                                 setErrorPass(false)
@@ -207,7 +278,6 @@ export default function CreateUser(props) {
                                             inputProps={{
                                                 required: true,
                                                 minLength: 8,
-                                                // dir: "ltr",
                                                 name: "password",
                                                 endAdornment: (
                                                     <InputAdornment position="start">
@@ -227,30 +297,43 @@ export default function CreateUser(props) {
 
                                         />
                                     </GridItem>
-                                </GridContainer>
-
-                                <GridContainer>
-                                    {/* <GridItem xs={12} sm={12} md={6}>
-                                        <CustomSelectInput
-                                            labelText="وضعیت کاربر"
-                                            value={status}
-                                            options={User_Status}
-                                            handleChange={(e) => {
-                                                setStatus(e.target.value);
-                                            }}
-                                        />
-                                    </GridItem> */}
-                                    <GridItem xs={12} sm={12} md={12}>
+                                    <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="توضیحات"
-                                            value={description}
+                                            errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی و کاراکتر خاص باشد و ۸ کاراکتر باشد"}
+                                            textLeft={textLeftAgain}
+                                            labelText="تکرار رمز عبور جدید"
+                                            value={passAgain}
+                                            className="password"
                                             onChange={(e) => {
-                                                setDescription(e);
+                                                setTextLeftAgain(true)
+                                                setErrorPassAgain(false)
+                                                setPassAgain(e);
                                             }}
+                                            error={errorPassAgain}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
+                                            inputProps={{
+                                                required: true,
+                                                minLength: 8,
+                                                name: "password",
+                                                endAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <IconButton
+
+                                                            onClick={() => {
+                                                                setShowPassAgain(!showPassAgain)
+                                                            }}
+
+                                                        >
+                                                            {showPassAgain ? <Visibility /> : <VisibilityOff />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                            type={showPassAgain ? 'text' : 'password'}
+
                                         />
                                     </GridItem>
                                 </GridContainer>

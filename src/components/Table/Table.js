@@ -93,7 +93,8 @@ export default function CustomTable(props) {
     SelectDatas,
     RoleToGroup,
     RoleToRole,
-    totalCoun
+    totalCoun,
+    NoNext
   } = props;
 
 
@@ -1231,6 +1232,7 @@ export default function CustomTable(props) {
                 onClick={() => {
                   handleChangePage(currentPage)
                 }}
+                style={NoNext ? { opacity: 0.3, cursor: "default" } : { opacity: 1, cursor: "pointer" }}
               >
                 بعد
               </RegularButton>
@@ -1270,6 +1272,7 @@ CustomTable.propTypes = {
   tableHead: PropTypes.arrayOf(PropTypes.string),
   tableData: PropTypes.any,
   currentPage: PropTypes.number,
+  NoNext: PropTypes.bool,
   rowsCount: PropTypes.number,
   handleChangePage: PropTypes.func,
   handleChangeRowsPerPage: PropTypes.func,

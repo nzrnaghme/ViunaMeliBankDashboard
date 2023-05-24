@@ -9,16 +9,22 @@ import styles from "assets/jss/material-dashboard-react/components/rtlHeaderLink
 import { Tooltip } from "@material-ui/core";
 import { removeItem } from "api/storage/storage";
 import { GeneralContext } from "providers/GeneralContext";
+import { getItem } from "api/storage/storage";
 
 
 const useStyles = makeStyles(styles);
 
 export default function RTLNavbarLinks() {
+  const User = getItem('user')
+
   const classes = useStyles();
   const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
+      <p>
+        {User}
+      </p>
       <Button
         color={window.innerWidth > 959 ? "transparent" : "transparent"}
         justIcon={window.innerWidth > 959}
@@ -32,7 +38,7 @@ export default function RTLNavbarLinks() {
         }}
       >
         <Tooltip title="خروج از حساب کاربری" placement="top">
-          <ExitToAppRoundedIcon className={classes.icons}/>
+          <ExitToAppRoundedIcon className={classes.icons} />
         </Tooltip>
       </Button>
     </div >

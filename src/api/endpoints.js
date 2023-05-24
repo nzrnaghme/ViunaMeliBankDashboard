@@ -1,4 +1,4 @@
-export const API_V = 'http://192.168.1.250:9502/Utopia/rest/';
+export const API_V = 'http://5.201.178.229:9502/Utopia/rest/';
 
 //user  
 export const LIST_USERS = `${API_V}user/lstusers?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
@@ -60,3 +60,7 @@ export const LIST_CATALOG = `${API_V}catalog/lstcatalogs?api_key=X-API-Key&API_K
 export const CREATE_CATALOG = `${API_V}catalog/createfolder?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
 export const REMOVE_CATALOG = `${API_V}catalog/removefolder?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
 
+//captcha
+export const GET_CAPTCHA = `${API_V}captcha/captchaimg?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const CHECK_CAPTCHA = `${API_V}captcha/validatecaptchaimage?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`
+export const RELOAD_CAPTCHA = `${API_V}captcha/reloadcaptchaimage?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`

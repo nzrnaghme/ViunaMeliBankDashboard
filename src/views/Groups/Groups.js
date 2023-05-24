@@ -71,6 +71,9 @@ export default function Groups() {
   const [openGroupToGroup, setOpenGroupToGroup] = useState(false)
   const [dataGroupToGroup, setDataGroupToGroup] = useState()
 
+  const [noNext, setNoNext] = useState(false)
+
+
   useEffect(() => {
     trackPromise(getGroups());
     trackPromise(getCountGroups());
@@ -84,7 +87,7 @@ export default function Groups() {
     }
   }
 
-  const getGroups = async (currentPage) => {
+  const getGroups = async (currentPage, fromHandlePlus, fromHandleMisen) => {
 
     const data = {
       first: (currentPage || currentPage === 0) ? currentPage.toString() : currentPage_MainbarMyGroup.toString(),
@@ -104,9 +107,15 @@ export default function Groups() {
       const sortedData = newData.sort((a, b) => b.GROUP_ID - a.GROUP_ID);
 
       setAllGroups(sortedData);
+      if (fromHandlePlus) {
+        setCurrentPage_MainbarMyGroup(currentPage);
+      }
+      else if (fromHandleMisen) {
+        setCurrentPage_MainbarMyGroup(currentPage);
+      }
     } else {
-      setCurrentPage_MainbarMyGroup(currentPage_MainbarMyGroup - 10);
-      toast.warning("گروهی دیگر وجود ندارد")
+      toast.warning("گروهی دیگر وجود ندارد");
+      setNoNext(true);
     }
 
   }
@@ -126,10 +135,10 @@ export default function Groups() {
     let response = await removeGroup(data);
     if (response.data === "SUCCESSFUL") {
       toast.success("گروه با موفقیت حذف شد");
-      getGroups();
+      trackPromise(getGroups());
     } else {
       toast.error("گروه حذف نشد");
-      getGroups();
+      trackPromise(getGroups());
     }
   }
 
@@ -140,14 +149,13 @@ export default function Groups() {
 
 
   const handleChangePage = (currentPage) => {
-    setCurrentPage_MainbarMyGroup(currentPage + 10);
-    getGroups(currentPage + 10)
+    trackPromise(getGroups(currentPage + 10, true));
   };
 
   const handleChangeRowsPerPage = (currentPage) => {
+    setNoNext(false)
     let currPage = currentPage - 10;
-    setCurrentPage_MainbarMyGroup(currPage);
-    getGroups(currPage)
+    trackPromise(getGroups(currPage, false, true));
   };
 
 
@@ -157,9 +165,9 @@ export default function Groups() {
     };
     const response = await findGroup(data);
     if (Object.values(response.data).length > 0) {
-      setAllGroups(Object.values(response.data))
+      setAllGroups(Object.values(response.data));
     } else {
-      toast.warning("گروهی با این مشخصات وجود ندارد")
+      toast.warning("گروهی با این مشخصات وجود ندارد");
     }
   }
 
@@ -169,9 +177,9 @@ export default function Groups() {
     };
     const response = await filterByStatusGroup(data);
     if (Object.values(response.data).length > 0) {
-      setAllGroups(Object.values(response.data))
+      setAllGroups(Object.values(response.data));
     } else {
-      toast.warning("گروهی با این مشخصات وجود ندارد")
+      toast.warning("گروهی با این مشخصات وجود ندارد");
     }
   }
 
@@ -181,9 +189,9 @@ export default function Groups() {
     };
     const response = await filterByDescriptionGroup(data);
     if (Object.values(response.data).length > 0) {
-      setAllGroups(Object.values(response.data))
+      setAllGroups(Object.values(response.data));
     } else {
-      toast.warning("گروهی با این مشخصات وجود ندارد")
+      toast.warning("گروهی با این مشخصات وجود ندارد");
     }
   }
 
@@ -204,7 +212,7 @@ export default function Groups() {
                 aria-label="Key"
                 className={classes.tableActionButton}
                 onClick={() => {
-                  setOpenInsertGroup(true)
+                  setOpenInsertGroup(true);
                 }}
               >
                 <AddIcon
@@ -245,7 +253,7 @@ export default function Groups() {
                     setOpenGroupToGroup(true);
                   }}
                   group
-
+                  NoNext={noNext}
                   AllDatas={() => {
                     trackPromise(getGroups())
                   }}

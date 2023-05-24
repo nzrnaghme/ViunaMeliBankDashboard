@@ -12,7 +12,6 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import AdminNavbarLinks from "./AdminNavbarLinks.js";
 import RTLNavbarLinks from "./RTLNavbarLinks.js";
-import { getItem } from "api/storage/storage";
 
 // import Button from "components/CustomButtons/Button.js";
 
@@ -24,7 +23,6 @@ import styles from "assets/jss/material-dashboard-react/components/headerStyle.j
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
-  const User = getItem('user')
   const classes = useStyles();
   const routeName = useRouteName();
   const { scrollAction } = props;
@@ -42,7 +40,7 @@ export default function Header(props) {
           <p className={classes.titleApp}>سامانه مدیریت کاربران بانک ملی</p>
         </div>
         <Hidden smDown implementation="css">
-          {props.rtlActive ? <div style={{ display: "flex", alignItems: "baseline" }}>{User} <RTLNavbarLinks /> </div> : <AdminNavbarLinks />}
+          {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
         </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton

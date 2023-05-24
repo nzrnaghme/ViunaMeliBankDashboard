@@ -11,7 +11,7 @@ import {
   // grayColor,
 } from "assets/jss/material-dashboard-react.js";
 
-const headerStyle = (theme) => ({
+const headerStyle = () => ({
   appBar: {
     backgroundImage: "linear-gradient(#FF9800, #ffffff)",
     backgroundColor: "transparent",
@@ -38,17 +38,27 @@ const headerStyle = (theme) => ({
     // background: "rgba(255, 255, 255, 0.8)",
     margin: "10px 4%",
     boxShadow: 'none',
-    [theme.breakpoints.down("md")]: {
-      // right: "1%",
-      width: "91.3%",
-      margin: "10px 6.3%",
-    },
-    [theme.breakpoints.down("sm")]: {
-      // right: "1%",
-      width: "93%",
-      margin: "10px 3.3%",
-    },
 
+    "@media (min-width: 1000px)": {
+      width: "90.2%",
+      margin: "10px 7%",
+    },
+    "@media (min-width: 1200px)": {
+      width: "91.7%",
+      margin: "10px 6%",
+    },
+    "@media (min-width: 1300px)": {
+      width: "92.8%",
+      margin: "10px 5.2%",
+    },
+    "@media (min-width: 1500px)": {
+      width: "94.2%",
+      margin: "10px 4.2%",
+    },
+    // "@media (min-width: 1600px)": {
+    //   width: "93.2%",
+    //   margin: "10px 4.8%",
+    // },
 
     // boxShadow: 'rgb(0 0 0 / 10%) 0rem 0.25rem 0.375rem -0.0625rem, rgb(0 0 0 / 6%) 0rem 0.125rem 0.25rem -0.0625rem'
   },
