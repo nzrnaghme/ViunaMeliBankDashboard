@@ -33,7 +33,7 @@ const customInputStyle = {
     },
   },
   labelRoot: {
-    fontFamily: "bakh",
+    fontFamily: "'IRANSANSX'",
     ...defaultFont,
     color: grayColor[3] + " !important",
     fontWeight: "400",
@@ -61,7 +61,7 @@ const customInputStyle = {
     marginTop: "16px",
   },
   formControl: {
-    fontFamily: "bakh",
+    fontFamily: "'IRANSANSX'",
     paddingBottom: "10px",
     margin: "27px 0 0 0",
     position: "relative",

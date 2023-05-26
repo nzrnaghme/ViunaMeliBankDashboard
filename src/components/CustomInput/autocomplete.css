@@ -1,11 +1,11 @@
 .MuiChip-sizeSmall {
     margin-left: 3px;
-    font-family: bakh;
+    font-family: 'IRANSANSX';
 }
 
 .MuiChip-root .MuiSvgIcon-root {
     padding-left: 7px;
-    font-family: bakh;
+    font-family: 'IRANSANSX';
 }
 
 .formControlAuto{
@@ -17,21 +17,21 @@
 
 .container{
     margin-top: auto;
-    font-family: bakh;
+    font-family: 'IRANSANSX';
 }
 
 .MuiInput-input{
-    font-family: bakh !important;
+    font-family: 'IRANSANSX' !important;
 }
 
 .MuiChip-label{
-    font-family: bakh !important;
+    font-family: 'IRANSANSX' !important;
 }
 
 .MuiInputBase-input{
-    font-family: bakh !important;
+    font-family: 'IRANSANSX' !important;
 }
 
 .MuiInputLabel-root{
-    font-family: bakh !important;
+    font-family: 'IRANSANSX' !important;
 }

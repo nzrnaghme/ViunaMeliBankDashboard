@@ -67,7 +67,7 @@ const container = {
 };
 
 const defaultFont = {
-  fontFamily: "bakh",
+  fontFamily: "'IRANSANSX'",
   fontWeight: "300",
   lineHeight: "1.5em",
 };
@@ -233,7 +233,7 @@ const title = {
   marginTop: "30px",
   marginBottom: "25px",
   minHeight: "32px",
-  fontFamily: "bakh",
+  fontFamily: "'IRANSANSX'",
   "& small": {
     color: grayColor[1],
     fontWeight: "400",

@@ -10,9 +10,6 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import ReplayIcon from '@material-ui/icons/Replay';
 import IconButton from '@material-ui/core/IconButton';
 
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
 import Card from "components/Card/Card";
@@ -35,7 +32,6 @@ const useStyles = makeStyles(styles);
 export default function LoginPage() {
 
   const classes = useStyles();
-  const [check, setCheck] = useState(false);
   const [userName, setUserName] = useState();
   const [pass, setPass] = useState();
   const [captcha, setCaptcha] = useState();
@@ -68,11 +64,6 @@ export default function LoginPage() {
       setCaptchaId(response.data.captchaId)
     }
   }
-
-
-  const handleToggle = (value) => {
-    setCheck(value.target.checked);
-  };
 
   const login = async (e) => {
     e.preventDefault();
@@ -248,24 +239,7 @@ export default function LoginPage() {
                     <ReplayIcon />
                   </IconButton>
                 </div>
-                <FormControlLabel
-                  classes={{
-                    root:
-                      classes.checkboxLabelControl +
-                      " " +
-                      classes.checkboxLabelControlClassName,
-                    label: classes.checkboxLabel,
-                  }}
-                  control={
-                    <Checkbox
-                      size="small"
-                      style={{ color: "#A5A5A5", marginRight: "-10px" }}
-                      onChange={handleToggle}
-                      checked={check}
-                    />
-                  }
-                  label={<span>ذخیره رمزعبور؟ </span>}
-                />
+                
               </CardBody>
               <CardFooter className={classes.justifyContentCenter}>
                 <Button type="submit" color="success" size="lg" block>

@@ -17,7 +17,7 @@ const tooltipStyle = {
       ", 0.2)",
     maxWidth: "200px",
     textAlign: "center",
-    fontFamily: "bakh",
+    fontFamily: "'IRANSANSX'",
     fontSize: "12px",
     fontStyle: "normal",
     fontWeight: "400",

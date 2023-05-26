@@ -6,7 +6,7 @@ import { prefixer } from 'stylis';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import "assets/css/material-dashboard-react.css?v=1.10.0";
-import "assets/fonts/fonts.css";
+import "assets/fonts/style.css";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "layouts/Main.js";
 

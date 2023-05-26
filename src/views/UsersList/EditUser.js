@@ -47,7 +47,7 @@ const styles = (theme) => ({
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
-    fontFamily: "bakh",
+    fontFamily: "'IRANSANSX'",
     marginBottom: "3px",
     textDecoration: "none",
     "& small": {
