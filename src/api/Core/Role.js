@@ -9,7 +9,8 @@ import {
     REMOVE_ROLE,
     FIND_ROLE,
     FILTER_DESCRIPTION_ROLE,
-    FILTER_STATUS_ROLE
+    FILTER_STATUS_ROLE,
+    FILTER_DISPLAYNAME_ROLE
 } from "../endpoints";
 import api from "../interceptor";
 
@@ -34,3 +35,5 @@ export const findRole = (payload) => api.post(FIND_ROLE, payload);
 export const filterByStatusRole = (payload) => api.post(FILTER_STATUS_ROLE, payload);
 
 export const filterByDescriptionRole = (payload) => api.post(FILTER_DESCRIPTION_ROLE, payload);
+
+export const filterByDisplayNameRole = (payload) => api.post(FILTER_DISPLAYNAME_ROLE, payload);

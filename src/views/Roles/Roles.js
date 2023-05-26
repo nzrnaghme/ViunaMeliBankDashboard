@@ -28,6 +28,7 @@ import {
   removeRole,
   findRole
 } from "api/Core/Role";
+import { filterByDisplayNameRole } from "api/Core/Role";
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -216,6 +217,18 @@ export default function Roles() {
     }
   }
 
+  const searchWithDisplayNameRole = async (nameSearch) => {
+    let data = {
+      ROLE_DISPLAYNAME: nameSearch
+    };
+    const response = await filterByDisplayNameRole(data);
+    if (Object.values(response.data).length > 0) {
+      setAllRoles(Object.values(response.data))
+    } else {
+      toast.warning("نقشی با این مشخصات وجود ندارد")
+    }
+  }
+
   return (
     <>
       <GridContainer>
@@ -284,6 +297,9 @@ export default function Roles() {
                     switch (key) {
                       case 0:
                         trackPromise(searchWithNameRole(nameSearch))
+                        break;
+                      case 1:
+                        trackPromise(searchWithDisplayNameRole(nameSearch))
                         break;
                       case 2:
                         trackPromise(searchWithDescriptionRole(nameSearch))

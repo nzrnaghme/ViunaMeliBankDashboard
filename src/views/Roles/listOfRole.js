@@ -35,9 +35,13 @@ import {
 import {
     getListUser,
     findUser,
-    filterByStatus,
+    // filterByStatus,
     filterByDescription
 } from "api/Core/User";
+import { filterByDisplayNameGroup } from "api/Core/Group";
+import { filterByDisplayNameRole } from "api/Core/Role";
+import { filterByDisplayName } from "api/Core/User";
+import { filterBranchCode } from "api/Core/User";
 
 
 const styles = (theme) => ({
@@ -463,6 +467,20 @@ export default function ListOfRole(props) {
         }
     }
 
+    const searchWithDisplayNameGroup = async (nameSearch) => {
+        let data = {
+            GROUP_DISPLAYNAME: nameSearch
+        };
+        const response = await filterByDisplayNameGroup(data);
+        if (Object.values(response.data).length > 0) {
+            setAllGroups(Object.values(response.data));
+            setCurrentPage_MainbarCurrentGroup(0);
+            setRowsPerPageGroup(10);
+        } else {
+            toast.warning("گروهی با این مشخصات وجود ندارد")
+        }
+    }
+
     const searchWithStatusGroup = async (nameSearch) => {
         let data = {
             GROUP_STATUS: nameSearch.toString()
@@ -506,6 +524,20 @@ export default function ListOfRole(props) {
         }
     }
 
+    const searchWithDisplayNameRole = async (nameSearch) => {
+        let data = {
+            ROLE_DISPLAYNAME: nameSearch
+        };
+        const response = await filterByDisplayNameRole(data);
+        if (Object.values(response.data).length > 0) {
+            setAllRoles(Object.values(response.data));
+            setRowsPerPageRole(10);
+            setCurrentPage_MainbarCurrentRole(0);
+        } else {
+            toast.warning("نقشی با این مشخصات وجود ندارد")
+        }
+    }
+
     const searchWithStatusRole = async (nameSearch) => {
         let data = {
             ROLE_STATUS: nameSearch.toString()
@@ -534,11 +566,25 @@ export default function ListOfRole(props) {
         }
     }
 
-    const searchWithStatus = async (nameSearch) => {
+    // const searchWithStatus = async (nameSearch) => {
+    //     let data = {
+    //         USER_STATUS: nameSearch.toString()
+    //     };
+    //     const response = await filterByStatus(data);
+    //     if (Object.values(response.data).length > 0) {
+    //         setAllMember(Object.values(response.data))
+    //         setRowsPerPageUser(10)
+    //         setCurrentPage_MainbarCurrentUser(0);
+    //     } else {
+    //         toast.warning("کاربری با این مشخصات وجود ندارد")
+    //     }
+    // }
+
+    const searchWithBranchCode = async (nameSearch) => {
         let data = {
-            USER_STATUS: nameSearch.toString()
+            USER_BRANCH_CODE: nameSearch
         };
-        const response = await filterByStatus(data);
+        const response = await filterBranchCode(data);
         if (Object.values(response.data).length > 0) {
             setAllMember(Object.values(response.data))
             setRowsPerPageUser(10)
@@ -553,6 +599,20 @@ export default function ListOfRole(props) {
             USER_DESCRIPTION: nameSearch
         };
         const response = await filterByDescription(data);
+        if (Object.values(response.data).length > 0) {
+            setAllMember(Object.values(response.data))
+            setRowsPerPageUser(10)
+            setCurrentPage_MainbarCurrentUser(0);
+        } else {
+            toast.warning("کاربری با این مشخصات وجود ندارد")
+        }
+    }
+
+    const searchWithDisplayNme = async (nameSearch) => {
+        let data = {
+            USER_DISPLAYNAME: nameSearch
+        };
+        const response = await filterByDisplayName(data);
         if (Object.values(response.data).length > 0) {
             setAllMember(Object.values(response.data))
             setRowsPerPageUser(10)
@@ -631,6 +691,9 @@ export default function ListOfRole(props) {
                                             case 0:
                                                 trackPromise(searchWithNameGroup(nameSearch))
                                                 break;
+                                            case 1:
+                                                trackPromise(searchWithDisplayNameGroup(nameSearch))
+                                                break;
                                             case 2:
                                                 trackPromise(searchWithDescriptionGroup(nameSearch))
                                                 break;
@@ -682,6 +745,9 @@ export default function ListOfRole(props) {
                                                 case 0:
                                                     trackPromise(searchWithNameRole(nameSearch))
                                                     break;
+                                                case 1:
+                                                    trackPromise(searchWithDisplayNameRole(nameSearch))
+                                                    break;
                                                 case 2:
                                                     trackPromise(searchWithDescriptionRole(nameSearch))
                                                     break;
@@ -702,6 +768,7 @@ export default function ListOfRole(props) {
                                                 "اسم کاربر",
                                                 "عنوان",
                                                 "توضیحات کاربر",
+                                                "کد کاربر",
                                                 // "وضعیت",
                                                 "عملیات"]}
                                             tableData={allMember}
@@ -733,11 +800,14 @@ export default function ListOfRole(props) {
                                                     case 0:
                                                         trackPromise(searchWithNameUser(nameSearch))
                                                         break;
+                                                    case 1:
+                                                        trackPromise(searchWithDisplayNme(nameSearch))
+                                                        break;
                                                     case 2:
                                                         trackPromise(searchWithDescription(nameSearch))
                                                         break;
                                                     case 3:
-                                                        trackPromise(searchWithStatus(nameSearch))
+                                                        trackPromise(searchWithBranchCode(nameSearch))
                                                         break;
                                                     default:
                                                         trackPromise(searchWithNameUser(nameSearch))
@@ -756,7 +826,7 @@ export default function ListOfRole(props) {
                                             paddingBottom: 10
                                         }}>اطلاعاتی ثبت نام نکرده</div>}
                         </CardBody>
-                      
+
                     </Card>
                 </GridItem>
             </GridContainer>

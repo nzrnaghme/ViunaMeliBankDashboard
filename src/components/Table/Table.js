@@ -22,7 +22,7 @@ import RegularButton from "../CustomButtons/Button";
 
 import "./index.css";
 import CustomInput from "components/CustomInput/CustomInput";
-import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+// import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 
 const useStyles = makeStyles(styles);
 
@@ -47,8 +47,9 @@ export default function CustomTable(props) {
   const [nameSearch0, setNameSearch0] = useState(null);
   const [nameSearch1, setNameSearch1] = useState(null);
   const [nameSearch2, setNameSearch2] = useState(null);
+  const [nameSearch3, setNameSearch3] = useState(null);
 
-  const [status, setStatus] = useState();
+  // const [status, setStatus] = useState();
 
   const {
     tableHead,
@@ -198,20 +199,40 @@ export default function CustomTable(props) {
                             :
                             (showText3 && prop != "عملیات" && key === 3) ?
 
-                              <CustomSelectInput
-                                labelText={prop}
-                                value={status}
-                                options={User_Status}
-                                handleChange={(e) => {
-                                  setStatus(e.target.value);
-                                  SelectDatas(e.target.value, 3)
-                                }}
+                              // <CustomSelectInput
+                              //   labelText={prop}
+                              //   value={status}
+                              //   options={User_Status}
+                              //   handleChange={(e) => {
+                              //     setStatus(e.target.value);
+                              //     SelectDatas(e.target.value, 3)
+                              //   }}
 
+                              // />
+                              <CustomInput
+                                rtlActive
+                                labelText={prop}
+                                value={nameSearch3}
+                                onChange={(e) => {
+                                  setNameSearch3(e);
+                                }}
+                                formControlProps={{
+                                  fullWidth: false,
+                                }}
+                                className={"showLabel"}
+                                EnterAction={() => {
+                                  if (nameSearch3)
+                                    SelectDatas(nameSearch3, key)
+                                  else {
+                                    AllDatas();
+                                    setShowText3(false)
+                                  }
+                                }}
                               />
                               :
                               prop
                       }
-                      {(prop != "عملیات" && !config && key != 1) &&
+                      {(prop != "عملیات" && !config) &&
                         <Tooltip
                           id="tooltip-top-start"
                           title={`جستجو با ${prop}`}
@@ -258,9 +279,8 @@ export default function CustomTable(props) {
                                     setShowText0(false)
                                     setShowText2(false)
                                     setShowText3(false)
-                                    AllDatas()
+                                    // AllDatas()
                                     setNameSearch1(null)
-
                                   }
                                   break;
                                 case 2:
@@ -282,7 +302,22 @@ export default function CustomTable(props) {
                                   }
                                   break;
                                 case 3:
-                                  setShowText3(!showText3)
+                                  if (!nameSearch3 && showText3) {
+                                    setShowText3(!showText3)
+                                    AllDatas()
+                                  } else if (nameSearch3 && showText3) {
+                                    SelectDatas(nameSearch3, key)
+                                    setShowText1(false)
+                                    setShowText0(false)
+                                    setShowText2(false)
+                                  } else {
+                                    setShowText3(!showText3)
+                                    setShowText1(false)
+                                    setShowText0(false)
+                                    setShowText2(false)
+                                    AllDatas()
+                                    setNameSearch3(null)
+                                  }
                                   break;
 
                                 default:
@@ -338,6 +373,9 @@ export default function CustomTable(props) {
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
                   </TableCell> */}
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_BRANCH_CODE ? row.USER_BRANCH_CODE : "..."}
+                  </TableCell>
                   <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top-start"

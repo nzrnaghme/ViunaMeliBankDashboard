@@ -11,7 +11,8 @@ import {
     LIST_ROLE_GROUP,
     FIND_GROUP,
     FILTER_STATUS_GROUP,
-    FILTER_DESCRIPTION_GROUP
+    FILTER_DESCRIPTION_GROUP,
+    FILTER_DEISPLAYNAME_GROUP
 } from "../endpoints";
 import api from "../interceptor";
 
@@ -40,3 +41,5 @@ export const findGroup = (payload) => api.post(FIND_GROUP, payload);
 export const filterByStatusGroup = (payload) => api.post(FILTER_STATUS_GROUP, payload);
 
 export const filterByDescriptionGroup = (payload) => api.post(FILTER_DESCRIPTION_GROUP, payload);
+
+export const filterByDisplayNameGroup = (payload) => api.post(FILTER_DEISPLAYNAME_GROUP, payload);

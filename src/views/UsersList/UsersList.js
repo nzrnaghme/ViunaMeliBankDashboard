@@ -20,8 +20,8 @@ import CreateUser from "./CreateUser";
 import ListOfUsers from "./ListOfUsers";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeUser, getListUser, findUser } from "api/Core/User";
-import { filterByStatus } from "api/Core/User";
-import { filterByDescription, countOfUser } from "api/Core/User";
+// import { filterByStatus } from "api/Core/User";
+import { filterByDescription, countOfUser, filterByDisplayName, filterBranchCode } from "api/Core/User";
 
 const styles = {
   cardCategoryWhite: {
@@ -183,11 +183,23 @@ export default function UsersList() {
     }
   }
 
-  const searchWithStatus = async (nameSearch) => {
+  // const searchWithStatus = async (nameSearch) => {
+  //   let data = {
+  //     USER_STATUS: nameSearch.toString()
+  //   };
+  //   const response = await filterByStatus(data);
+  //   if (Object.values(response.data).length > 0) {
+  //     setAllUsers(Object.values(response.data));
+  //   } else {
+  //     toast.warning("کاربری با این مشخصات وجود ندارد");
+  //   }
+  // }
+
+  const searchWithDescription = async (nameSearch) => {
     let data = {
-      USER_STATUS: nameSearch.toString()
+      USER_DESCRIPTION: nameSearch
     };
-    const response = await filterByStatus(data);
+    const response = await filterByDescription(data);
     if (Object.values(response.data).length > 0) {
       setAllUsers(Object.values(response.data))
     } else {
@@ -195,11 +207,23 @@ export default function UsersList() {
     }
   }
 
-  const searchWithDescription = async (nameSearch) => {
+  const searchWithDisplayName = async (nameSearch) => {
     let data = {
-      USER_DESCRIPTION: nameSearch
+      USER_DISPLAYNAME: nameSearch
     };
-    const response = await filterByDescription(data);
+    const response = await filterByDisplayName(data);
+    if (Object.values(response.data).length > 0) {
+      setAllUsers(Object.values(response.data))
+    } else {
+      toast.warning("کاربری با این مشخصات وجود ندارد")
+    }
+  }
+
+  const searchWithBranchCode = async (nameSearch) => {
+    let data = {
+      USER_BRANCH_CODE: nameSearch
+    };
+    const response = await filterBranchCode(data);
     if (Object.values(response.data).length > 0) {
       setAllUsers(Object.values(response.data))
     } else {
@@ -245,6 +269,7 @@ export default function UsersList() {
                     "اسم کاربری",
                     "عنوان",
                     "توضیحات",
+                    "کد شعبه",
                     // "وضعیت کاربر",
                     "عملیات",
                   ]}
@@ -277,11 +302,14 @@ export default function UsersList() {
                       case 0:
                         trackPromise(searchWithNameUser(nameSearch))
                         break;
+                      case 1:
+                        trackPromise(searchWithDisplayName(nameSearch))
+                        break;
                       case 2:
                         trackPromise(searchWithDescription(nameSearch))
                         break;
                       case 3:
-                        trackPromise(searchWithStatus(nameSearch))
+                        trackPromise(searchWithBranchCode(nameSearch))
                         break;
                       default:
                         trackPromise(searchWithNameUser(nameSearch))

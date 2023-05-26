@@ -13,6 +13,8 @@ export const CHANGE_PASS = `${API_V}user/changeuserspassword?api_key=X-API-Key&A
 export const FIND_USER = `${API_V}user/filterbyusername?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_STATUS = `${API_V}user/filterbyuserstatus?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_DESCRIPTION = `${API_V}user/filterbyuserdesc?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FILTER_DISPLAYNAME = `${API_V}user/filterbyuserdisplayname?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FILTER_BRANCHCODE = `${API_V}user/filterbyuserbranchcode?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
 
 //Group
@@ -30,6 +32,7 @@ export const LIST_ROLE_GROUP = `${API_V}group/lstrolesofgroup?api_key=X-API-Key&
 export const FIND_GROUP = `${API_V}group/filterbygroupname?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_STATUS_GROUP = `${API_V}group/filterbygroupstatus?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_DESCRIPTION_GROUP = `${API_V}group/filterbygroupdesc?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FILTER_DEISPLAYNAME_GROUP = `${API_V}group/filterbygroupdisplayname?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
 //Roll
 export const LIST_ROLLS = `${API_V}role/lstroles?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
@@ -43,6 +46,7 @@ export const COUNT_ROLE = `${API_V}role/rolescount?api_key=X-API-Key&API_KEY_VAL
 export const FIND_ROLE = `${API_V}role/filterbyrolename?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_STATUS_ROLE = `${API_V}role/filterbyrolestatus?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 export const FILTER_DESCRIPTION_ROLE = `${API_V}role/filterbyroledesc?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
+export const FILTER_DISPLAYNAME_ROLE = `${API_V}role/filterbyroledisplayname?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`;
 
 //Login
 export const LOGINUSER = `${API_V}login/normaluser?api_key=X-API-Key&API_KEY_VALUE=sd3209Sdkl2DF3dfzsDGEsZ8476`

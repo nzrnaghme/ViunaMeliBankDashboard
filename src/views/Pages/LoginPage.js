@@ -66,7 +66,6 @@ export default function LoginPage() {
       image.src = `data:image/png;base64,${response.data.captchaImg}`;
       setCaptchaImg(image.src)
       setCaptchaId(response.data.captchaId)
-
     }
   }
 
@@ -75,61 +74,64 @@ export default function LoginPage() {
     setCheck(value.target.checked);
   };
 
-  const checkCaptcha = async () => {
+  const login = async (e) => {
+    e.preventDefault();
+
     const dataCaptcha = {
       captchaAnswer: captcha,
       captchaId: captchaId
     }
     let response = await validCaptcha(dataCaptcha)
     if (response.data) {
-      return;
-    }
-  }
+      if (response.data.challange === "fail") {
+        setCaptcha("");
+        toast.error("عبارت وارد شده اشتباه است");
+        trackPromise(getRetryImgCaptcha());
+      } else {
+        const userN = userName;
+        const data = Object.create(
+          {
+            userN: {
+              PASSWORD: pass,
+              USER_DESCRIPTION: "test",
+            },
+          },
+        );
+        data[userN] = data["userN"];
+        let response = await loginUser(data);
+        if (response.status != "200") {
+          toast.error("کاربر وجود ندارد")
+        } else {
+          switch (response.data) {
+            case 0:
+              toast.error("نام کاربری یا رمز عبور اشتباه است!")
+              break;
+            case 1:
+              window.location = "/dashboard";
+              setItem("user", userName);
+              break;
+            case 2:
+              toast.error("کاربر قفل شده!")
 
-  const login = async (e) => {
-    e.preventDefault();
+              break;
+            case 3:
+              toast.error("کاربر فعال نیست!")
 
-    trackPromise(checkCaptcha());
+              break;
+            case 4:
+              toast.error("کاربر تعریف نشده!")
+              break;
 
-    const userN = userName;
-    const data = Object.create(
-      {
-        userN: {
-          PASSWORD: pass,
-          USER_DESCRIPTION: "test",
-        },
-      },
-    );
-    data[userN] = data["userN"];
-    let response = await loginUser(data);
-    if (response.status != "200") {
-      toast.error("کاربر وجود ندارد")
-    } else {
-      switch (response.data) {
-        case 0:
-          toast.error("نام کاربری یا رمز عبور اشتباه است!")
-          break;
-        case 1:
-          window.location = "/dashboard";
-          setItem("user", userName);
-          break;
-        case 2:
-          toast.error("کاربر قفل شده!")
+            default:
+              window.location = "/dashboard";
+              break;
+          }
+        }
 
-          break;
-        case 3:
-          toast.error("کاربر فعال نیست!")
-
-          break;
-        case 4:
-          toast.error("کاربر تعریف نشده!")
-          break;
-
-        default:
-          window.location = "/dashboard";
-          break;
       }
     }
+
+
 
 
   };

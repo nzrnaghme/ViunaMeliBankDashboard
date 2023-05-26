@@ -33,6 +33,8 @@ import {
     filterByStatusGroup,
     filterByDescriptionGroup
 } from "api/Core/Group";
+import { filterByDisplayNameRole } from "api/Core/Role";
+import { filterByDisplayNameGroup } from "api/Core/Group";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -344,6 +346,20 @@ export default function ListOfGroup(props) {
         }
     }
 
+    const searchWithDisplayNameGroup = async (nameSearch) => {
+        let data = {
+            GROUP_DISPLAYNAME: nameSearch.toString()
+        };
+        const response = await filterByDisplayNameGroup(data);
+        if (Object.values(response.data).length > 0) {
+            setAllGroups(Object.values(response.data));
+            setCurrentPage_MainbarCurrentGroup(0);
+            setRowsPerPageGroup(10);
+        } else {
+            toast.warning("گروهی با این مشخصات وجود ندارد")
+        }
+    }
+
     const searchWithStatusGroup = async (nameSearch) => {
         let data = {
             GROUP_STATUS: nameSearch.toString()
@@ -378,6 +394,20 @@ export default function ListOfGroup(props) {
             ROLE_DESCRIPTION: nameSearch
         };
         const response = await filterByDescriptionRole(data);
+        if (Object.values(response.data).length > 0) {
+            setAllRoles(Object.values(response.data));
+            setRowsPerPageRole(10);
+            setCurrentPage_MainbarCurrentRole(0);
+        } else {
+            toast.warning("نقشی با این مشخصات وجود ندارد")
+        }
+    }
+
+    const searchWithDisplayNameRole = async (nameSearch) => {
+        let data = {
+            ROLE_DISPLAYNAME: nameSearch
+        };
+        const response = await filterByDisplayNameRole(data);
         if (Object.values(response.data).length > 0) {
             setAllRoles(Object.values(response.data));
             setRowsPerPageRole(10);
@@ -466,6 +496,9 @@ export default function ListOfGroup(props) {
                                             case 0:
                                                 trackPromise(searchWithNameGroup(nameSearch))
                                                 break;
+                                            case 1:
+                                                trackPromise(searchWithDisplayNameGroup(nameSearch))
+                                                break;
                                             case 2:
                                                 trackPromise(searchWithDescriptionGroup(nameSearch))
                                                 break;
@@ -516,6 +549,9 @@ export default function ListOfGroup(props) {
                                             switch (key) {
                                                 case 0:
                                                     trackPromise(searchWithNameRole(nameSearch))
+                                                    break;
+                                                case 1:
+                                                    trackPromise(searchWithDisplayNameRole(nameSearch))
                                                     break;
                                                 case 2:
                                                     trackPromise(searchWithDescriptionRole(nameSearch))

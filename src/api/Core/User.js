@@ -10,7 +10,9 @@ import {
     CHANGE_PASS,
     FIND_USER,
     FILTER_STATUS,
-    FILTER_DESCRIPTION
+    FILTER_DESCRIPTION,
+    FILTER_DISPLAYNAME,
+    FILTER_BRANCHCODE
 } from "../endpoints";
 import api from "../interceptor";
 
@@ -39,3 +41,7 @@ export const findUser = (payload) => api.post(FIND_USER, payload)
 export const filterByStatus = (payload) => api.post(FILTER_STATUS, payload)
 
 export const filterByDescription = (payload) => api.post(FILTER_DESCRIPTION, payload)
+
+export const filterByDisplayName = (payload) => api.post(FILTER_DISPLAYNAME, payload)
+
+export const filterBranchCode = (payload) => api.post(FILTER_BRANCHCODE, payload)

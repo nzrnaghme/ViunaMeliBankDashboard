@@ -22,6 +22,7 @@ import { getAllGroups, removeGroup, findGroup } from "api/Core/Group";
 import ListOfUGroups from "./ListOfGroups";
 import { filterByStatusGroup } from "api/Core/Group";
 import { filterByDescriptionGroup, countOfGroup } from "api/Core/Group";
+import { filterByDisplayNameGroup } from "api/Core/Group";
 
 const styles = {
   cardCategoryWhite: {
@@ -195,6 +196,18 @@ export default function Groups() {
     }
   }
 
+  const searchWithDisplayNameGroup = async (nameSearch) => {
+    let data = {
+      GROUP_DISPLAYNAME: nameSearch
+    };
+    const response = await filterByDisplayNameGroup(data);
+    if (Object.values(response.data).length > 0) {
+      setAllGroups(Object.values(response.data));
+    } else {
+      toast.warning("گروهی با این مشخصات وجود ندارد");
+    }
+  }
+
 
   return (
     <>
@@ -264,6 +277,9 @@ export default function Groups() {
                     switch (key) {
                       case 0:
                         trackPromise(searchWithNameGroup(nameSearch))
+                        break;
+                      case 1:
+                        trackPromise(searchWithDisplayNameGroup(nameSearch))
                         break;
                       case 2:
                         trackPromise(searchWithDescriptionGroup(nameSearch))

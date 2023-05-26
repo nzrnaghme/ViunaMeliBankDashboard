@@ -140,7 +140,7 @@ const buttonStyle = {
     },
   },
   info: {
-    backgroundColor: infoColor[0],
+    backgroundColor: infoColor[1],
     boxShadow:
       "0 2px 2px 0 rgba(" +
       hexToRgb(infoColor[0]) +
