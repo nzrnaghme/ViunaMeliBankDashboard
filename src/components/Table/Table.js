@@ -12,6 +12,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
+import stylesTool from "assets/jss/material-dashboard-react/tooltipStyle.js";
 //icon
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
@@ -25,6 +26,7 @@ import CustomInput from "components/CustomInput/CustomInput";
 // import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 
 const useStyles = makeStyles(styles);
+const useStylesTool = makeStyles(stylesTool);
 
 export const User_Status = [
   {
@@ -39,6 +41,8 @@ export const User_Status = [
 
 export default function CustomTable(props) {
   const classes = useStyles();
+  const classesTools = useStylesTool();
+
   const [showText0, setShowText0] = useState(false);
   const [showText1, setShowText1] = useState(false);
   const [showText2, setShowText2] = useState(false);
@@ -95,7 +99,9 @@ export default function CustomTable(props) {
     RoleToGroup,
     RoleToRole,
     totalCoun,
-    NoNext
+    NoNext,
+    listFileUser,
+    removeRowFromList
   } = props;
 
 
@@ -232,7 +238,7 @@ export default function CustomTable(props) {
                               :
                               prop
                       }
-                      {(prop != "عملیات" && !config) &&
+                      {(prop != "عملیات" && !config && !listFileUser) &&
                         <Tooltip
                           id="tooltip-top-start"
                           title={`جستجو با ${prop}`}
@@ -381,7 +387,7 @@ export default function CustomTable(props) {
                       id="tooltip-top-start"
                       title="تغییر رمز"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Key"
@@ -403,7 +409,7 @@ export default function CustomTable(props) {
                       id="tooltip-top"
                       title="ویرایش"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Edit"
@@ -423,7 +429,7 @@ export default function CustomTable(props) {
                       id="tooltip-top-start"
                       title="حذف"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Close"
@@ -445,7 +451,7 @@ export default function CustomTable(props) {
                       id="tooltip-top-start"
                       title="اضافه کردن به کاربر"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Close"
@@ -490,7 +496,7 @@ export default function CustomTable(props) {
                       id="tooltip-top"
                       title="ویرایش"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Edit"
@@ -510,7 +516,7 @@ export default function CustomTable(props) {
                       id="tooltip-top-start"
                       title="حذف"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Close"
@@ -541,9 +547,9 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_DISPLAYNAME ? row.GROUP_DISPLAYNAME : "..."}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
@@ -559,7 +565,8 @@ export default function CustomTable(props) {
                       id="tooltip-top"
                       title="ویرایش"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
+                      style={{ fontFamily: "IRANSANSX" }}
                     >
                       <IconButton
                         aria-label="Edit"
@@ -579,7 +586,7 @@ export default function CustomTable(props) {
                       id="tooltip-top"
                       title="حذف"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Edit"
@@ -601,7 +608,7 @@ export default function CustomTable(props) {
                       id="tooltip-top-start"
                       title="اضافه کردن گروه به گروه"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Close"
@@ -634,9 +641,9 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_DISPLAYNAME ? row.GROUP_DISPLAYNAME : "..."}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
@@ -653,7 +660,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="حذف کردن گروه از کاربر مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -676,7 +683,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="اضافه کردن گروه به کاربر مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -728,7 +735,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="حذف کردن نقش از کاربر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -748,7 +755,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="اضافه کردن نقش به کاربر مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -782,9 +789,9 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_DISPLAYNAME ? row.GROUP_DISPLAYNAME : "..."}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
@@ -801,7 +808,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="حذف کردن گروه از گروه مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -824,7 +831,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="اضافه کردن گروه به گروه مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -859,9 +866,9 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_NAME}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.GROUP_DISPLAYNAME ? row.GROUP_DISPLAYNAME : "..."}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     {row.GROUP_DESCRIPTION ? row.GROUP_DESCRIPTION : "..."}
                   </TableCell>
@@ -878,7 +885,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="حذف کردن گروه از نقش مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -901,7 +908,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="اضافه کردن گروه به نقش مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -955,7 +962,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="حذف کردن نقش از گروه"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -975,7 +982,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="اضافه کردن نقش به گروه"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -1028,7 +1035,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="حذف کردن نقش از نقش"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -1048,7 +1055,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="اضافه کردن نقش به نقش"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -1085,19 +1092,19 @@ export default function CustomTable(props) {
                   <TableCell className={classes.tableCell}>
                     {row.ROLE_DESCRIPTION ? row.ROLE_DESCRIPTION : "..."}
                   </TableCell>
-                  <TableCell className={classes.tableCell}>
+                  {/* <TableCell className={classes.tableCell}>
                     {row.ROLE_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className={classes.tableCell}>
                     <Tooltip
                       id="tooltip-top"
                       title="ویرایش"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Edit"
@@ -1117,7 +1124,7 @@ export default function CustomTable(props) {
                       id="tooltip-top-start"
                       title="حذف"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Close"
@@ -1139,7 +1146,7 @@ export default function CustomTable(props) {
                       id="tooltip-top-start"
                       title="افزودن"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}
+                      classes={{ tooltip: classesTools.tooltip }}
                     >
                       <IconButton
                         aria-label="Close"
@@ -1190,7 +1197,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="حذف کردن کاربر از نقش مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -1213,7 +1220,7 @@ export default function CustomTable(props) {
                         id="tooltip-top-start"
                         title="اضافه کردن کاربر به نقش مورد نظر"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}
+                        classes={{ tooltip: classesTools.tooltip }}
                       >
                         <IconButton
                           aria-label="Close"
@@ -1236,12 +1243,73 @@ export default function CustomTable(props) {
               ))
             : ""}
 
+
+          {listFileUser && tableData
+            ? tableData
+              .slice(
+                currentPage * rowsCount,
+                currentPage * rowsCount + rowsCount
+              )
+              .map((row, index) => (
+                <TableRow key={index} className={[classes.tableBodyRow]}>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_USERNAME}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_PASSWORD}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_DESCRIPTION ? row.USER_DESCRIPTION : "..."}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_DISPLAYNAME ? row.USER_DISPLAYNAME : "..."}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {row.USER_BRANCH_CODE ? row.USER_BRANCH_CODE : "..."}
+                  </TableCell>
+                  {/* <TableCell className={classes.tableCell}>
+                    {row.GROUP_STATUS === 1 ? (
+                      <p style={{ color: "green" }}>فعال</p>
+                    ) : (
+                      <p style={{ color: "red" }}>غیر فعال</p>
+                    )}
+                  </TableCell> */}
+                  <TableCell className={classes.tableCell}>
+                  <Tooltip
+                      id="tooltip-top-start"
+                      title="حذف کاربر از لیست"
+                      placement="top"
+                      classes={{ tooltip: classesTools.tooltip }}
+                    >
+                      <IconButton
+                        aria-label="Close"
+                        className={classes.tableActionButton}
+                        onClick={() => {
+                          removeRowFromList(row);
+                        }}
+                      >
+                        <Close
+                          className={
+                            classes.tableActionButtonIcon +
+                            " " +
+                            classes.close
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+
+
+                </TableRow>
+              ))
+            : ""}
+
         </TableBody>
       </Table>
 
 
       {
-        (userToGroup || userToRole || groupToGroup || roleToUser || groupToRole || RoleToGroup || RoleToRole) ?
+        (userToGroup || userToRole || groupToGroup || roleToUser || groupToRole || RoleToGroup || RoleToRole || listFileUser) ?
           <TablePagination
             rowsPerPageOptions={[10, 20]}
             component="div"
@@ -1365,5 +1433,8 @@ CustomTable.propTypes = {
   SelectDatas: PropTypes.func,
 
   RoleToGroup: PropTypes.bool,
-  RoleToRole: PropTypes.bool
+  RoleToRole: PropTypes.bool,
+
+  listFileUser: PropTypes.bool,
+  removeRowFromList:PropTypes.func
 };

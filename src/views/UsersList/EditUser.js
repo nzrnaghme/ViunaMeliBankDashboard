@@ -79,12 +79,17 @@ export default function EditCourse(props) {
   // const [condition, setCondition] = useState();
   const [description, setDescription] = useState(null);
   const [displayName, setDisplayName] = useState(null);
+  const [branchCode, setBranchCode] = useState(null);
 
+
+  console.log(dataUser, "data");
 
   useEffect(() => {
     // setCondition(dataUser.USER_STATUS);
     setDescription(dataUser.USER_DESCRIPTION)
     setDisplayName(dataUser.USER_DISPLAYNAME)
+    setBranchCode(dataUser.USER_BRANCH_CODE)
+
   }, [dataUser]);
 
 
@@ -97,6 +102,7 @@ export default function EditCourse(props) {
           USER_STATUS: "1",//condition.toString()
           USER_DESCRIPTION: description,
           USER_DISPLAYNAME: displayName,
+          USER_BRANCH_CODE: branchCode
         },
       },
     );
@@ -124,7 +130,7 @@ export default function EditCourse(props) {
         <GridItem xs={12} sm={12} md={12}>
           <Card className="CardEditCourse" style={{ boxShadow: "none" }}>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>بروزرسانی کاربر</h4>
+              <h4 className={classes.cardTitleWhite}>بروزرسانی کاربر {dataUser.USER_USERNAME}</h4>
             </CardHeader>
             <CardBody className="bodyEditCourse bodyStyleCard">
 
@@ -167,13 +173,26 @@ export default function EditCourse(props) {
                         }} />
                     }
                   </GridItem> */}
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
                       labelText="توضیحات"
                       value={description}
                       onChange={(e) => {
                         setDescription(e);
+                      }}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <CustomInput
+                      rtlActive
+                      labelText="کد شعبه"
+                      value={branchCode}
+                      onChange={(e) => {
+                        setBranchCode(e);
                       }}
                       formControlProps={{
                         fullWidth: true,

@@ -23,6 +23,9 @@ import { removeUser, getListUser, findUser } from "api/Core/User";
 // import { filterByStatus } from "api/Core/User";
 import { filterByDescription, countOfUser, filterByDisplayName, filterBranchCode } from "api/Core/User";
 
+import stylesTool from "assets/jss/material-dashboard-react/tooltipStyle.js";
+
+
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -54,10 +57,12 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
+const useStylesTool = makeStyles(stylesTool);
 
 export default function UsersList() {
-
+  const classesTools = useStylesTool();
   const classes = useStyles();
+
   const {
     setConfirmPopupOpen,
     onConfirmSetter
@@ -239,7 +244,7 @@ export default function UsersList() {
             id="tooltip-top-start"
             title="افزودن کاربر"
             placement="top"
-            classes={{ tooltip: classes.tooltip }}
+            classes={{ tooltip: classesTools.tooltip }}
             color={"#00adef"}
           >
             <IconButton

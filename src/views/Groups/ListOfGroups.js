@@ -135,7 +135,7 @@ export default function ListOfGroups(props) {
         }
         if (currentGroup.length > 0) {
             var select = sortedData.filter((e) => (
-                currentGroup.includes(e.GROUP_NAME && dataGroupToGroup.GROUP_ID)
+                currentGroup.includes(e.GROUP_NAME)
             ))
 
             var AllGroups = sortedData.filter((e) => (
@@ -459,7 +459,7 @@ export default function ListOfGroups(props) {
                                     tableHeaderColor="info"
                                     tableHead={[
                                         "اسم گروه",
-                                        "عنوان",
+                                        // "عنوان",
                                         "توضیحات گروه",
                                         // "وضعیت گروه",
                                         "عملیات"]}
@@ -473,7 +473,6 @@ export default function ListOfGroups(props) {
                                             trackPromise(addGroupToGroups(row))
                                         })
                                         setConfirmPopupOpen(true)
-
                                     }}
                                     currentGroupToUser={currentGroupToGroup}
                                     removeGroupToGroup={(row) => {

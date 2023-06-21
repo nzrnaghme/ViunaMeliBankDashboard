@@ -118,6 +118,7 @@ const tableStyle = (theme) => ({
     width: "27px",
     height: "27px",
     padding: "0",
+    fontFamily: "'IRANSANSX' !important",
   },
   tableActionButtonIcon: {
     width: "18px",

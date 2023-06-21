@@ -75,12 +75,12 @@ export default function EditTeacher(props) {
 
     // const [condition, setCondition] = useState(null);
     const [description, setDescription] = useState(null);
-    const [displayName, setDisplayName] = useState(null);
+    // const [displayName, setDisplayName] = useState(null);
 
     useEffect(() => {
         // setCondition(dataGroup.GROUP_STATUS);
         setDescription(dataGroup.GROUP_DESCRIPTION);
-        setDisplayName(dataGroup.GROUP_DISPLAYNAME);
+        // setDisplayName(dataGroup.GROUP_DISPLAYNAME);
 
     }, [dataGroup]);
 
@@ -92,7 +92,7 @@ export default function EditTeacher(props) {
                 groupName: {
                     GROUP_STATUS: "1",//condition.toString()
                     GROUP_DESCRIPTION: description,
-                    GROUP_DISPLAYNAME: displayName,
+                    // GROUP_DISPLAYNAME: displayName,
 
                 },
             },
@@ -121,12 +121,12 @@ export default function EditTeacher(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardEditCourse" style={{ boxShadow: "none" }}>
                         <CardHeader color="warning">
-                            <h4 className={classes.cardTitleWhite}>بروزرسانی گروه</h4>
+                            <h4 className={classes.cardTitleWhite}>بروز رسانی گروه {dataGroup.GROUP_NAME}</h4>
                         </CardHeader>
                         <CardBody className="bodyEditGroup">
                             <div>
                                 <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             disabled
                                             rtlActive
@@ -137,7 +137,7 @@ export default function EditTeacher(props) {
                                             }}
                                         />
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
+                                    {/* <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
                                             labelText="عنوان گروه"
@@ -149,7 +149,7 @@ export default function EditTeacher(props) {
                                                 setDisplayName(e);
                                             }}
                                         />
-                                    </GridItem>
+                                    </GridItem> */}
                                     {/* <GridItem xs={12} sm={12} md={6}>
                                         {User_Status && User_Status.length > 0 &&
                                             <CustomSelectInput
@@ -176,8 +176,6 @@ export default function EditTeacher(props) {
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
-                                            multiline
-                                            rows={3}
                                         />
                                     </GridItem>
                                 </GridContainer>

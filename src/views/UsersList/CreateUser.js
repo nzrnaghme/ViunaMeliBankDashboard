@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { trackPromise } from "react-promise-tracker";
 import { toast } from "react-toastify";
+import * as XLSX from 'xlsx'
 
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -18,10 +21,12 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import Table from "components/Table/Table.js";
+
 // import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 
-import "./User.css";
 import { insertUser } from "api/Core/User";
+import "./User.css";
 
 // new
 
@@ -89,6 +94,7 @@ export default function CreateUser(props) {
     const [passAgain, setPassAgain] = useState();
 
     const [displayName, setDisplayName] = useState(null);
+    const [codeBranch, setCodeBranch] = useState(null);
     // const [status, setStatus] = useState(1);
     const [description, setDescription] = useState(null);
     const [errorName, setErrorName] = useState(false);
@@ -97,9 +103,20 @@ export default function CreateUser(props) {
     const [textLeft, setTextLeft] = useState(false);
     const [textLeftAgain, setTextLeftAgain] = useState(false);
     const [errorDisplayName, setErrorDisplayName] = useState(false);
+    const [errorCodeBranch, setErrorCodeBranch] = useState(false);
 
     const [showPass, setShowPass] = useState(false);
     const [showPassAgain, setShowPassAgain] = useState(false);
+
+    const [itemTabs, setItemTabs] = useState(0);
+
+    const uoploadFile = useRef(null);
+    const [nameFile, setNameFile] = useState(null);
+
+    const [rowsPerPageGroup, setRowsPerPageGroup] = useState(10);
+    const [currentPage_MainbarCurrentGroup, setCurrentPage_MainbarCurrentGroup] = useState(0);
+    const [allUsers, setAllUsers] = useState()
+
 
     function validatePassword(password) {
         const regex = /^(?=.*[0-7])(?=.*[!@#$%^&*])[a-zA-Z0-7!@#$%^&*]{8,}$/;
@@ -119,7 +136,8 @@ export default function CreateUser(props) {
                             USER_PASSWORD: pass,
                             USER_STATUS: "1",//status.toString()
                             USER_DESCRIPTION: description,
-                            USER_DISPLAYNAME: displayName
+                            USER_DISPLAYNAME: displayName,
+                            USER_BRANCH_CODE: codeBranch
                         },
                     },
                 );
@@ -138,53 +156,127 @@ export default function CreateUser(props) {
             }
 
 
-        } else if (name && !pass && !displayName && !passAgain) {
+        } else if (name && !pass && !displayName && !passAgain && !codeBranch) {
             setErrorPassAgain(true);
             setErrorPass(true);
-            setErrorDisplayName(true)
-        } else if (!name && !pass && displayName && !passAgain) {
+            setErrorDisplayName(true);
+            setErrorCodeBranch(true)
+        } else if (!name && !pass && displayName && !passAgain && !codeBranch) {
             setErrorName(true);
             setErrorPass(true);
             setErrorPassAgain(true);
-        } else if (!name && pass && !displayName && !passAgain) {
+            setErrorCodeBranch(true)
+        } else if (!name && pass && !displayName && !passAgain && !codeBranch) {
             setErrorName(true);
             setErrorDisplayName(true);
             setErrorPassAgain(true);
-        } else if (!name && !pass && !displayName && passAgain) {
+            setErrorCodeBranch(true)
+        } else if (!name && !pass && !displayName && passAgain && !codeBranch) {
             setErrorName(true);
             setErrorDisplayName(true);
             setErrorPass(true);
-        } else if (name && pass && !displayName && !passAgain) {
+            setErrorCodeBranch(true);
+        }
+        else if (!name && !pass && !displayName && !passAgain && codeBranch) {
+            setErrorName(true);
+            setErrorDisplayName(true);
+            setErrorPass(true);
+        } else if (name && pass && !displayName && !passAgain && !codeBranch) {
             setErrorDisplayName(true);
             setErrorPassAgain(true);
-        } else if (!name && pass && displayName && !passAgain) {
+            setErrorCodeBranch(true)
+        } else if (!name && pass && displayName && !passAgain && !codeBranch) {
             setErrorName(true);
             setErrorPassAgain(true);
-        } else if (name && !pass && displayName && !passAgain) {
+            setErrorCodeBranch(true)
+        } else if (name && !pass && displayName && !passAgain && !codeBranch) {
             setErrorPass(true);
             setErrorPassAgain(true);
-        } else if (!name && !pass && displayName && passAgain) {
+            setErrorCodeBranch(true);
+        } else if (!name && !pass && displayName && passAgain && !codeBranch) {
             setErrorName(true);
             setErrorPass(true);
+            setErrorCodeBranch(true)
         }
-        else if (!name && pass && !displayName && passAgain) {
+        else if (!name && pass && !displayName && passAgain && !codeBranch) {
             setErrorName(true);
             setErrorDisplayName(true);
+            setErrorCodeBranch(true)
         }
-        else if (name && !pass && !displayName && passAgain) {
+        else if (name && !pass && !displayName && passAgain && !codeBranch) {
             setErrorDisplayName(true);
             setErrorPass(true);
+            setErrorCodeBranch(true)
         }
-        else if (name && pass && !displayName && passAgain) {
+        else if (!name && !pass && !displayName && passAgain && codeBranch) {
             setErrorDisplayName(true);
-        }
-        else if (name && !pass && displayName && passAgain) {
             setErrorPass(true);
+            setErrorName(true)
         }
-        else if (!name && pass && displayName && passAgain) {
+        else if (!name && !pass && displayName && !passAgain && codeBranch) {
+            setErrorPassAgain(true);
+            setErrorPass(true);
+            setErrorName(true)
+        }
+        else if (!name && pass && !displayName && !passAgain && codeBranch) {
+            setErrorDisplayName(true);
+            setErrorPassAgain(true);
+            setErrorName(true)
+        }
+        else if (name && !pass && !displayName && !passAgain && codeBranch) {
+            setErrorDisplayName(true);
+            setErrorPass(true);
+            setErrorPassAgain(true);
+        }//from three
+        else if (!name && !pass && displayName && passAgain && codeBranch) {
+            setErrorPass(true);
             setErrorName(true);
         }
-        // else if (name && pass && displayName && !passAgain) {
+        else if (!name && pass && !displayName && passAgain && codeBranch) {
+            setErrorDisplayName(true);
+            setErrorName(true);
+        }
+        else if (!name && pass && displayName && !passAgain && codeBranch) {
+            setErrorPassAgain(true);
+            setErrorName(true);
+        }
+        else if (!name && pass && displayName && passAgain && !codeBranch) {
+            setErrorCodeBranch(true);
+            setErrorName(true);
+        }
+        else if (name && !pass && displayName && passAgain && !codeBranch) {
+            setErrorCodeBranch(true);
+            setErrorPass(true);
+        }
+        else if (name && pass && !displayName && passAgain && !codeBranch) {
+            setErrorCodeBranch(true);
+            setErrorDisplayName(true);
+        }
+        // else if (name && pass && displayName && !passAgain && !codeBranch) {
+        //     setErrorCodeBranch(true);
+        //     setErrorPassAgain(true);
+        // }
+        else if (name && !pass && displayName && !passAgain && codeBranch) {
+            setErrorPass(true);
+            setErrorPassAgain(true);
+        }
+        else if (name && pass && !displayName && !passAgain && codeBranch) {
+            setErrorDisplayName(true);
+            setErrorPassAgain(true);
+        }//from one
+        else if (name && pass && !displayName && passAgain && codeBranch) {
+            setErrorDisplayName(true);
+        }
+        else if (name && !pass && displayName && passAgain && codeBranch) {
+            setErrorPass(true);
+        }
+        else if (!name && pass && displayName && passAgain && codeBranch) {
+            setErrorName(true);
+        }
+        // else if (!codeBranch && name && pass && displayName && passAgain) {
+        //     setErrorCodeBranch(true);
+        // }
+        // else if (name && pass && displayName && !passAgain && codeBranch) {
         //     setErrorPassAgain(true);
         // }
 
@@ -192,9 +284,75 @@ export default function CreateUser(props) {
             setErrorPass(true);
             setErrorName(true);
             setErrorDisplayName(true);
+            setErrorCodeBranch(true);
             toast.error("اطلاعات کافی نیست");
         }
     };
+
+
+    const readExcel = (file) => {
+        try {
+            return new Promise((resolve, reject) => {
+                const fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(file);
+                fileReader.onload = (e) => {
+                    const bufferReader = e.target.result;
+                    const wb = XLSX.read(bufferReader, { type: "buffer" });
+                    const wbSheetName = wb.SheetNames[0];
+                    const ws = wb.Sheets[wbSheetName];
+                    const data = XLSX.utils.sheet_to_json(ws);
+                    const resultArray = data.map((obj, index) => {
+                        const newObj = { ...obj }; // Create a new object to avoid modifying the original object
+                        newObj.id = index + 1; // Assign unique id based on index position
+                        return newObj;
+                    });
+                    setAllUsers(resultArray)
+                    resolve(data);
+                };
+                FileReader.onError = (error) => {
+                    reject(error);
+                };
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const handleChange = (event, newValue) => {
+        setItemTabs(newValue);
+    };
+
+    const handleChangeRowsPerPageGroup = (event) => {
+        setRowsPerPageGroup(+event.target.value);
+        setCurrentPage_MainbarCurrentGroup(0);
+    };
+
+    const handleChangePageGroup = (event, newPage) => {
+        setCurrentPage_MainbarCurrentGroup(newPage)
+    }
+
+    const createAllUser = async () => {
+        console.log(allUsers);
+        const resultObject = {};
+        allUsers.forEach(obj => {
+            const key = obj.USER_USERNAME;
+            delete obj.USER_USERNAME;
+            delete obj.id;
+            obj.USER_STATUS = String(obj.USER_STATUS);
+            obj.USER_BRANCH_CODE = String(obj.USER_BRANCH_CODE);
+            resultObject[key] = obj;
+        });
+        console.log(resultObject, "res");
+
+        let response = await insertUser(resultObject);
+        if (response.data === "SUCCESSFUL") {
+            CreateSuccess();
+        } else {
+            toast.error("کاربران اضافه نشدند");
+        }
+    }
+
 
     return (
         <PopUpCustome
@@ -211,44 +369,59 @@ export default function CreateUser(props) {
                             <h4 className={classes.cardTitleWhite}>افزودن کاربر</h4>
                         </CardHeader>
                         <CardBody className="bodyCreateCourse" style={{ marginTop: 25 }}>
-                            <div>
-                                <GridContainer >
-                                    <GridItem xs={12} sm={12} md={6} >
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="اسم کاربری"
-                                            value={name}
-                                            error={errorName}
+                            <Tabs
+                                value={itemTabs}
+                                indicatorColor="secondary"
+                                textColor="secondary"
+                                onChange={handleChange}
+                                aria-label="disabled tabs example"
+                                className="tabsUser"
+                            >
+                                <Tab label="بصورت تکی" />
+                                <Tab label="بصورت فایل" />
+                            </Tabs>
 
-                                            onChange={(e) => {
-                                                setErrorName(false)
-                                                setName(e);
-                                            }}
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
+                            {itemTabs === 0 &&
+                                <>
+
+                                    <div>
+                                        <GridContainer >
+                                            <GridItem xs={12} sm={12} md={6} >
+                                                <CustomInput
+                                                    rtlActive
+                                                    labelText="اسم کاربری"
+                                                    value={name}
+                                                    error={errorName}
+
+                                                    onChange={(e) => {
+                                                        setErrorName(false)
+                                                        setName(e);
+                                                    }}
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                    }}
+                                                />
+                                            </GridItem>
 
 
 
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="توضیحات"
-                                            value={description}
-                                            onChange={(e) => {
-                                                setDescription(e);
-                                            }}
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
-                                </GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <CustomInput
+                                                    rtlActive
+                                                    labelText="توضیحات"
+                                                    value={description}
+                                                    onChange={(e) => {
+                                                        setDescription(e);
+                                                    }}
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                    }}
+                                                />
+                                            </GridItem>
+                                        </GridContainer>
 
-                                <GridContainer>
-                                    {/* <GridItem xs={12} sm={12} md={6}>
+                                        <GridContainer>
+                                            {/* <GridItem xs={12} sm={12} md={6}>
                                         <CustomSelectInput
                                             labelText="وضعیت کاربر"
                                             value={status}
@@ -257,141 +430,224 @@ export default function CreateUser(props) {
                                                 setStatus(e.target.value);
                                             }}
                                         />
-                                    </GridItem> */}
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی و کاراکتر خاص باشد و ۸ کاراکتر باشد"}
-                                            textLeft={textLeft}
-                                            labelText="رمز عبور جدید"
-                                            value={pass}
-                                            className="password"
+                                        </GridItem> */}
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <CustomInput
+                                                    rtlActive
+                                                    errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی و کاراکتر خاص باشد و ۸ کاراکتر باشد"}
+                                                    textLeft={textLeft}
+                                                    labelText="رمز عبور جدید"
+                                                    value={pass}
+                                                    className="password"
+                                                    onChange={(e) => {
+                                                        setTextLeft(true)
+                                                        setErrorPass(false)
+                                                        setPass(e);
+                                                    }}
+                                                    error={errorPass}
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                    }}
+                                                    inputProps={{
+                                                        required: true,
+                                                        minLength: 8,
+                                                        name: "password",
+                                                        endAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <IconButton
+
+                                                                    onClick={() => {
+                                                                        setShowPass(!showPass)
+                                                                    }}
+
+                                                                >
+                                                                    {showPass ? <Visibility /> : <VisibilityOff />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                    type={showPass ? 'text' : 'password'}
+
+                                                />
+                                            </GridItem>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <CustomInput
+                                                    rtlActive
+                                                    errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی و کاراکتر خاص باشد و ۸ کاراکتر باشد"}
+                                                    textLeft={textLeftAgain}
+                                                    labelText="تکرار رمز عبور جدید"
+                                                    value={passAgain}
+                                                    className="password"
+                                                    onChange={(e) => {
+                                                        setTextLeftAgain(true)
+                                                        setErrorPassAgain(false)
+                                                        setPassAgain(e);
+                                                    }}
+                                                    error={errorPassAgain}
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                    }}
+                                                    inputProps={{
+                                                        required: true,
+                                                        minLength: 8,
+                                                        name: "password",
+                                                        endAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <IconButton
+
+                                                                    onClick={() => {
+                                                                        setShowPassAgain(!showPassAgain)
+                                                                    }}
+
+                                                                >
+                                                                    {showPassAgain ? <Visibility /> : <VisibilityOff />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                    type={showPassAgain ? 'text' : 'password'}
+
+                                                />
+                                            </GridItem>
+                                        </GridContainer>
+                                        <GridContainer>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <CustomInput
+                                                    rtlActive
+                                                    labelText="عنوان"
+                                                    value={displayName}
+                                                    error={errorDisplayName}
+
+                                                    onChange={(e) => {
+                                                        setErrorDisplayName(false)
+                                                        setDisplayName(e);
+                                                    }}
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                    }}
+                                                />
+                                            </GridItem>
+                                            <GridItem xs={12} sm={12} md={6}>
+                                                <CustomInput
+                                                    rtlActive
+                                                    labelText="کد شعبه"
+                                                    value={codeBranch}
+                                                    error={errorCodeBranch}
+
+                                                    onChange={(e) => {
+                                                        setErrorCodeBranch(false)
+                                                        setCodeBranch(e);
+                                                    }}
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                    }}
+                                                />
+                                            </GridItem>
+                                        </GridContainer>
+                                    </div>
+                                    <div className="btnEditCourse">
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                bottom: 20,
+                                                cursor: "pointer",
+                                                marginTop: 20,
+                                                justifyContent: "center"
+                                            }}
+                                        >
+                                            <RegularButton
+                                                color="info"
+                                                size="sm"
+                                                onClick={() => {
+                                                    trackPromise(createNewCourse());
+                                                }}
+                                            >
+                                                ایجاد کاربر
+                                            </RegularButton>
+                                            <RegularButton
+                                                color="danger"
+                                                size="sm"
+                                                onClick={() => {
+                                                    closePopUpCreate();
+                                                }}
+                                            >
+                                                انصراف
+                                            </RegularButton>
+                                        </div>
+                                    </div>
+                                </>
+                            }
+
+                            {itemTabs === 1 &&
+                                <>
+                                    <div className="file">
+                                        <input
+                                            hidden
+                                            type="file"
                                             onChange={(e) => {
-                                                setTextLeft(true)
-                                                setErrorPass(false)
-                                                setPass(e);
+                                                const file = e.target.files[0];
+                                                setNameFile(file.name)
+                                                readExcel(file);
                                             }}
-                                            error={errorPass}
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            inputProps={{
-                                                required: true,
-                                                minLength: 8,
-                                                name: "password",
-                                                endAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <IconButton
-
-                                                            onClick={() => {
-                                                                setShowPass(!showPass)
-                                                            }}
-
-                                                        >
-                                                            {showPass ? <Visibility /> : <VisibilityOff />}
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                            type={showPass ? 'text' : 'password'}
-
+                                            ref={uoploadFile}
                                         />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            errorText={"رمز عبور باید شامل عدد و حروف بزرگ و کوچک انگلیسی و کاراکتر خاص باشد و ۸ کاراکتر باشد"}
-                                            textLeft={textLeftAgain}
-                                            labelText="تکرار رمز عبور جدید"
-                                            value={passAgain}
-                                            className="password"
-                                            onChange={(e) => {
-                                                setTextLeftAgain(true)
-                                                setErrorPassAgain(false)
-                                                setPassAgain(e);
-                                            }}
-                                            error={errorPassAgain}
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            inputProps={{
-                                                required: true,
-                                                minLength: 8,
-                                                name: "password",
-                                                endAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <IconButton
 
-                                                            onClick={() => {
-                                                                setShowPassAgain(!showPassAgain)
-                                                            }}
-
-                                                        >
-                                                            {showPassAgain ? <Visibility /> : <VisibilityOff />}
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                ),
+                                        <RegularButton
+                                            color="info"
+                                            size="sm"
+                                            onClick={() => {
+                                                uoploadFile.current.click();
                                             }}
-                                            type={showPassAgain ? 'text' : 'password'}
+                                            className="btnFile"
+                                        >
+                                            آپلود فایل
+                                        </RegularButton>
+                                        {nameFile &&
+                                            <p>{nameFile}</p>
+                                        }
+                                    </div>
+                                    {allUsers && allUsers.length > 0 && allUsers != undefined &&
+                                        <div style={{ textAlign: "center" }}>
+                                            <Table
+                                                tableHeaderColor="info"
+                                                tableHead={[
+                                                    "اسم کاربر",
+                                                    "رمز کاربر",
+                                                    "توضیحات کاربر",
+                                                    "عنوان کاربر",
+                                                    "کد شعبه",
+                                                    "عملیات"]}
+                                                rowsCount={rowsPerPageGroup}
+                                                tableData={allUsers}
+                                                currentPage={currentPage_MainbarCurrentGroup}
+                                                handleChangePage={handleChangePageGroup}
+                                                handleChangeRowsPerPage={handleChangeRowsPerPageGroup}
+                                                listFileUser
+                                                removeRowFromList={(row) => {
+                                                    var newData = allUsers.filter((e) => e.id != row.id)
+                                                    setAllUsers(newData);
+                                                }}
 
-                                        />
-                                    </GridItem>
-                                </GridContainer>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="عنوان"
-                                            value={displayName}
-                                            error={errorDisplayName}
+                                            />
+                                            <RegularButton
+                                                color="info"
+                                                size="sm"
+                                                onClick={createAllUser}
+                                                className="btnFileAccept"
+                                            >
+                                                ذخیره تغییرات
+                                            </RegularButton>
+                                        </div>
+                                    }
+                                </>
+                            }
 
-                                            onChange={(e) => {
-                                                setErrorDisplayName(false)
-                                                setDisplayName(e);
-                                            }}
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
-                                </GridContainer>
-                            </div>
-                            <div className="btnEditCourse">
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        bottom: 20,
-                                        cursor: "pointer",
-                                        marginTop: 20,
-                                        justifyContent: "center"
-                                    }}
-                                >
-                                    <RegularButton
-                                        color="info"
-                                        size="sm"
-                                        onClick={() => {
-                                            trackPromise(createNewCourse());
-                                        }}
-                                    >
-                                        ایجاد کاربر
-                                    </RegularButton>
-                                    <RegularButton
-                                        color="danger"
-                                        size="sm"
-                                        onClick={() => {
-                                            closePopUpCreate();
-                                        }}
-                                    >
-                                        انصراف
-                                    </RegularButton>
-                                </div>
-                            </div>
                         </CardBody>
                     </Card>
                 </GridItem>
             </GridContainer>
-        </PopUpCustome >
+        </PopUpCustome>
     );
 }
 

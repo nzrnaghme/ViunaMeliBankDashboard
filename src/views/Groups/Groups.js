@@ -24,6 +24,8 @@ import { filterByStatusGroup } from "api/Core/Group";
 import { filterByDescriptionGroup, countOfGroup } from "api/Core/Group";
 import { filterByDisplayNameGroup } from "api/Core/Group";
 
+import stylesTool from "assets/jss/material-dashboard-react/tooltipStyle.js";
+
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -55,9 +57,12 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
+const useStylesTool = makeStyles(stylesTool);
 
 export default function Groups() {
   const classes = useStyles();
+  const classesTools = useStylesTool();
+
   const [allGroups, setAllGroups] = useState([]);
   const [countCourses, setCountCourses] = useState(0);
 
@@ -218,7 +223,7 @@ export default function Groups() {
               id="tooltip-top-start"
               title="افزودن گروه"
               placement="top"
-              classes={{ tooltip: classes.tooltip }}
+              classes={{ tooltip: classesTools.tooltip }}
               color={"#00adef"}
             >
               <IconButton
@@ -246,7 +251,7 @@ export default function Groups() {
                   tableHeaderColor="info"
                   tableHead={[
                     "اسم گروه",
-                    "عنوان",
+                    // "عنوان",
                     "توضیحات",
                     // "وضعیت گروه",
                     "عملیات"]}

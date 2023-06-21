@@ -463,7 +463,7 @@ export default function ListOfGroup(props) {
                                     tableHeaderColor="info"
                                     tableHead={[
                                         "اسم گروه",
-                                        "عنوان",
+                                        // "عنوان",
                                         "توضیحات گروه",
                                         // "وضعیت",
                                         "عملیات"]}

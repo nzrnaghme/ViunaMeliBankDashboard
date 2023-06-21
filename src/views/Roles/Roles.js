@@ -18,7 +18,6 @@ import InsertRole from "./InsertRole";
 import EditRole from "./EditRole";
 import ListOfRole from "./listOfRole";
 
-import "./role.css";
 import { GeneralContext } from "providers/GeneralContext";
 import {
   filterByStatusRole,
@@ -29,6 +28,10 @@ import {
   findRole
 } from "api/Core/Role";
 import { filterByDisplayNameRole } from "api/Core/Role";
+
+import stylesTool from "assets/jss/material-dashboard-react/tooltipStyle.js";
+import "./role.css";
+
 
 const styles = (theme) => ({
   cardCategoryWhite: {
@@ -65,9 +68,12 @@ const styles = (theme) => ({
 });
 
 const useStyles = makeStyles(styles);
+const useStylesTool = makeStyles(stylesTool);
 
 export default function Roles() {
   const classes = useStyles();
+  const classesTools = useStylesTool();
+
   const [allRoles, setAllRoles] = useState([]);
   const [
     currentPage_MainbarMyRoles,
@@ -238,7 +244,7 @@ export default function Roles() {
               id="tooltip-top-start"
               title="افزودن نقش"
               placement="top"
-              classes={{ tooltip: classes.tooltip }}
+              classes={{ tooltip: classesTools.tooltip }}
               color={"#00adef"}
             >
               <IconButton
@@ -268,7 +274,7 @@ export default function Roles() {
                     "اسم نقش",
                     "عنوان",
                     "توضیحات",
-                    "وضعیت نقش",
+                    // "وضعیت نقش",
                     "عملیات",
                   ]}
                   NoNext={noNext}

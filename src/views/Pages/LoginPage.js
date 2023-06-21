@@ -95,7 +95,7 @@ export default function LoginPage() {
         } else {
           switch (response.data) {
             case 0:
-              toast.error("نام کاربری یا رمز عبور اشتباه است!")
+              toast.error("شما درسترسی لازم جهت ورود به سامانه را ندارید. لطفا با مدیر سامانه تماس بگیرید.")
               break;
             case 1:
               window.location = "/dashboard";
@@ -121,10 +121,6 @@ export default function LoginPage() {
 
       }
     }
-
-
-
-
   };
 
   return (
@@ -140,7 +136,7 @@ export default function LoginPage() {
                 color="info"
               >
                 <h4 className={classes.cardTitle}>
-                  سامانه مدیریت بانک ملی ایران
+                  سامانه مدیریت کاربران بانک ملی ایران
                 </h4>
               </CardHeader>
               <CardBody>

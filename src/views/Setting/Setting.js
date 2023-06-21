@@ -22,6 +22,8 @@ import InsertConfig from "./InsertConfig"
 import { GeneralContext } from "providers/GeneralContext";
 import { getAllConfigs, removeConfig } from "api/Core/Config";
 
+import stylesTool from "assets/jss/material-dashboard-react/tooltipStyle.js";
+
 const styles = {
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
@@ -53,10 +55,12 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
+const useStylesTool = makeStyles(stylesTool);
 
 export default function Setting() {
-
     const classes = useStyles();
+    const classesTools = useStylesTool();
+
     const [allConfig, setAllConfig] = useState()
     const [
         currentPage_MainbarMyConfig,
@@ -150,7 +154,7 @@ export default function Setting() {
                             id="tooltip-top-start"
                             title="افزودن تنظیمات"
                             placement="top"
-                            classes={{ tooltip: classes.tooltip }}
+                            classes={{ tooltip: classesTools.tooltip }}
                             color={"#00adef"}
                         >
                             <IconButton

@@ -192,7 +192,7 @@ export default function ListOfRole(props) {
         }
         if (currentRole.length > 0) {
             var select = sortedData.filter((e) => (
-                currentRole.includes(e.ROLE_NAME && dataRoleTo.ROLE_ID)
+                currentRole.includes(e.ROLE_NAME)
             ))
 
             var AllRoles = sortedData.filter((e) => (
@@ -658,7 +658,7 @@ export default function ListOfRole(props) {
                                     tableHeaderColor="info"
                                     tableHead={[
                                         "اسم گروه",
-                                        "عنوان",
+                                        // "عنوان",
                                         "توضیحات گروه",
                                         // "وضعیت گروه",
                                         "عملیات"]}
@@ -768,7 +768,7 @@ export default function ListOfRole(props) {
                                                 "اسم کاربر",
                                                 "عنوان",
                                                 "توضیحات کاربر",
-                                                "کد کاربر",
+                                                // "کد کاربر",
                                                 // "وضعیت",
                                                 "عملیات"]}
                                             tableData={allMember}

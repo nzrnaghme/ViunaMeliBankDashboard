@@ -104,6 +104,30 @@
     margin-top: 0px;
 }
 
+.file {
+    padding: 10px;
+    border-radius: 10px;
+    border-color: rgb(244, 147, 21);
+    border-width: 1px;
+    border-style: solid;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.btnFile {
+    background: linear-gradient(60deg, #ffa726, #fb8c00);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(255, 152, 0, .4);
+    height: 40px;
+}
+
+.btnFileAccept {
+    
+}
+
+
 @media screen and (max-width:749px) {
     .bodyEditCourse {
         display: flex;

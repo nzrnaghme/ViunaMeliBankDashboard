@@ -124,6 +124,8 @@ export default function RTLPage() {
         </GridItem>
 
       </GridContainer>
+
+      
       {/* <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           <Card chart>

@@ -124,7 +124,7 @@ export default function EditRole(props) {
         <GridItem xs={12} sm={12} md={12}>
           <Card className="CardEditStudent" style={{ boxShadow: "none" }}>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>بروزرسانی نقش</h4>
+              <h4 className={classes.cardTitleWhite}>بروزرسانی نقش {dataRole.ROLE_NAME}</h4>
             </CardHeader>
             <CardBody className="bodyEditStudent">
               <div>
