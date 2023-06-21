@@ -333,7 +333,6 @@ export default function CreateUser(props) {
     }
 
     const createAllUser = async () => {
-        console.log(allUsers);
         const resultObject = {};
         allUsers.forEach(obj => {
             const key = obj.USER_USERNAME;
@@ -343,7 +342,6 @@ export default function CreateUser(props) {
             obj.USER_BRANCH_CODE = String(obj.USER_BRANCH_CODE);
             resultObject[key] = obj;
         });
-        console.log(resultObject, "res");
 
         let response = await insertUser(resultObject);
         if (response.data === "SUCCESSFUL") {
