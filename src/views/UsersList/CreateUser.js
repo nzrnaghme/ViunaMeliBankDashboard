@@ -332,7 +332,7 @@ export default function CreateUser(props) {
         setCurrentPage_MainbarCurrentGroup(newPage)
     }
 
-    const createAllUser = async () => {
+    const createAllUser = () => {
         const resultObject = {};
         allUsers.forEach(obj => {
             const key = obj.USER_USERNAME;
@@ -343,12 +343,23 @@ export default function CreateUser(props) {
             resultObject[key] = obj;
         });
 
-        let response = await insertUser(resultObject);
-        if (response.data === "SUCCESSFUL") {
-            CreateSuccess();
-        } else {
-            toast.error("کاربران اضافه نشدند");
-        }
+        const userObjects = Object.entries(resultObject);
+
+        userObjects.forEach(async ([key, value]) => {
+            const name = key
+            const data = Object.create(
+                {
+                    name: value
+                }
+            )
+            data[name] = data["name"];
+            let response = await insertUser(data);
+            if (response.data === "SUCCESSFUL") {
+                CreateSuccess();
+            } else if (response.data) {
+                toast.error(`کاربر ${response.data} اضافه نشد`);
+            }
+        });
     }
 
 
