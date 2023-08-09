@@ -299,13 +299,36 @@ export default function CreateUser(props) {
                     const bufferReader = e.target.result;
                     const wb = XLSX.read(bufferReader, { type: "buffer" });
                     const wbSheetName = wb.SheetNames[0];
+                    console.log(wbSheetName, "wbSheetName");
                     const ws = wb.Sheets[wbSheetName];
+                    console.log(ws, "ws");
                     const data = XLSX.utils.sheet_to_json(ws);
                     const resultArray = data.map((obj, index) => {
-                        const newObj = { ...obj }; // Create a new object to avoid modifying the original object
+                        console.log(obj, "obj");
+                        const newKeyNames = [
+                            "USER_USERNAME",
+                            "USER_PASSWORD",
+                            // "USER_STATUS",
+                            "USER_DISPLAYNAME",
+                            "USER_DESCRIPTION",
+                            "USER_BRANCH_CODE",
+                        ];
+
+                        const updatedObject = {};
+                        const objectKeys = Object.keys(obj);
+
+                        for (let i = 0; i < objectKeys.length; i++) {
+                            const oldKey = objectKeys[i];
+                            const newKey = newKeyNames[i] || oldKey; // Use new key name if available, otherwise keep the old key name
+                            updatedObject[newKey] = obj[oldKey];
+                        }
+                        console.log(updatedObject, "updatedObject");
+                        const newObj = { ...updatedObject }; // Create a new object to avoid modifying the original object
                         newObj.id = index + 1; // Assign unique id based on index position
+
                         return newObj;
                     });
+                    console.log(resultArray, "resultArray");
                     setAllUsers(resultArray)
                     resolve(data);
                 };
@@ -338,7 +361,7 @@ export default function CreateUser(props) {
             const key = obj.USER_USERNAME;
             delete obj.USER_USERNAME;
             delete obj.id;
-            obj.USER_STATUS = String(obj.USER_STATUS);
+            // obj.USER_STATUS = String(obj.USER_STATUS);
             obj.USER_BRANCH_CODE = String(obj.USER_BRANCH_CODE);
             resultObject[key] = obj;
         });
@@ -398,7 +421,7 @@ export default function CreateUser(props) {
                                             <GridItem xs={12} sm={12} md={6} >
                                                 <CustomInput
                                                     rtlActive
-                                                    labelText="اسم کاربری"
+                                                    labelText="نام کاربری"
                                                     value={name}
                                                     error={errorName}
 
@@ -417,7 +440,7 @@ export default function CreateUser(props) {
                                             <GridItem xs={12} sm={12} md={6}>
                                                 <CustomInput
                                                     rtlActive
-                                                    labelText="توضیحات"
+                                                    labelText="نام خانوادگی"
                                                     value={description}
                                                     onChange={(e) => {
                                                         setDescription(e);
@@ -523,7 +546,7 @@ export default function CreateUser(props) {
                                             <GridItem xs={12} sm={12} md={6}>
                                                 <CustomInput
                                                     rtlActive
-                                                    labelText="عنوان"
+                                                    labelText="سمت"
                                                     value={displayName}
                                                     error={errorDisplayName}
 
@@ -610,7 +633,7 @@ export default function CreateUser(props) {
                                             }}
                                             className="btnFile"
                                         >
-                                            آپلود فایل
+                                            بارگذاری فایل
                                         </RegularButton>
                                         {nameFile &&
                                             <p>{nameFile}</p>
@@ -621,10 +644,10 @@ export default function CreateUser(props) {
                                             <Table
                                                 tableHeaderColor="info"
                                                 tableHead={[
-                                                    "اسم کاربر",
+                                                    "نام کاربر",
                                                     "رمز کاربر",
-                                                    "توضیحات کاربر",
-                                                    "عنوان کاربر",
+                                                    "نام و نام خانوادگی",
+                                                    "سمت",
                                                     "کد شعبه",
                                                     "عملیات"]}
                                                 rowsCount={rowsPerPageGroup}

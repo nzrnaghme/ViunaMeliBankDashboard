@@ -140,7 +140,7 @@ export default function EditCourse(props) {
                     <CustomInput
                       disabled
                       rtlActive
-                      labelText="اسم کاربری"
+                      labelText="نام کاربری"
                       value={dataUser.USER_USERNAME}
                       formControlProps={{
                         fullWidth: true,
@@ -150,7 +150,7 @@ export default function EditCourse(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
-                      labelText="عنوان کاربری"
+                      labelText="نام و نام خانوادگی"
                       value={displayName}
                       formControlProps={{
                         fullWidth: true,
@@ -176,7 +176,7 @@ export default function EditCourse(props) {
                   <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
-                      labelText="توضیحات"
+                      labelText="سمت"
                       value={description}
                       onChange={(e) => {
                         setDescription(e);

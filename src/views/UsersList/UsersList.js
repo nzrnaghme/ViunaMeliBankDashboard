@@ -271,9 +271,9 @@ export default function UsersList() {
                 <Table
                   tableHeaderColor="info"
                   tableHead={[
-                    "اسم کاربری",
-                    "عنوان",
-                    "توضیحات",
+                    "نام کاربری",
+                    "نام و نام خانوادگی",
+                    "سمت",
                     "کد شعبه",
                     // "وضعیت کاربر",
                     "عملیات",

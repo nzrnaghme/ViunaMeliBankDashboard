@@ -32,8 +32,7 @@ import "./Catalog.css"
 // api
 import { trackPromise } from "react-promise-tracker";
 import { GeneralContext } from "providers/GeneralContext";
-import { getListCatalog } from "api/Core/Catalog";
-import { removeCatalog } from "api/Core/Catalog";
+import { getListCatalog, removeCatalog, detailCatalog } from "api/Core/Catalog";
 
 const useStyles = makeStyles({
     root: {
@@ -41,6 +40,10 @@ const useStyles = makeStyles({
         flexGrow: 1,
         maxWidth: 400,
     },
+    cardBody: {
+        display: "flex",
+        justifyContent: "space-between"
+    }
 });
 
 export default function Setting() {
@@ -48,11 +51,13 @@ export default function Setting() {
 
     const [Catalog, setCatalog] = useState({});
     const [oldNode, setOldNode] = useState("");
+    const [detailsCatalog, setDetailsCatalog] = useState();
+
 
     //new catalog
     const [openPopUpCreateCatalog, setOpenPopUpCreateCatalog] = useState(false);
 
-
+    console.log(detailsCatalog, "detailsCatalog");
 
     const {
         setConfirmPopupOpen,
@@ -106,7 +111,7 @@ export default function Setting() {
                 type: item.type
             }));
             addChildToUser(Catalog, catalogName, newData);
-
+            getDetailCatalog(catalogName);
         } else {
             toast.warning("فایل داخلی وجود ندارد");
         }
@@ -122,6 +127,18 @@ export default function Setting() {
                 addChildToUser(user.children, parentId, childrenData);
             }
         });
+    }
+
+    const getDetailCatalog = async (catalogName) => {
+        const data = {
+            PATH: `${catalogName}`
+        }
+        let response = await detailCatalog(data);
+
+        setDetailsCatalog(Object.values(response.data)[0]);
+
+        let today = new Date(Object.values(response.data)[0].CREATED).toLocaleDateString('fa-IR');
+        console.log(today, "today");
     }
 
     // const removeNode = (userData, nodeId) => {
@@ -254,7 +271,7 @@ export default function Setting() {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
 
-                        <CardBody>
+                        <CardBody className={classes.cardBody}>
                             {Object.values(Catalog).length > 0 &&
                                 <TreeView
                                     className={classes.root}
@@ -267,6 +284,19 @@ export default function Setting() {
                                     }
 
                                 </TreeView>
+                            }
+                            {(detailsCatalog !== null && detailsCatalog !== undefined) &&
+                                <div className="details">
+                                    <div className="catalosDetail">
+                                        <p>تاریخ ایجاد : </p>
+                                        <p>{new Date(detailsCatalog.CREATED).toLocaleDateString('fa-IR')}</p>
+                                    </div>
+                                    <div className="catalosDetail">
+                                        <p>نوع : </p>
+                                        <p>{detailsCatalog.TYPE ? detailsCatalog.TYPE : "..."}</p>
+                                    </div>
+
+                                </div>
                             }
                         </CardBody>
                     </Card>

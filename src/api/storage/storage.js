@@ -1,23 +1,23 @@
-// save item in localStorage
+// save item in sessionStorage
 const setItem = (key, value) => {
-    localStorage.setItem(key, value);
+    sessionStorage.setItem(key, value);
 };
 
-// get an item from localStorage with its key
+// get an item from sessionStorage with its key
 const getItem = (key) => {
-    if (localStorage.getItem(key)) return localStorage.getItem(key);
+    if (sessionStorage.getItem(key)) return sessionStorage.getItem(key);
     return false;
 };
 
-// remove specific item with its key from localStorage
+// remove specific item with its key from sessionStorage
 const removeItem = (key) => {
     if (getItem(key) === false) return false;
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
 };
 
-// cleare all localStorage of this site
+// cleare all sessionStorage of this site
 const clearStorage = () => {
-    localStorage.clear();
+    sessionStorage.clear();
 };
 
 export { setItem, getItem, removeItem, clearStorage };

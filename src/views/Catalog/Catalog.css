@@ -1,3 +1,13 @@
-.MuiTreeItem-group{
+.MuiTreeItem-group {
     margin-right: 17px !important;
+}
+
+.details {
+    width: 40%;
+
+}
+
+.catalosDetail {
+    display: flex;
+    margin-bottom: -16px;
 }

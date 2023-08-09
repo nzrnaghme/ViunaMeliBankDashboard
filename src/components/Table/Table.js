@@ -1268,7 +1268,7 @@ export default function CustomTable(props) {
                     {row.USER_BRANCH_CODE ? row.USER_BRANCH_CODE : "..."}
                   </TableCell>
                   {/* <TableCell className={classes.tableCell}>
-                    {row.GROUP_STATUS === 1 ? (
+                    {row.USER_STATUS === 1 ? (
                       <p style={{ color: "green" }}>فعال</p>
                     ) : (
                       <p style={{ color: "red" }}>غیر فعال</p>
